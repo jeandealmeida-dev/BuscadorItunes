@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">BuscadorItunes</string>
     <string name="action_settings">Settings</string>
+    <string name="json_heart_shaped_box">{
+            "wrapperType": "track",
+            "kind": "song",
+            "artistId": 112018,
+            "artistName": "Nirvana",
+            "collectionId": 1440875565,
+            "collectionName": "In Utero (20th Anniversary Deluxe Edition)",
+            "trackId": 1440877336,
+            "trackName": "Heart-Shaped Box",
+            "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/bc/05/8d/bc058d3b-1ff9-4c32-2c46-60ff88234d19/source/100x100bb.jpg"
+    }</string>
 </resources>
