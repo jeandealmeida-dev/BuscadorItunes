@@ -24,6 +24,22 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+        enabledForTests = true
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions{
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+
 }
 
 dependencies {
@@ -64,4 +80,33 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0'
+
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    implementation 'com.github.tony19:logback-android:2.0.0'
+
+    //ROOM
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+
+    //ESPRESSO
+    testImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    testImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    testImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
+
+    //ANDROID TEST - INSTRUMENTED TESTING
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:$espressoVersion"
+    androidTestImplementation "org.robolectric:annotations:$robolectricVersion"
+    implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
+
+    //TIMBER
+    implementation "com.jakewharton.timber:timber:$timberVersion"
+
+    //Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 }
