@@ -1,7 +1,6 @@
 package com.jeanpaulo.buscador_itunes.view.fragment
 
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -18,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.jeanpaulo.buscador_itunes.R
 import com.jeanpaulo.buscador_itunes.databinding.SearchFragBinding
 import com.jeanpaulo.buscador_itunes.model.Music
+import com.jeanpaulo.buscador_itunes.model.util.NetworkState
 import com.jeanpaulo.buscador_itunes.util.*
 import com.jeanpaulo.buscador_itunes.view.activity.CollectionActivity
 import com.jeanpaulo.buscador_itunes.view.adapter.MusicListAdapter
@@ -26,7 +26,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.content_main.*
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -100,8 +99,25 @@ class SearchFragment : Fragment() {
         //txt_error.setOnClickListener { viewModel.refresh() }
         //viewModel.getState().observe(this, createNetworkStateObserver())
 
-        viewModel.dataLoading.observe(viewLifecycleOwner, Observer {
-            progress_bar.visibility = if(it) View.VISIBLE else View.GONE
+        viewModel.networkState.observe(viewLifecycleOwner, Observer {
+            //TODO Jean: Colocar view de  loading aqui
+            when(it){
+
+                NetworkState.LOADING ->{
+
+                }
+
+                NetworkState.ERROR -> {
+
+                }
+
+                NetworkState.DONE -> {
+
+                }
+            }
+
+
+            //viewDataBinding.refreshLayout .visibility = if (it) View.VISIBLE else View.GONE
         })
 
         viewModel.musicList?.observe(viewLifecycleOwner, Observer { it: PagedList<Music> ->
@@ -172,7 +188,6 @@ class SearchFragment : Fragment() {
             .subscribeOn(AndroidSchedulers.mainThread())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
-                //showProgress()
             }
             .observeOn(Schedulers.io())
             .map {
@@ -203,10 +218,12 @@ class SearchFragment : Fragment() {
         val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
 
-            musicListAdapter = MusicListAdapter(viewModel)
-            recycler_view.layoutManager =
+            musicListAdapter = MusicListAdapter(viewModel) {
+                openMusicDetail(it)
+            }
+            viewDataBinding.musicList.layoutManager =
                 CustomLinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-            recycler_view.adapter = musicListAdapter
+            viewDataBinding.musicList.adapter = musicListAdapter
 
             /*val itemDecorator =
                 DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
@@ -217,8 +234,8 @@ class SearchFragment : Fragment() {
                 DividerItemDecoration.VERTICAL
             )
 
-            recycler_view.addItemDecoration(itemDecorator);
-            viewDataBinding.musicList.adapter = musicListAdapter
+            viewDataBinding.musicList.addItemDecoration(itemDecorator);
+
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }

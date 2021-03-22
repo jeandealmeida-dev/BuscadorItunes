@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.jeanpaulo.buscador_itunes.R
 import com.jeanpaulo.buscador_itunes.model.Music
+import com.jeanpaulo.buscador_itunes.model.Track
 import com.jeanpaulo.buscador_itunes.model.util.NetworkState
 import com.jeanpaulo.buscador_itunes.view_model.SearchViewModel
 import com.squareup.picasso.Picasso
@@ -16,7 +17,8 @@ import kotlinx.android.synthetic.main.item_list_footer.view.*
 import kotlinx.android.synthetic.main.item_music.view.*
 
 class MusicListAdapter(
-    private val viewModel: SearchViewModel
+    private val viewModel: SearchViewModel,
+    private val listener: (Long) -> Unit
 ) : PagedListAdapter<Music, RecyclerView.ViewHolder>(NewsDiffCallback) {
 
     private val DATA_VIEW_TYPE = 1
@@ -39,7 +41,7 @@ class MusicListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == DATA_VIEW_TYPE) {
             val music = getItem(position)
-            (holder as MusicViewHolder).bind(music)
+            (holder as MusicViewHolder).bind(music, listener)
             //holder.itemView.setOnClickListener({ listenerFun(music) })
         } else (holder as FooterViewHolder).bind(state)
     }
@@ -68,19 +70,17 @@ class MusicListAdapter(
         return super.getItemCount() != 0 && (state == NetworkState.LOADING || state == NetworkState.ERROR)
     }
 
-    fun setState(state: NetworkState) {
-        this.state = state
-        notifyItemChanged(super.getItemCount())
-    }
-
     class MusicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(music: Music?) {
+        fun bind(music: Music?, listener: (Long) -> Unit) {
             if (music != null) {
                 itemView.txt_music_name.text = music.name
                 itemView.txt_artist_name.text = music.artist.name
                 itemView.txt_collection_name.text = music.collection.name
                 Picasso.get().load(music.artworkUrl).into(itemView.img_news_banner)
+
+                if (music.trackId != null)
+                    itemView.setOnClickListener { listener(music.trackId!!) }
             }
         }
 

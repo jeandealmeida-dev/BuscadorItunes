@@ -15,4 +15,6 @@
     <string name="menu_search_music">Pesquisar músicas</string>
     <string name="menu_fav_music">Favoritos</string>
     <string name="loading_music_error">Erro ao carregar lista de musica</string>
+    <string name="no_music_found">Nenhuma música encontrada com esse termo!</string>
+    <string name="no_internet_connection">Sem conexao com Internet</string>
 </resources>

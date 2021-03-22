@@ -16,10 +16,11 @@
 package com.jeanpaulo.buscador_itunes.mock.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.jeanpaulo.buscador_itunes.model.util.Result
 import com.jeanpaulo.buscador_itunes.model.Music
-import com.jeanpaulo.buscador_itunes.repository.MusicDataSource
+import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
+import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse
+import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse2
 import java.util.LinkedHashMap
 
 /**
@@ -29,9 +30,18 @@ object FakeTasksRemoteDataSource :
     MusicDataSource {
 
     private var MUSICS_SERVICE_DATA: LinkedHashMap<String, Music> = LinkedHashMap()
+    override suspend fun searchMusic(
+        term: String,
+        mediaType: String,
+        offset: Int,
+        limit: Int
+    ): Result<ItunesResponse> {
+        TODO("Not yet implemented")
+    }
 
-    private val observableMusics = MutableLiveData<Result<List<Music>>>()
-
+    override suspend fun getCollection(term: Long, mediaType: String): ItunesResponse2 {
+        TODO("Not yet implemented")
+    }
 
     override fun observeMusics(): LiveData<Result<List<Music>>> {
         TODO("Not yet implemented")

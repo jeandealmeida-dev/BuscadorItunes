@@ -2,12 +2,13 @@ package com.jeanpaulo.buscador_itunes.ui_controller.view.collection.data_source
 
 import androidx.lifecycle.MutableLiveData
 import com.jeanpaulo.buscador_itunes.model.Collection
+import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
 import com.jeanpaulo.buscador_itunes.util.CustomCallback
 import io.reactivex.disposables.CompositeDisposable
 
 class CollectionDataSourceFactory (
     private val collectionId: Long,
-    private val service: ItunesService,
+    private val service: MusicDataSource,
     private val composite: CompositeDisposable,
     private val callback: CustomCallback<Collection>
 ) {

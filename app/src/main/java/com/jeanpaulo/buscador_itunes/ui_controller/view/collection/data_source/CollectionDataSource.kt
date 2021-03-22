@@ -3,10 +3,11 @@ package com.jeanpaulo.buscador_itunes.ui_controller.view.collection.data_source
 import androidx.lifecycle.MutableLiveData
 import com.jeanpaulo.buscador_itunes.model.Collection
 import com.jeanpaulo.buscador_itunes.model.util.NetworkState
-import com.jeanpaulo.buscador_itunes.repository.remote.util.ItunesResponse2
+import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
+import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse2
 import com.jeanpaulo.buscador_itunes.util.CustomCallback
 import com.jeanpaulo.buscador_itunes.util.params.CollectionParams
-import com.jeanpaulo.buscador_itunes.repository.remote.paged_seach.PagedSearchDataSource
+import com.jeanpaulo.buscador_itunes.datasource.remote.paged_seach.PagedSearchDataSource
 import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -17,7 +18,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class CollectionDataSource(
-    val service: ItunesService,
+    val service: MusicDataSource,
     val composite: CompositeDisposable,
     val callback: CustomCallback<Collection>
 ) : SingleObserver<ItunesResponse2> {

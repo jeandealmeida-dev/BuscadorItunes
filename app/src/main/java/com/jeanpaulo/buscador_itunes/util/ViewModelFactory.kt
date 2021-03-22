@@ -20,7 +20,7 @@ import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
-import com.jeanpaulo.buscador_itunes.repository.remote.MusicRemoteDataSource
+import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
 import com.jeanpaulo.buscador_itunes.view_model.SearchViewModel
 
 /**
@@ -28,7 +28,7 @@ import com.jeanpaulo.buscador_itunes.view_model.SearchViewModel
  */
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory constructor(
-    private val musicRepository: MusicRemoteDataSource,
+    private val dataSource: MusicDataSource,
     owner: SavedStateRegistryOwner,
     defaultArgs: Bundle? = null
 ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
@@ -49,7 +49,7 @@ class ViewModelFactory constructor(
                 TasksViewModel(musicRepository, handle)
                 */
             isAssignableFrom(SearchViewModel::class.java) ->
-                SearchViewModel(musicRepository, handle)
+                SearchViewModel(dataSource, handle)
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

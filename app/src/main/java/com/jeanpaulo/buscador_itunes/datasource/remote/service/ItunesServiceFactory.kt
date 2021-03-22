@@ -1,13 +1,12 @@
-package com.jeanpaulo.buscador_itunes.util
+package com.jeanpaulo.buscador_itunes.datasource.remote.service
 
 import com.jeanpaulo.buscador_itunes.view.adapter.CollectionAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class RetrofitServiceFactory {
+class ItunesServiceFactory {
 
     companion object {
         val BASE_URL = "https://itunes.apple.com"
@@ -18,7 +17,7 @@ class RetrofitServiceFactory {
     fun build(){
         retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            //.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(
                 MoshiConverterFactory
                 .create(

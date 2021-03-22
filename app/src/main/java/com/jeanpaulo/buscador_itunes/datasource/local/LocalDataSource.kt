@@ -1,4 +1,4 @@
-package com.jeanpaulo.buscador_itunes.repository.local
+package com.jeanpaulo.buscador_itunes.datasource.local
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map

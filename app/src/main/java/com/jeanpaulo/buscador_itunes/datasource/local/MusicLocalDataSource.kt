@@ -1,9 +1,8 @@
-package com.jeanpaulo.buscador_itunes.repository.local
+package com.jeanpaulo.buscador_itunes.datasource.local
 
 import androidx.lifecycle.LiveData
 import com.jeanpaulo.buscador_itunes.model.Music
 import com.jeanpaulo.buscador_itunes.model.util.Result
-import com.jeanpaulo.buscador_itunes.repository.local.LocalDataSource
 
 /**
  * Interface to the data layer.

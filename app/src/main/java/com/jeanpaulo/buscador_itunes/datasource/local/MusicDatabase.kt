@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.jeanpaulo.buscador_itunes.repository.local
+package com.jeanpaulo.buscador_itunes.datasource.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

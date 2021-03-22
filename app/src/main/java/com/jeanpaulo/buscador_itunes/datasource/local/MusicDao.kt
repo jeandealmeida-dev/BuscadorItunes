@@ -1,4 +1,4 @@
-package com.jeanpaulo.buscador_itunes.repository.local
+package com.jeanpaulo.buscador_itunes.datasource.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -30,7 +30,7 @@ interface MusicDao {
      * @param taskId the task id.
      * @return the task with taskId.
      */
-    @Query("SELECT * FROM Music WHERE entryid = :musicId")
+    @Query("SELECT * FROM Music WHERE trackId = :musicId")
     suspend fun getMusicById(musicId: Long): Music?
 
     /**
@@ -39,7 +39,7 @@ interface MusicDao {
      * @param taskId the task id.
      * @return the task with taskId.
      */
-    @Query("SELECT * FROM Music WHERE entryid = :taskId")
+    @Query("SELECT * FROM Music WHERE trackId = :taskId")
     fun observeMusicById(taskId: Long): LiveData<Music>
 
     /**
@@ -74,7 +74,7 @@ interface MusicDao {
      *
      * @return the number of tasks deleted. This should always be 1.
      */
-    @Query("DELETE FROM Music WHERE entryid = :taskId")
+    @Query("DELETE FROM Music WHERE trackId = :taskId")
     suspend fun deleteMusicById(taskId: Long): Int
 
     /**

@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 class Collection(
-    @Json(name = "collectionId") val id: Long,
+    @Json(name = "collectionId") val id: Long?,
     @Json(name = "collectionName") val name: String?
 ){
 

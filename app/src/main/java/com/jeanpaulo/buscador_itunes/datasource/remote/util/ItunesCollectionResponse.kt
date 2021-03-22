@@ -1,4 +1,4 @@
-package com.jeanpaulo.buscador_itunes.repository.remote.util
+package com.jeanpaulo.buscador_itunes.datasource.remote.util
 
 import com.jeanpaulo.buscador_itunes.model.util.WrapperType
 import com.squareup.moshi.Json

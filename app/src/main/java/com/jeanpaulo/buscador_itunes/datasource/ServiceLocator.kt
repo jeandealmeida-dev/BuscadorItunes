@@ -1,21 +1,22 @@
-package com.jeanpaulo.buscador_itunes.repository
+package com.jeanpaulo.buscador_itunes.datasource
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.room.Room
-import com.jeanpaulo.buscador_itunes.repository.remote.MusicRemoteDataSource
-import com.jeanpaulo.buscador_itunes.repository.local.MusicDatabase
-import com.jeanpaulo.buscador_itunes.repository.local.LocalDataSource
-import com.jeanpaulo.buscador_itunes.util.RetrofitServiceFactory
+import com.jeanpaulo.buscador_itunes.datasource.remote.service.ItunesService
+import com.jeanpaulo.buscador_itunes.datasource.local.MusicDatabase
+import com.jeanpaulo.buscador_itunes.datasource.local.LocalDataSource
+import com.jeanpaulo.buscador_itunes.datasource.remote.service.ItunesServiceFactory
 
 object ServiceLocator {
     private val lock = Any()
     private var database: MusicDatabase? = null
+
     @Volatile
-    var musicRepository: MusicRemoteDataSource? = null
+    var musicRepository: MusicDataSource? = null
         @VisibleForTesting set
 
-    fun provideMusicRepository(context: Context): MusicRemoteDataSource {
+    fun provideMusicRepository(context: Context): MusicDataSource {
         synchronized(this) {
             return musicRepository
                 ?: musicRepository
@@ -25,7 +26,7 @@ object ServiceLocator {
         }
     }
 
-    private fun createMusicRepository(context: Context): MusicRemoteDataSource {
+    private fun createMusicRepository(context: Context): MusicDataSource {
         val newRepo =
             DefaultMusicRepository(
                 createRepository(),
@@ -37,9 +38,11 @@ object ServiceLocator {
         return newRepo
     }
 
-    private fun createRepository(): MusicRemoteDataSource {
-        RetrofitServiceFactory().build()
-        return RetrofitServiceFactory.retrofit.create(MusicRemoteDataSource::class.java)
+    private fun createRepository(): ItunesService {
+        ItunesServiceFactory()
+            .build()
+        return ItunesServiceFactory.retrofit.create(
+            ItunesService::class.java)
     }
 
     private fun createLocalDataSource(context: Context): LocalDataSource {

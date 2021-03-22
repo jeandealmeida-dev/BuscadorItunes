@@ -1,24 +1,28 @@
-package com.jeanpaulo.buscador_itunes.repository
+package com.jeanpaulo.buscador_itunes.datasource
 
 import androidx.lifecycle.LiveData
 import com.jeanpaulo.buscador_itunes.model.Music
 import kotlinx.coroutines.*
 import com.jeanpaulo.buscador_itunes.model.util.Result
-import com.jeanpaulo.buscador_itunes.repository.remote.MusicRemoteDataSource
-import com.jeanpaulo.buscador_itunes.repository.local.MusicLocalDataSource
-import com.jeanpaulo.buscador_itunes.repository.remote.util.ItunesResponse
-import com.jeanpaulo.buscador_itunes.repository.remote.util.ItunesResponse2
-import com.jeanpaulo.buscador_itunes.util.wrapEspressoIdlingResource
-import io.reactivex.Single
+import com.jeanpaulo.buscador_itunes.datasource.remote.service.ItunesService
+import com.jeanpaulo.buscador_itunes.datasource.local.MusicLocalDataSource
+import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
+import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse
+import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse2
+import org.slf4j.LoggerFactory
+import java.io.IOException
+import java.net.SocketTimeoutException
 
 /**
  * Default implementation of [MusicsRepository]. Single entry point for managing musics' data.
  */
 class DefaultMusicRepository(
-    private val musicRemoteDataSource: MusicRemoteDataSource,
+    private val musicRemoteDataSource: ItunesService,
     private val musicLocalDataSource: MusicLocalDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : MusicDataSource {
+
+    private var log: org.slf4j.Logger = LoggerFactory.getLogger(DefaultMusicRepository::class.java)
 
     /*override suspend fun getMusics(forceUpdate: Boolean): Result<List<Music>> {
         // Set app as busy while this function executes.
@@ -35,17 +39,36 @@ class DefaultMusicRepository(
         }
     }*/
 
-    override fun searchMusic(
+    override suspend fun searchMusic(
         term: String,
         mediaType: String,
         offset: Int,
         limit: Int
-    ): Single<ItunesResponse> {
-        //TODO salvar lista de pesquisa na base de dados
-        return musicRemoteDataSource.searchMusic(term, mediaType, offset, limit)
+    ): Result<ItunesResponse> {
+        return withContext(ioDispatcher) {
+            try {
+                val response =
+                    musicRemoteDataSource.searchMusic(term, mediaType, offset, limit)
+                        .also {
+                            log.info("RESPONSE ->", it)
+                        }
+                if (response.isSuccessful)
+                    Result.Success(response.body()!!)
+                else
+                    Result.Error(DataSourceException("Objeto com erro"))
+
+            } catch (e: SocketTimeoutException) {
+                Result.Error(DataSourceException("NO INTERNET CONNECTION"))
+            } catch (e: IOException) {
+                Result.Error(DataSourceException(e.message ?: "unknown error"))
+            } catch (e: Exception){
+                Result.Error(DataSourceException(e.message ?: "unknown error"))
+            }
+        }
+
     }
 
-    override fun getCollection(term: Long, mediaType: String): ItunesResponse2 {
+    override suspend fun getCollection(term: Long, mediaType: String): ItunesResponse2 {
         //TODO salvar em cache itens ja acessados
         return musicRemoteDataSource.getCollection(term, mediaType)
     }
@@ -120,12 +143,13 @@ class DefaultMusicRepository(
         }
     }
 
-    override suspend fun activateMusic(music: Music) = withContext<Unit>(ioDispatcher) {
-        coroutineScope {
-            //launch { musicRemoteDataSource.activateMusic(music) }
-            launch { musicLocalDataSource.activateMusic(music) }
+    override suspend fun activateMusic(music: Music) =
+        withContext<Unit>(ioDispatcher) {
+            coroutineScope {
+                //launch { musicRemoteDataSource.activateMusic(music) }
+                launch { musicLocalDataSource.activateMusic(music) }
+            }
         }
-    }
 
     override suspend fun activateMusic(musicId: Long) {
         withContext(ioDispatcher) {
