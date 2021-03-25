@@ -21,6 +21,7 @@ import com.jeanpaulo.buscador_itunes.model.Music
 import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse2
+import retrofit2.Response
 import java.util.LinkedHashMap
 
 /**
@@ -39,7 +40,7 @@ object FakeTasksRemoteDataSource :
         TODO("Not yet implemented")
     }
 
-    override suspend fun getCollection(term: Long, mediaType: String): ItunesResponse2 {
+    override suspend fun lookup(term: Long, mediaType: String): Result<ItunesResponse2> {
         TODO("Not yet implemented")
     }
 

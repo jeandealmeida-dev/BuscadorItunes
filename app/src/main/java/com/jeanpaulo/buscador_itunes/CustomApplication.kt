@@ -25,7 +25,7 @@ class CustomApplication : Application() {
 
     // Called by the system when the device configuration changes while your component is running.
     // Overriding this method is totally optional!
-    override fun onConfigurationChanged ( newConfig : Configuration) {
+    override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
     }
 
@@ -35,4 +35,6 @@ class CustomApplication : Application() {
     override fun onLowMemory() {
         super.onLowMemory()
     }
+
+    fun isDebuging() = BuildConfig.DEBUG
 }

@@ -4,6 +4,7 @@ class SearchParams {
     companion object {
         const val SEARCH_PAGE_SIZE = 5
         const val INIT_SEARCH_TERM = "Nirvana"
-        const val SEARCH_MEDIA_TYPE = "musicTrack"
+        const val MUSIC_MEDIA_TYPE = "musicTrack"
+        const val SONG_MEDIA_TYPE = "song"
     }
 }

@@ -1,51 +1,107 @@
 package com.jeanpaulo.buscador_itunes.view_model
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.*
 import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
-import com.jeanpaulo.buscador_itunes.model.Collection
+import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
+import com.jeanpaulo.buscador_itunes.model.Music
 import com.jeanpaulo.buscador_itunes.model.util.NetworkState
-import com.jeanpaulo.buscador_itunes.util.CustomCallback
-import com.jeanpaulo.buscador_itunes.ui_controller.view.collection.data_source.CollectionDataSource
-import com.jeanpaulo.buscador_itunes.ui_controller.view.collection.data_source.CollectionDataSourceFactory
-import io.reactivex.disposables.CompositeDisposable
+import com.jeanpaulo.buscador_itunes.model.util.Result
+import com.jeanpaulo.buscador_itunes.util.Event
+import com.jeanpaulo.buscador_itunes.util.params.SearchParams
+import com.jeanpaulo.buscador_itunes.view.activity.TRACK_ID_PARAM
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class CollectionViewModel(
+class MusicDetailViewModel(
     private val dataSource: MusicDataSource,
     private val savedStateHandle: SavedStateHandle
-) {
+) : ViewModel() {
 
-    private val compositeDisposable = CompositeDisposable()
-    private var dataSource: CollectionDataSourceFactory? = null
+    private var _music: MutableLiveData<Music> = MutableLiveData()
+    val music: LiveData<Music> = _music
 
     init {
-        val service = null//CustomApplication.retrofit.create(ItunesService::class.java)
-
-        dataSource =
-            CollectionDataSourceFactory(
-                collectionId,
-                service!!,
-                compositeDisposable,
-                callback
-            )
+        searchMusic()
     }
 
-    fun getCollection(){
-        dataSource!!.run()
+    private fun searchMusic() {
+        val music = getMusic()
+        if (music != null)
+            getMusicDetail(music)
     }
 
+    private fun getMusic(): Long? {
+        return savedStateHandle.get(TRACK_ID_PARAM)
+    }
 
-    fun getState(): LiveData<NetworkState> = Transformations.switchMap<CollectionDataSource,
-            NetworkState>(dataSource!!.dataSource, CollectionDataSource::state)
+    private fun getMusicDetail(musicId: Long) {
+        GlobalScope.launch {
+            setNetworkState(NetworkState.LOADING)
+            val response = dataSource.lookup(musicId, SearchParams.SONG_MEDIA_TYPE)
+            if (response is Result.Success) {
+                _music.postValue(response.data.result.get(0))
+                setNetworkState(NetworkState.DONE)
+            } else {
+                setNetworkState(NetworkState.ERROR)
+            }
+        }
+    }
+
+    //SETUP SNACKBAR
+
+    private val _snackbarText = MutableLiveData<Event<Int>>()
+    val snackbarText: LiveData<Event<Int>> = _snackbarText
+
+    fun showSnackbarMessage(message: String) {
+        //_snackbarText.value = Event(message)
+    }
+
+    fun showSnackbarMessage(message: Int) {
+        _snackbarText.value = Event(message)
+    }
+
+    fun reproducePreview() {
+        //TODO Jean Reproduzir musica
+    }
+
+    fun setNetworkState(networkState: NetworkState) {
+        _networkState.postValue(networkState)
+    }
+
+    fun setMusicId(musicId: Long) {
+        savedStateHandle.set(TRACK_ID_PARAM, musicId)
+        getMusicDetail(musicId)
+    }
 
     fun retry() {
-        dataSource!!.retry()
+        searchMusic()
     }
 
-    fun onClose() {
-        compositeDisposable.dispose()
+    //SETUP NETWORKSTATE
+
+    private var _errorLoading: MutableLiveData<DataSourceException?> =
+        MutableLiveData()
+    val errorLoading: LiveData<DataSourceException?> = _errorLoading
+
+    private var _networkState = MutableLiveData<NetworkState>()
+
+    val dataLoading: LiveData<Boolean> = Transformations.switchMap<NetworkState, Boolean>(
+        _networkState
+    ) { state ->
+        when (state) {
+            NetworkState.LOADING -> {
+                MutableLiveData<Boolean>(true)
+            }
+
+            NetworkState.DONE -> {
+                _errorLoading.postValue(null)
+                MutableLiveData<Boolean>(false)
+            }
+
+            NetworkState.ERROR -> {
+                _errorLoading.postValue(state.exception)
+                MutableLiveData<Boolean>(false)
+            }
+        }
     }
-
-
 }

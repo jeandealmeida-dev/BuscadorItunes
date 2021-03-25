@@ -23,7 +23,7 @@ class ItunesServiceFactory {
                 .create(
                     Moshi
                     .Builder()
-                    .add(CollectionAdapter())
+                    //.add(CollectionAdapter())
                     .addLast(KotlinJsonAdapterFactory())
                     .build()
                 )

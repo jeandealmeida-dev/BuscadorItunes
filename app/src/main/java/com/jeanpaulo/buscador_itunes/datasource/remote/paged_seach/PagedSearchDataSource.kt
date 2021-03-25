@@ -29,7 +29,10 @@ class PagedSearchDataSource(
         callback: LoadInitialCallback<Int, Music>
     ) {
         runBlocking {
-            updateState(NetworkState.LOADING)
+
+            //Not necessary cause it was alredy called on createFactory
+            //updateState(NetworkState.LOADING)
+
             val response = searchTermUseCase.execute(
                 0,
                 SearchParams.SEARCH_PAGE_SIZE
@@ -43,7 +46,12 @@ class PagedSearchDataSource(
                 delay(100L)
                 updateState(NetworkState.DONE)
             } else {
-                updateState(NetworkState.ERROR)
+                val exception = (response as Result.Error).exception
+
+                val errorState = NetworkState.ERROR
+                errorState.exception = exception
+                updateState(errorState)
+
                 setRetry(Action { loadInitial(params, callback) })
             }
         }

@@ -1,5 +1,7 @@
 package com.jeanpaulo.buscador_itunes.model.util
 
+import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
+
 /**
  * A generic class that holds a value with its loading status.
  * @param <T>
@@ -7,7 +9,7 @@ package com.jeanpaulo.buscador_itunes.model.util
 sealed class Result<out R> {
 
     data class Success<out T>(val data: T) : Result<T>()
-    data class Error(val exception: Exception) : Result<Nothing>()
+    data class Error(val exception: DataSourceException) : Result<Nothing>()
     object Loading : Result<Nothing>()
 
     override fun toString(): String {
@@ -24,3 +26,4 @@ sealed class Result<out R> {
  */
 val Result<*>.succeeded
     get() = this is Result.Success && data != null
+

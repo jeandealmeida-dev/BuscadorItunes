@@ -20,8 +20,8 @@ interface ItunesService {
     ): Response<ItunesResponse>
 
     @GET("lookup")
-    suspend fun getCollection(
+    suspend fun lookUp(
         @Query("id") term: Long,
         @Query("entity") mediaType: String
-    ): ItunesResponse2
+    ): Response<ItunesResponse2>
 }

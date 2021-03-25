@@ -2,6 +2,7 @@ package com.jeanpaulo.buscador_itunes.datasource.local
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
+import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
 import com.jeanpaulo.buscador_itunes.model.Music
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +28,12 @@ class LocalDataSource internal constructor(
         return try {
             Result.Success(musicDao.getMusics())
         } catch (e: Exception) {
-            Result.Error(e)
+            Result.Error(
+                DataSourceException(
+                    DataSourceException.Error.UNKNOWN_EXCEPTION,
+                    e.toString()
+                )
+            )
         }
     }
 
@@ -51,10 +57,20 @@ class LocalDataSource internal constructor(
             if (task != null) {
                 return@withContext Result.Success(task)
             } else {
-                return@withContext Result.Error(Exception("Music not found!"))
+                return@withContext Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.NULL_EXCEPTION,
+                        "Music not found!"
+                    )
+                )
             }
         } catch (e: Exception) {
-            return@withContext Result.Error(e)
+            return@withContext Result.Error(
+                DataSourceException(
+                    DataSourceException.Error.UNKNOWN_EXCEPTION,
+                    e.toString()
+                )
+            )
         }
     }
 

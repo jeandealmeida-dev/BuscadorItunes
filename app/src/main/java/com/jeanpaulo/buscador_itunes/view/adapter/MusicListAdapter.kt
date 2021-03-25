@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.item_music.view.*
 
 class MusicListAdapter(
     private val viewModel: SearchViewModel,
-    private val listener: (Long) -> Unit
+    private val listener: (Music) -> Unit
 ) : PagedListAdapter<Music, RecyclerView.ViewHolder>(NewsDiffCallback) {
 
     private val DATA_VIEW_TYPE = 1
@@ -72,7 +72,7 @@ class MusicListAdapter(
 
     class MusicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(music: Music?, listener: (Long) -> Unit) {
+        fun bind(music: Music?, listener: (Music) -> Unit) {
             if (music != null) {
                 itemView.txt_music_name.text = music.name
                 itemView.txt_artist_name.text = music.artist.name
@@ -80,7 +80,7 @@ class MusicListAdapter(
                 Picasso.get().load(music.artworkUrl).into(itemView.img_news_banner)
 
                 if (music.trackId != null)
-                    itemView.setOnClickListener { listener(music.trackId!!) }
+                    itemView.setOnClickListener { listener(music) }
             }
         }
 

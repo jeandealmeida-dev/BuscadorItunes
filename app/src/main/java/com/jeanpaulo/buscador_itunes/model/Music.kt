@@ -24,6 +24,7 @@ data class Music(
     @Json(name = "collectionId") @ColumnInfo(name = "collectionId") val collectionId: Long?,
     @Json(name = "collectionName") @ColumnInfo(name = "collectionName") val collectionName: String?
 ) {
+    constructor(trackId: Long) : this(trackId, null, null, null, null, null, null)
 
     @PrimaryKey
     var id: Long

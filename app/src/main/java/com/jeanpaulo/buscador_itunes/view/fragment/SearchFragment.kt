@@ -14,18 +14,25 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.jeanpaulo.buscador_itunes.CustomApplication
 import com.jeanpaulo.buscador_itunes.R
-import com.jeanpaulo.buscador_itunes.databinding.SearchFragBinding
+import com.jeanpaulo.buscador_itunes.databinding.FragMusicSearchBinding
+import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
 import com.jeanpaulo.buscador_itunes.model.Music
 import com.jeanpaulo.buscador_itunes.model.util.NetworkState
 import com.jeanpaulo.buscador_itunes.util.*
-import com.jeanpaulo.buscador_itunes.view.activity.CollectionActivity
+import com.jeanpaulo.buscador_itunes.view.activity.ARTWORK_URL_PARAM
+import com.jeanpaulo.buscador_itunes.view.activity.MusicDetailActivity
+import com.jeanpaulo.buscador_itunes.view.activity.TRACK_ID_PARAM
 import com.jeanpaulo.buscador_itunes.view.adapter.MusicListAdapter
 import com.jeanpaulo.buscador_itunes.view_model.SearchViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.frag_music_detail.*
+import kotlinx.android.synthetic.main.frag_music_detail.txt_error
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -39,7 +46,7 @@ class SearchFragment : Fragment() {
 
     private val args: MusicFragmentArgs by navArgs()
 
-    private lateinit var viewDataBinding: SearchFragBinding
+    private lateinit var viewBinding: FragMusicSearchBinding
     private lateinit var musicListAdapter: MusicListAdapter
 
     override fun onCreateView(
@@ -47,11 +54,11 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewDataBinding = SearchFragBinding.inflate(inflater, container, false).apply {
+        viewBinding = FragMusicSearchBinding.inflate(inflater, container, false).apply {
             viewmodel = viewModel
         }
         setHasOptionsMenu(true)
-        return viewDataBinding.root
+        return viewBinding.root
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
@@ -79,10 +86,10 @@ class SearchFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         // Set the lifecycle owner to the lifecycle of the view
-        viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
+        viewBinding.lifecycleOwner = this.viewLifecycleOwner
         setupSnackbar()
         setupListAdapter()
-        setupRefreshLayout(viewDataBinding.refreshLayout, viewDataBinding.musicList)
+        setupRefreshLayout(viewBinding.refreshLayout, viewBinding.musicList)
         setupNavigation()
         setupFab()
         initState()
@@ -96,41 +103,27 @@ class SearchFragment : Fragment() {
     }
 
     private fun initState() {
-        //txt_error.setOnClickListener { viewModel.refresh() }
-        //viewModel.getState().observe(this, createNetworkStateObserver())
-
-        viewModel.networkState.observe(viewLifecycleOwner, Observer {
-            //TODO Jean: Colocar view de  loading aqui
-            when(it){
-
-                NetworkState.LOADING ->{
-
-                }
-
-                NetworkState.ERROR -> {
-
-                }
-
-                NetworkState.DONE -> {
-
-                }
-            }
-
-
-            //viewDataBinding.refreshLayout .visibility = if (it) View.VISIBLE else View.GONE
-        })
 
         viewModel.musicList?.observe(viewLifecycleOwner, Observer { it: PagedList<Music> ->
             musicListAdapter.submitList(it)
             musicListAdapter.notifyDataSetChanged()
         })
+
+        viewModel.errorLoading.observe(viewLifecycleOwner, Observer { exception ->
+            if (exception != null) {
+                txt_error.visibility = View.VISIBLE
+                txt_error.text = showException(exception)
+            } else
+                txt_error.visibility = View.GONE
+        })
+
+        txt_error.setOnClickListener {
+            viewModel.refresh()
+        }
     }
 
 
     private fun setupNavigation() {
-        viewModel.openMusicEvent.observe(viewLifecycleOwner, EventObserver {
-            openMusicDetail(it)
-        })
         /*viewModel.newTaskEvent.observe(this, EventObserver {
             navigateToAddNewTask()
         })*/
@@ -197,6 +190,19 @@ class SearchFragment : Fragment() {
             .subscribe()
     }
 
+    private fun showException(exception: DataSourceException): String {
+        return when (exception.knownNetworkError) {
+            DataSourceException.Error.NO_INTERNET_EXCEPTION ->
+                getString(R.string.no_internet_connection)
+            DataSourceException.Error.TIMEOUT_EXCEPTION ->
+                getString(R.string.loading_search_music_error)
+
+            else -> {
+                exception.toString()
+            }
+        }
+    }
+
     private fun setupFab() {
         activity?.findViewById<FloatingActionButton>(R.id.add_task_fab)?.let {
             it.setOnClickListener {
@@ -215,15 +221,15 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupListAdapter() {
-        val viewModel = viewDataBinding.viewmodel
+        val viewModel = viewBinding.viewmodel
         if (viewModel != null) {
 
             musicListAdapter = MusicListAdapter(viewModel) {
-                openMusicDetail(it)
+                openMusicDetail(it.trackId!!, it.artworkUrl!!)
             }
-            viewDataBinding.musicList.layoutManager =
+            viewBinding.musicList.layoutManager =
                 CustomLinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-            viewDataBinding.musicList.adapter = musicListAdapter
+            viewBinding.musicList.adapter = musicListAdapter
 
             /*val itemDecorator =
                 DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
@@ -234,17 +240,18 @@ class SearchFragment : Fragment() {
                 DividerItemDecoration.VERTICAL
             )
 
-            viewDataBinding.musicList.addItemDecoration(itemDecorator);
+            viewBinding.musicList.addItemDecoration(itemDecorator);
 
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }
     }
 
-    private fun openMusicDetail(musicId: Long) {
-        val intent = Intent(requireActivity(), CollectionActivity::class.java)
+    private fun openMusicDetail(musicId: Long, artworkUrl: String) {
+        val intent = Intent(requireActivity(), MusicDetailActivity::class.java)
         val b = Bundle()
-        b.putLong("collectionId", musicId) //Your id
+        b.putLong(TRACK_ID_PARAM, musicId) //Your id
+        b.putString(ARTWORK_URL_PARAM, artworkUrl) //Your id
         intent.putExtras(b)
         startActivity(intent)
     }

@@ -46,10 +46,11 @@
                         android:id="@+id/music_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/cardview_light_background"
+                        android:background="@android:color/background_light"
                         tools:listitem="@layout/item_music" />
 
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:id="@+id/no_tasks_layout"
@@ -64,17 +65,26 @@
                         android:layout_width="96dp"
                         android:layout_height="96dp"
                         android:layout_gravity="center"
-                        android:src="@mipmap/ic_launcher"
-                        android:contentDescription="@string/no_tasks_image_content_description" />
+                        android:contentDescription="@string/no_tasks_image_content_description"
+                        android:src="@mipmap/ic_launcher" />
 
                     <TextView
                         android:id="@+id/no_tasks_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="@string/no_music_found"
-                        android:layout_marginBottom="@dimen/list_item_padding" />
+                        android:layout_marginBottom="@dimen/list_item_padding"
+                        android:text="@string/no_music_found" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txt_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/background_light"
+                    android:gravity="center"
+                    android:text="ERROR !! Tap to retry."
+                    android:visibility="gone" />
             </RelativeLayout>
 
         </com.jeanpaulo.buscador_itunes.util.ScrollChildSwipeRefreshLayout>

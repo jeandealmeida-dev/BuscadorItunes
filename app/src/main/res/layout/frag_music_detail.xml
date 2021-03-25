@@ -10,19 +10,19 @@
         <import type="androidx.core.content.ContextCompat" />
 
         <variable
+            name="music"
+            type="com.jeanpaulo.buscador_itunes.model.Music" />
+
+        <variable
             name="viewmodel"
             type="com.jeanpaulo.buscador_itunes.view_model.MusicDetailViewModel" />
 
     </data>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.fragment.MusicDetailFragment"
-        tools:showIn="@layout/activity_music_detail">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,21 +32,29 @@
             <ImageView
                 android:id="@+id/img_collection"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/artwork_music_detail_size"
                 android:scaleType="fitXY"
                 tools:src="@mipmap/ic_launcher" />
+
+            <LinearLayout
+                android:id="@+id/layout_progress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:visibility="@{viewmodel.dataLoading ? View.VISIBLE : View.GONE}">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/txt_error"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="ERROR !! Tap to retry." />
 
                 <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/card_view"
@@ -73,7 +81,7 @@
                             android:paddingLeft="12dp"
                             android:textColor="#333"
                             android:textSize="18sp"
-                            tools:text="Sample news title" />
+                            tools:text="@{music.collection.name}" />
 
                         <TextView
                             android:id="@+id/txt_artist_name"
@@ -83,7 +91,7 @@
                             android:paddingLeft="12dp"
                             android:textColor="#333"
                             android:textSize="16sp"
-                            tools:text="Sample Artist title" />
+                            tools:text="@{music.artist.name}" />
 
                     </LinearLayout>
 
@@ -124,7 +132,17 @@
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
+
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/background_light"
+            android:gravity="center"
+            android:text="ERROR !! Tap to retry."
+            android:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

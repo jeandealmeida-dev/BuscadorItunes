@@ -21,6 +21,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
+import com.jeanpaulo.buscador_itunes.view_model.MusicDetailViewModel
 import com.jeanpaulo.buscador_itunes.view_model.SearchViewModel
 
 /**
@@ -44,10 +45,9 @@ class ViewModelFactory constructor(
             isAssignableFrom(TaskDetailViewModel::class.java) ->
                 TaskDetailViewModel(musicRepository)
             isAssignableFrom(AddEditTaskViewModel::class.java) ->
-                AddEditTaskViewModel(musicRepository)
-            isAssignableFrom(TasksViewModel::class.java) ->
-                TasksViewModel(musicRepository, handle)
-                */
+                AddEditTaskViewModel(musicRepository)*/
+            isAssignableFrom(MusicDetailViewModel::class.java) ->
+                MusicDetailViewModel(dataSource, handle)
             isAssignableFrom(SearchViewModel::class.java) ->
                 SearchViewModel(dataSource, handle)
             else ->

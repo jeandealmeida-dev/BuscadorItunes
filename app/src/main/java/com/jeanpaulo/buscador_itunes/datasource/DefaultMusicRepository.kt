@@ -10,6 +10,7 @@ import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse2
 import org.slf4j.LoggerFactory
+import retrofit2.Response
 import java.io.IOException
 import java.net.SocketTimeoutException
 
@@ -55,22 +56,82 @@ class DefaultMusicRepository(
                 if (response.isSuccessful)
                     Result.Success(response.body()!!)
                 else
-                    Result.Error(DataSourceException("Objeto com erro"))
+                    Result.Error(
+                        DataSourceException(
+                            DataSourceException.Error.NULL_EXCEPTION,
+                            "Objeto com erro"
+                        )
+                    )
 
             } catch (e: SocketTimeoutException) {
-                Result.Error(DataSourceException("NO INTERNET CONNECTION"))
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.NO_INTERNET_EXCEPTION,
+                        "NO INTERNET CONNECTION"
+                    )
+                )
             } catch (e: IOException) {
-                Result.Error(DataSourceException(e.message ?: "unknown error"))
-            } catch (e: Exception){
-                Result.Error(DataSourceException(e.message ?: "unknown error"))
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.NO_INTERNET_EXCEPTION,
+                        e.message ?: "unknown error"
+                    )
+                )
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.message ?: "unknown error"
+                    )
+                )
             }
         }
 
     }
 
-    override suspend fun getCollection(term: Long, mediaType: String): ItunesResponse2 {
-        //TODO salvar em cache itens ja acessados
-        return musicRemoteDataSource.getCollection(term, mediaType)
+    override suspend fun lookup(term: Long, mediaType: String): Result<ItunesResponse2> {
+        return withContext(ioDispatcher) {
+            try {
+                val response =
+                    musicRemoteDataSource.lookUp(term, mediaType)
+                        .also {
+                            log.info("RESPONSE ->", it)
+                        }
+                if (response.isSuccessful)
+                    Result.Success(response.body()!!)
+                else
+                    Result.Error(
+                        DataSourceException(
+                            DataSourceException.Error.NULL_EXCEPTION,
+                            "Objeto com erro"
+                        )
+                    )
+
+            } catch (e: SocketTimeoutException) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.NO_INTERNET_EXCEPTION,
+                        "NO INTERNET CONNECTION"
+                    )
+                )
+            } catch (e: IOException) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.NO_INTERNET_EXCEPTION,
+                        e.message ?: "unknown error"
+                    )
+                )
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.message ?: "unknown error"
+                    )
+                )
+            }
+        }
+
+
     }
 
 

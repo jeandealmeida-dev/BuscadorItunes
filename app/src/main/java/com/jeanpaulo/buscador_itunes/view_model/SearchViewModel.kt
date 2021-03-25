@@ -8,6 +8,7 @@ import com.jeanpaulo.buscador_itunes.model.util.NetworkState
 import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
 import com.jeanpaulo.buscador_itunes.util.params.SearchParams
 import com.jeanpaulo.buscador_itunes.datasource.remote.paged_seach.PagedSearchDataSourceFactory
+import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
 import com.jeanpaulo.buscador_itunes.util.Event
 
 
@@ -28,13 +29,15 @@ class SearchViewModel(
             filterTextAll
         ) { input ->
 
+            _networkState.postValue(NetworkState.LOADING)
+
             dataSourceFactory =
                 PagedSearchDataSourceFactory(
                     dataSource = dataSource,
-                    searchMediaType = SearchParams.SEARCH_MEDIA_TYPE,
+                    searchMediaType = SearchParams.MUSIC_MEDIA_TYPE,
                     searchKey = input,
                     networkStateUpdate = {
-                        networkState.postValue(it)
+                        _networkState.postValue(it)
                     }
                 )
 
@@ -52,7 +55,7 @@ class SearchViewModel(
 
         }
 
-    var networkState = MutableLiveData<NetworkState>()
+    private var _networkState: MutableLiveData<NetworkState> = MutableLiveData<NetworkState>()
 
     val musicList: LiveData<PagedList<Music>>? = _musicList
 
@@ -64,7 +67,7 @@ class SearchViewModel(
         savedStateHandle.set(MUSIC_LAST_SEARCH_TERM, term)
     }
 
-    private fun showSnackbarMessage(message: Int) {
+    fun showSnackbarMessage(message: Int) {
         _snackbarText.value = Event(message)
     }
 
@@ -72,7 +75,7 @@ class SearchViewModel(
         return savedStateHandle.get(MUSIC_LAST_SEARCH_TERM) ?: SearchParams.INIT_SEARCH_TERM
     }
 
-    fun search(term: String) {
+    private fun search(term: String) {
         filterTextAll.postValue(term)
     }
 
@@ -85,12 +88,27 @@ class SearchViewModel(
     }
 
 
+    private var _errorLoading: MutableLiveData<DataSourceException?> =
+        MutableLiveData()
+    val errorLoading: LiveData<DataSourceException?> = _errorLoading
+
     val dataLoading: LiveData<Boolean> = Transformations.switchMap<NetworkState, Boolean>(
-        networkState
-    ) {
-        when (it) {
-            NetworkState.LOADING -> MutableLiveData<Boolean>(true)
-            else -> MutableLiveData<Boolean>(false)
+        _networkState
+    ) { state ->
+        when (state) {
+            NetworkState.LOADING -> {
+                MutableLiveData<Boolean>(true)
+            }
+
+            NetworkState.DONE -> {
+                _errorLoading.postValue(null)
+                MutableLiveData<Boolean>(false)
+            }
+
+            NetworkState.ERROR -> {
+                _errorLoading.postValue(state.exception)
+                MutableLiveData<Boolean>(false)
+            }
         }
     }
 
@@ -101,11 +119,6 @@ class SearchViewModel(
     val empty: LiveData<Boolean> = Transformations.map(musicList!!) {
         it.isEmpty()
     }
-
-    fun openMusic(musicId: Long?) {
-        _openMusicEvent.value = Event(musicId!!)
-    }
-
 
 }
 
