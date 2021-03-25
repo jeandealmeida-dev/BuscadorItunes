@@ -1,7 +1,9 @@
 package com.jeanpaulo.buscador_itunes.view_model
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.Transformations
+import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
 import com.jeanpaulo.buscador_itunes.model.Collection
 import com.jeanpaulo.buscador_itunes.model.util.NetworkState
 import com.jeanpaulo.buscador_itunes.util.CustomCallback
@@ -10,8 +12,8 @@ import com.jeanpaulo.buscador_itunes.ui_controller.view.collection.data_source.C
 import io.reactivex.disposables.CompositeDisposable
 
 class CollectionViewModel(
-    val callback: CustomCallback<Collection>,
-    val collectionId: Long
+    private val dataSource: MusicDataSource,
+    private val savedStateHandle: SavedStateHandle
 ) {
 
     private val compositeDisposable = CompositeDisposable()

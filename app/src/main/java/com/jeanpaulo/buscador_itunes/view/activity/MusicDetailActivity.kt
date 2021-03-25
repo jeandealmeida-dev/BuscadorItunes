@@ -12,7 +12,7 @@ import com.jeanpaulo.buscador_itunes.model.Track
 import com.jeanpaulo.buscador_itunes.util.CustomCallback
 import com.jeanpaulo.buscador_itunes.util.MyMediaPlayer
 import com.jeanpaulo.buscador_itunes.view.adapter.TrackListAdapter
-import com.jeanpaulo.buscador_itunes.view_model.CollectionViewModel
+import com.jeanpaulo.buscador_itunes.view_model.MusicDetailViewModel
 import com.squareup.picasso.Picasso
 
 import kotlinx.android.synthetic.main.activity_collection.*
@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_collection.*
 
 class CollectionActivity : AppCompatActivity(), CustomCallback<Collection>{
 
-    private lateinit var viewModel: CollectionViewModel
+    private lateinit var viewModel: MusicDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +35,7 @@ class CollectionActivity : AppCompatActivity(), CustomCallback<Collection>{
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val collectionId = intent.getLongExtra("collectionId", 0L)
 
-        viewModel = CollectionViewModel(
+        viewModel = MusicDetailViewModel(
             this,
             collectionId = collectionId
         )
