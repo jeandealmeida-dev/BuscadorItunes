@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -18,6 +19,7 @@ import com.jeanpaulo.buscador_itunes.view.activity.MusicDetailActivity
 import com.jeanpaulo.buscador_itunes.view.adapter.TrackListAdapter
 import com.jeanpaulo.buscador_itunes.view_model.MusicDetailViewModel
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_music_detail.*
 import kotlinx.android.synthetic.main.frag_music_detail.*
 import timber.log.Timber
 
@@ -73,15 +75,11 @@ class MusicDetailFragment : Fragment() {
         initState()
     }
 
-    var artWorkUrl = null
-
     private fun initState() {
-        val artWorkUrl = (activity as MusicDetailActivity).getArtworkUrlParameter()
-        Picasso.get().load(artWorkUrl).into(img_collection)
-
         viewModel.music.observe(viewLifecycleOwner, Observer { it: Music? ->
             if (it != null) {
                 viewBinding.music = it
+                setupToolbar(it.name)
             }
         })
 
@@ -118,12 +116,12 @@ class MusicDetailFragment : Fragment() {
     private fun setupNavigation() {}
 
     private fun setupFab() {
-        activity?.findViewById<FloatingActionButton>(R.id.fab_preview)?.let {
-            it.setOnClickListener {
-                //TODO Jean: Implementar reproducao de preview
-                viewModel.reproducePreview()
-                //navigateToAddNewTask()
-            }
+
+    }
+
+    private fun setupToolbar(trackName: String?) {
+        if(activity is MusicDetailActivity){
+            (activity as MusicDetailActivity).setToolbarName(trackName)
         }
     }
 
@@ -158,11 +156,6 @@ class MusicDetailFragment : Fragment() {
     }
 
     //PROGRESS BAR
-
-    private fun showProgress(isLoading: Boolean) {
-        val progressBar = activity?.findViewById<LinearLayout>(R.id.layout_progress)
-        progressBar!!.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
 
 
     private fun setupSnackbar() {

@@ -8,37 +8,37 @@ import com.jeanpaulo.buscador_itunes.model.Artist
 import com.jeanpaulo.buscador_itunes.model.Collection
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
-@JsonClass(generateAdapter = true)
 @Entity(tableName = "Music")
-data class Music(
-    @Json(name = "trackId") @ColumnInfo(name = "trackId") val trackId: Long?,
+class Music(
+    @ColumnInfo(name = "trackId") val trackId: Long?,
+    @ColumnInfo(name = "name") val name: String?,
 
-    @Json(name = "trackName") @ColumnInfo(name = "name") val name: String?,
-    @Json(name = "artworkUrl100") @ColumnInfo(name = "artworkUrl") val artworkUrl: String?,
+    @ColumnInfo(name = "artworkUrl") val artworkUrl: String?,
+    @ColumnInfo(name = "releaseDate") val releaseDate: Date?,
 
-    @Json(name = "artistId") @ColumnInfo(name = "artistId") val artistId: Long?,
-    @Json(name = "artistName") @ColumnInfo(name = "artistName") val artistName: String?,
-
-    @Json(name = "collectionId") @ColumnInfo(name = "collectionId") val collectionId: Long?,
-    @Json(name = "collectionName") @ColumnInfo(name = "collectionName") val collectionName: String?
+    @ColumnInfo(name = "isStreamable") val isStreamable: Boolean?,
+    @ColumnInfo(name = "trackTimeMillis") val trackTimeMillis: Long?
 ) {
-    constructor(trackId: Long) : this(trackId, null, null, null, null, null, null)
+    constructor(trackId: Long) : this(trackId, null, null, null, null, null)
+
+    @Ignore
+    lateinit var collection: Collection
+
+    @Ignore
+    lateinit var artist: Artist
 
     @PrimaryKey
     var id: Long
-
-    @Ignore
-    val artist: Artist = Artist(artistId, artistName)
-
-    @Ignore
-    val collection: Collection = Collection(collectionId, collectionName)
 
     init {
         id = UUID.randomUUID().leastSignificantBits
     }
 
-}
+    val formatedReleaseDate: String
+        get() = if (releaseDate != null) SimpleDateFormat("MM-yyyy").format(releaseDate) else "-"
 
-//REF: CustomAdapter para clases complexas https://gist.github.com/alexforrester/5c96ace4227916fb456ff49a16ef025d
+}

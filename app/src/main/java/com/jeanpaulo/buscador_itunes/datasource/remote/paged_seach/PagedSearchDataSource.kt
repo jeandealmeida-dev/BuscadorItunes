@@ -39,7 +39,7 @@ class PagedSearchDataSource(
             )
             if (response is Result.Success) {
                 callback.onResult(
-                    response.data.result,
+                    response.data,
                     null,
                     SearchParams.SEARCH_PAGE_SIZE
                 )
@@ -66,7 +66,7 @@ class PagedSearchDataSource(
             )
             if (response is Result.Success) {
                 callback.onResult(
-                    response.data.result,
+                    response.data,
                     params.key + SearchParams.SEARCH_PAGE_SIZE
                 )
                 delay(100L)

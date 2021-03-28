@@ -2,6 +2,7 @@ package com.jeanpaulo.buscador_itunes.datasource.remote
 
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse2
+import com.jeanpaulo.buscador_itunes.model.Music
 import com.jeanpaulo.buscador_itunes.model.util.Result
 import retrofit2.Response
 
@@ -15,10 +16,10 @@ interface MusicRemoteDataSource {
         mediaType: String,
         offset: Int,
         limit: Int
-    ): Result<ItunesResponse>
+    ): Result<List<Music>>
 
     suspend fun lookup(
         term: Long,
         mediaType: String
-    ): Result<ItunesResponse2>
+    ): Result<Music>
 }

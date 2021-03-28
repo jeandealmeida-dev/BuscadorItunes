@@ -39,7 +39,8 @@ class MusicDetailViewModel(
             setNetworkState(NetworkState.LOADING)
             val response = dataSource.lookup(musicId, SearchParams.SONG_MEDIA_TYPE)
             if (response is Result.Success) {
-                _music.postValue(response.data.result.get(0))
+                val music = response.data
+                _music.postValue(music)
                 setNetworkState(NetworkState.DONE)
             } else {
                 setNetworkState(NetworkState.ERROR)

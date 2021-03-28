@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Biblioteca Musical</string>
     <string name="action_settings">Settings</string>
+    <string name="action_preview">Preview</string>
     <string name="search_hint">Música, Album ou Artista..</string>
     <string name="title_activity_music_detail">MusicDetailActivity</string>
 

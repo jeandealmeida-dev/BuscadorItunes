@@ -158,7 +158,7 @@ class SearchFragment : Fragment() {
     private fun createSearchObservable(searchView: SearchView?): Disposable {
         val observable: Observable<String> = Observable.create { emitter ->
 
-            val watcher = object : SearchView.OnQueryTextListener {
+            searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     Toast.makeText(searchView?.context, "query: $query", Toast.LENGTH_LONG).show()
                     return true
@@ -168,8 +168,7 @@ class SearchFragment : Fragment() {
                     newText?.let { emitter.onNext(newText) }
                     return true
                 }
-            }
-            searchView?.setOnQueryTextListener(watcher)
+            })
 
             emitter.setCancellable {
                 searchView?.setOnQueryTextListener(null)
