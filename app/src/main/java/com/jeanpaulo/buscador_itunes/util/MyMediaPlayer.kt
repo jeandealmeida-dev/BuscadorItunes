@@ -13,7 +13,7 @@ class MyMediaPlayer(val url: String, val onChangeState: (Boolean) -> Unit) {
         mediaPlayer = MediaPlayer.create(context, Uri.parse(url))
         mediaPlayer.setOnCompletionListener { mp ->
             onChangeState(false)
-            mp.stop()
+            mp.prepare()
         }
     }
 

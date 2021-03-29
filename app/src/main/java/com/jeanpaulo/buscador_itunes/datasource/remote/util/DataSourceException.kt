@@ -11,4 +11,13 @@ class DataSourceException(
         NULL_EXCEPTION,
         UNKNOWN_EXCEPTION
     }
+
+    override fun toString(): String {
+        return when(knownNetworkError){
+            Error.TIMEOUT_EXCEPTION-> "TIMEOUT_EXCEPTION"
+            Error.NO_INTERNET_EXCEPTION-> "NO_INTERNET_EXCEPTION"
+            Error.NULL_EXCEPTION-> "NULL_EXCEPTION"
+            Error.UNKNOWN_EXCEPTION-> "UNKNOWN_EXCEPTION"
+        }
+    }
 }

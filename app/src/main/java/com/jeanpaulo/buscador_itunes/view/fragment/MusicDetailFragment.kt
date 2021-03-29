@@ -95,7 +95,7 @@ class MusicDetailFragment : Fragment() {
         })
 
         txt_error.setOnClickListener {
-            viewModel.retry()
+            viewModel.refresh()
         }
     }
 

@@ -89,8 +89,8 @@ class SearchFragment : Fragment() {
         initState()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         if (!disposable.isDisposed) {
             disposable.dispose()
         }

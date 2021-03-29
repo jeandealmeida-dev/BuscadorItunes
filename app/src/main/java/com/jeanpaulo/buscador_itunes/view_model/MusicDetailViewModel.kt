@@ -41,7 +41,7 @@ class MusicDetailViewModel(
             setNetworkState(NetworkState.LOADING)
 
             //delay para dar tempo de carregar toda a animacao
-            delay(200L)
+            delay(600L)
 
             val response = dataSource.lookup(musicId, SearchParams.SONG_MEDIA_TYPE)
             if (response is Result.Success) {
@@ -76,7 +76,7 @@ class MusicDetailViewModel(
         getMusicDetail(musicId)
     }
 
-    fun retry() {
+    fun refresh() {
         searchMusic()
     }
 
