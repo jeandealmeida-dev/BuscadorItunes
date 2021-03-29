@@ -1,8 +1,12 @@
 package com.jeanpaulo.buscador_itunes.view.activity
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -13,6 +17,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.jeanpaulo.buscador_itunes.R
 import kotlinx.android.synthetic.main._activity_music.*
+import androidx.core.util.Pair
 
 class MusicActivity : AppCompatActivity() {
 
@@ -45,6 +50,27 @@ class MusicActivity : AppCompatActivity() {
             .apply {
                 setStatusBarBackground(R.color.colorPrimaryDark)
             }
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    fun startMusicDetailActivity(view: View, musicId: Long, artworkUrl: String) {
+        val intent = Intent(this, MusicDetailActivity::class.java)
+        val b = Bundle()
+        b.putLong(TRACK_ID_PARAM, musicId) //Your id
+        b.putString(ARTWORK_URL_PARAM, artworkUrl) //Your id
+        intent.putExtras(b)
+
+        //Animations
+        val p1 =Pair.create<View, String>(view.findViewById(R.id.txt_music_name), VIEW_NAME_HEADER_TITLE)
+        val p2  = Pair.create<View, String>(view.findViewById(R.id.img_artwork), VIEW_NAME_HEADER_TITLE)
+
+        val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2)
+        ActivityCompat.startActivity(this, intent, activityOptions.toBundle());
+        //startActivity(intent)
+        //overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
     }
 
 }

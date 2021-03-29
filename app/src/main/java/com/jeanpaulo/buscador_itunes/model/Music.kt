@@ -21,9 +21,10 @@ class Music(
     @ColumnInfo(name = "releaseDate") val releaseDate: Date?,
 
     @ColumnInfo(name = "isStreamable") val isStreamable: Boolean?,
-    @ColumnInfo(name = "trackTimeMillis") val trackTimeMillis: Long?
+    @ColumnInfo(name = "trackTimeMillis") val trackTimeMillis: Long?,
+    @ColumnInfo(name = "previewUrl") val previewUrl: String?
 ) {
-    constructor(trackId: Long) : this(trackId, null, null, null, null, null)
+    constructor(trackId: Long) : this(trackId, null, null, null, null, null, null)
 
     @Ignore
     lateinit var collection: Collection
@@ -39,6 +40,6 @@ class Music(
     }
 
     val formatedReleaseDate: String
-        get() = if (releaseDate != null) SimpleDateFormat("MM-yyyy").format(releaseDate) else "-"
+        get() = if (releaseDate != null) SimpleDateFormat("yyyy").format(releaseDate) else "-"
 
 }

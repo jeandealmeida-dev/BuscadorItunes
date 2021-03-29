@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:layout_gravity="bottom"
-                android:background="@drawable/scrim"/>
+                android:background="@drawable/scrim" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -54,10 +54,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone"
         app:fabSize="normal"
         app:layout_anchor="@+id/appBar"
         app:layout_anchorGravity="bottom|right|end"
-        app:srcCompat="@android:drawable/ic_media_play"/>
+        app:srcCompat="@android:drawable/ic_media_play" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

@@ -24,13 +24,14 @@ data class MusicJson(
     @Json(name = "releaseDate") val releaseDate: Date?,
     @Json(name = "primaryGenreName") val primaryGenreName: String?,
     @Json(name = "isStreamable") val isStreamable: Boolean?,
-    @Json(name = "trackTimeMillis") val trackTimeMillis: Long?
+    @Json(name = "trackTimeMillis") val trackTimeMillis: Long?,
+    @Json(name = "previewUrl") val previewUrl: String?
 ) {
 
     fun convert(): Music {
         val collection = Collection(collectionId, collectionName, trackCount = trackCount)
         val artist = Artist(artistId, artistName, country, primaryGenreName)
-        val music = Music(trackId, trackName, artworkUrl, releaseDate, isStreamable, trackTimeMillis)
+        val music = Music(trackId, trackName, artworkUrl, releaseDate, isStreamable, trackTimeMillis, previewUrl)
 
         music.collection = collection
         music.artist = artist

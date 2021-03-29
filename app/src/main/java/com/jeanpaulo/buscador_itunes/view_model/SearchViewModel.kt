@@ -22,7 +22,6 @@ class SearchViewModel(
 
 
     var filterTextAll = MutableLiveData<String>()
-    private lateinit var dataSourceFactory: PagedSearchDataSourceFactory
 
     private var _musicList: LiveData<PagedList<Music>>? =
         Transformations.switchMap<String, PagedList<Music>>(
@@ -31,7 +30,7 @@ class SearchViewModel(
 
             _networkState.postValue(NetworkState.LOADING)
 
-            dataSourceFactory =
+            val dataSourceFactory =
                 PagedSearchDataSourceFactory(
                     dataSource = dataSource,
                     searchMediaType = SearchParams.MUSIC_MEDIA_TYPE,

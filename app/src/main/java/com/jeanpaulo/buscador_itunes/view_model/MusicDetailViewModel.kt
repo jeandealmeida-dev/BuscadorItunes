@@ -7,9 +7,11 @@ import com.jeanpaulo.buscador_itunes.model.Music
 import com.jeanpaulo.buscador_itunes.model.util.NetworkState
 import com.jeanpaulo.buscador_itunes.model.util.Result
 import com.jeanpaulo.buscador_itunes.util.Event
+import com.jeanpaulo.buscador_itunes.util.MyMediaPlayer
 import com.jeanpaulo.buscador_itunes.util.params.SearchParams
 import com.jeanpaulo.buscador_itunes.view.activity.TRACK_ID_PARAM
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MusicDetailViewModel(
@@ -37,6 +39,10 @@ class MusicDetailViewModel(
     private fun getMusicDetail(musicId: Long) {
         GlobalScope.launch {
             setNetworkState(NetworkState.LOADING)
+
+            //delay para dar tempo de carregar toda a animacao
+            delay(200L)
+
             val response = dataSource.lookup(musicId, SearchParams.SONG_MEDIA_TYPE)
             if (response is Result.Success) {
                 val music = response.data
@@ -59,10 +65,6 @@ class MusicDetailViewModel(
 
     fun showSnackbarMessage(message: Int) {
         _snackbarText.value = Event(message)
-    }
-
-    fun reproducePreview() {
-        //TODO Jean Reproduzir musica
     }
 
     fun setNetworkState(networkState: NetworkState) {

@@ -5,28 +5,33 @@ import android.media.MediaPlayer
 import android.net.Uri
 
 
-class MyMediaPlayer {
+class MyMediaPlayer(val url: String, val onChangeState: (Boolean) -> Unit) {
 
-    private val mpSet = HashSet<MediaPlayer>()
+    private lateinit var mediaPlayer: MediaPlayer
 
-    fun play(context: Context?, uri: String) {
-        val mp = MediaPlayer.create(context, Uri.parse(uri))
-        mp.setOnCompletionListener { mp ->
-            mpSet.remove(mp)
+    fun create(context: Context?) {
+        mediaPlayer = MediaPlayer.create(context, Uri.parse(url))
+        mediaPlayer.setOnCompletionListener { mp ->
+            onChangeState(false)
             mp.stop()
-            mp.release()
         }
-        mpSet.add(mp)
-        mp.start()
     }
 
-    fun stop() {
-        for (mp in mpSet) {
-            if (mp != null) {
-                mp.stop()
-                mp.release()
-            }
+    fun play() {
+        if (!mediaPlayer.isPlaying) {
+            mediaPlayer.start()
+            onChangeState(true)
         }
-        mpSet.clear()
+    }
+
+    fun pause() {
+        mediaPlayer.pause()
+        onChangeState(false)
+    }
+
+
+    fun release() {
+        mediaPlayer.stop()
+        mediaPlayer.release()
     }
 }

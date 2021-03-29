@@ -25,7 +25,7 @@
 
 
         <ImageView
-            android:id="@+id/img_news_banner"
+            android:id="@+id/img_artwork"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="fitXY"

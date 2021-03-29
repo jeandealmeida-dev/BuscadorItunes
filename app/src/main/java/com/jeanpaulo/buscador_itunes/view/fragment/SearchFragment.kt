@@ -1,6 +1,5 @@
 package com.jeanpaulo.buscador_itunes.view.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -14,24 +13,19 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import com.jeanpaulo.buscador_itunes.CustomApplication
 import com.jeanpaulo.buscador_itunes.R
 import com.jeanpaulo.buscador_itunes.databinding.FragMusicSearchBinding
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
 import com.jeanpaulo.buscador_itunes.model.Music
-import com.jeanpaulo.buscador_itunes.model.util.NetworkState
 import com.jeanpaulo.buscador_itunes.util.*
-import com.jeanpaulo.buscador_itunes.view.activity.ARTWORK_URL_PARAM
+import com.jeanpaulo.buscador_itunes.view.activity.MusicActivity
 import com.jeanpaulo.buscador_itunes.view.activity.MusicDetailActivity
-import com.jeanpaulo.buscador_itunes.view.activity.TRACK_ID_PARAM
 import com.jeanpaulo.buscador_itunes.view.adapter.MusicListAdapter
 import com.jeanpaulo.buscador_itunes.view_model.SearchViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.frag_music_detail.*
 import kotlinx.android.synthetic.main.frag_music_detail.txt_error
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -91,7 +85,7 @@ class SearchFragment : Fragment() {
         setupListAdapter()
         setupRefreshLayout(viewBinding.refreshLayout, viewBinding.musicList)
         setupNavigation()
-        setupFab()
+        //setupFab()
         initState()
     }
 
@@ -158,7 +152,7 @@ class SearchFragment : Fragment() {
     private fun createSearchObservable(searchView: SearchView?): Disposable {
         val observable: Observable<String> = Observable.create { emitter ->
 
-            searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     Toast.makeText(searchView?.context, "query: $query", Toast.LENGTH_LONG).show()
                     return true
@@ -202,14 +196,6 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun setupFab() {
-        activity?.findViewById<FloatingActionButton>(R.id.add_task_fab)?.let {
-            it.setOnClickListener {
-                navigateToAddNewTask()
-            }
-        }
-    }
-
     private fun navigateToAddNewTask() {
         /*val action = TasksFragmentDirections
             .actionTasksFragmentToAddEditTaskFragment(
@@ -223,8 +209,8 @@ class SearchFragment : Fragment() {
         val viewModel = viewBinding.viewmodel
         if (viewModel != null) {
 
-            musicListAdapter = MusicListAdapter(viewModel) {
-                openMusicDetail(it.trackId!!, it.artworkUrl!!)
+            musicListAdapter = MusicListAdapter(viewModel) { view, it ->
+                openMusicDetail(view, it.trackId!!, it.artworkUrl!!)
             }
             viewBinding.musicList.layoutManager =
                 CustomLinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -246,12 +232,8 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun openMusicDetail(musicId: Long, artworkUrl: String) {
-        val intent = Intent(requireActivity(), MusicDetailActivity::class.java)
-        val b = Bundle()
-        b.putLong(TRACK_ID_PARAM, musicId) //Your id
-        b.putString(ARTWORK_URL_PARAM, artworkUrl) //Your id
-        intent.putExtras(b)
-        startActivity(intent)
+    private fun openMusicDetail(view: View, musicId: Long, artworkUrl: String) {
+        if (activity is MusicActivity)
+            (activity as MusicActivity).startMusicDetailActivity(view, musicId, artworkUrl)
     }
 }
