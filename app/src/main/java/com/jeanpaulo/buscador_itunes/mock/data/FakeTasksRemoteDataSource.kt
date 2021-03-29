@@ -36,11 +36,11 @@ object FakeTasksRemoteDataSource :
         mediaType: String,
         offset: Int,
         limit: Int
-    ): Result<ItunesResponse> {
+    ): Result<List<Music>> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun lookup(term: Long, mediaType: String): Result<ItunesResponse2> {
+    override suspend fun lookup(term: Long, mediaType: String): Result<Music> {
         TODO("Not yet implemented")
     }
 

@@ -18,6 +18,8 @@ package com.jeanpaulo.buscador_itunes.datasource.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.jeanpaulo.buscador_itunes.datasource.local.util.DateConverter
 import com.jeanpaulo.buscador_itunes.model.Music
 
 /**
@@ -26,6 +28,9 @@ import com.jeanpaulo.buscador_itunes.model.Music
  * Note that exportSchema should be true in production databases.
  */
 @Database(entities = [Music::class], version = 1, exportSchema = false)
+@TypeConverters(
+    DateConverter::class
+)
 abstract class MusicDatabase : RoomDatabase() {
 
     abstract fun musicDao(): MusicDao

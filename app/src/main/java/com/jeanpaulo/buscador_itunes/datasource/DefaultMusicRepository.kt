@@ -45,7 +45,7 @@ class DefaultMusicRepository(
         mediaType: String,
         offset: Int,
         limit: Int
-    ): Result<ItunesResponse> {
+    ): Result<List<Music>> {
         return withContext(ioDispatcher) {
             try {
                 val response =
@@ -53,9 +53,10 @@ class DefaultMusicRepository(
                         .also {
                             log.info("RESPONSE ->", it)
                         }
-                if (response.isSuccessful)
-                    Result.Success(response.body()!!)
-                else
+                if (response.isSuccessful) {
+                    val listJson = response.body()!!.result
+                    Result.Success(listJson.map { json -> json.convert() })
+                } else
                     Result.Error(
                         DataSourceException(
                             DataSourceException.Error.NULL_EXCEPTION,
@@ -89,7 +90,7 @@ class DefaultMusicRepository(
 
     }
 
-    override suspend fun lookup(term: Long, mediaType: String): Result<ItunesResponse2> {
+    override suspend fun lookup(term: Long, mediaType: String): Result<Music> {
         return withContext(ioDispatcher) {
             try {
                 val response =
@@ -97,9 +98,10 @@ class DefaultMusicRepository(
                         .also {
                             log.info("RESPONSE ->", it)
                         }
-                if (response.isSuccessful)
-                    Result.Success(response.body()!!)
-                else
+                if (response.isSuccessful) {
+                    val musicJson = response.body()!!.result[0]
+                    Result.Success(musicJson.convert())
+                } else
                     Result.Error(
                         DataSourceException(
                             DataSourceException.Error.NULL_EXCEPTION,

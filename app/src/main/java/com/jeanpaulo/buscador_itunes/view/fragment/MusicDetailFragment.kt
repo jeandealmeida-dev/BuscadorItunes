@@ -1,25 +1,24 @@
 package com.jeanpaulo.buscador_itunes.view.fragment
 
-import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.view.*
-import android.widget.LinearLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.jeanpaulo.buscador_itunes.R
 import com.jeanpaulo.buscador_itunes.databinding.FragMusicDetailBinding
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
 import com.jeanpaulo.buscador_itunes.model.Music
-import com.jeanpaulo.buscador_itunes.model.util.NetworkState
-import com.jeanpaulo.buscador_itunes.util.*
+import com.jeanpaulo.buscador_itunes.util.MyMediaPlayer
+import com.jeanpaulo.buscador_itunes.util.getViewModelFactory
+import com.jeanpaulo.buscador_itunes.util.setupSnackbar
 import com.jeanpaulo.buscador_itunes.view.activity.MusicDetailActivity
 import com.jeanpaulo.buscador_itunes.view.adapter.TrackListAdapter
 import com.jeanpaulo.buscador_itunes.view_model.MusicDetailViewModel
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.frag_music_detail.*
 import timber.log.Timber
+
 
 /**
  * A placeholder fragment containing a simple view.
@@ -69,19 +68,17 @@ class MusicDetailFragment : Fragment() {
         setupListAdapter()
         //setupRefreshLayout(viewBinding.refreshLayout, viewBinding.musicList)
         setupNavigation()
-        setupFab()
         initState()
     }
 
-    var artWorkUrl = null
-
     private fun initState() {
-        val artWorkUrl = (activity as MusicDetailActivity).getArtworkUrlParameter()
-        Picasso.get().load(artWorkUrl).into(img_collection)
-
         viewModel.music.observe(viewLifecycleOwner, Observer { it: Music? ->
             if (it != null) {
                 viewBinding.music = it
+
+                //Load Widgets whit model
+                setupToolbar(it.name)
+                setupFab(it.isStreamable, it.previewUrl)
             }
         })
 
@@ -117,13 +114,30 @@ class MusicDetailFragment : Fragment() {
 
     private fun setupNavigation() {}
 
-    private fun setupFab() {
-        activity?.findViewById<FloatingActionButton>(R.id.fab_preview)?.let {
-            it.setOnClickListener {
-                //TODO Jean: Implementar reproducao de preview
-                viewModel.reproducePreview()
-                //navigateToAddNewTask()
+    lateinit var player: MyMediaPlayer
+
+    var playing = false
+    private fun setupFab(isStreamble: Boolean?, previewUri: String?) {
+        if (isStreamble != null && isStreamble && previewUri != null) {
+            player = MyMediaPlayer(previewUri) {
+                playing = it
+                (activity as MusicDetailActivity).onChangedPlayerState(it)
             }
+            player.create(context)
+
+            (activity as MusicDetailActivity).setFABListener {
+                if (!playing) {
+                    player.play()
+                } else {
+                    player.pause()
+                }
+            }
+        }
+    }
+
+    private fun setupToolbar(trackName: String?) {
+        if (activity is MusicDetailActivity) {
+            (activity as MusicDetailActivity).setToolbarName(trackName)
         }
     }
 
@@ -159,11 +173,6 @@ class MusicDetailFragment : Fragment() {
 
     //PROGRESS BAR
 
-    private fun showProgress(isLoading: Boolean) {
-        val progressBar = activity?.findViewById<LinearLayout>(R.id.layout_progress)
-        progressBar!!.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-
 
     private fun setupSnackbar() {
         view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
@@ -172,5 +181,10 @@ class MusicDetailFragment : Fragment() {
         }
     }
 
+
+    override fun onStop() {
+        super.onStop()
+        player.release()
+    }
 
 }

@@ -6,7 +6,7 @@ import androidx.room.Room
 import com.jeanpaulo.buscador_itunes.datasource.remote.service.ItunesService
 import com.jeanpaulo.buscador_itunes.datasource.local.MusicDatabase
 import com.jeanpaulo.buscador_itunes.datasource.local.LocalDataSource
-import com.jeanpaulo.buscador_itunes.datasource.remote.service.ItunesServiceFactory
+import com.jeanpaulo.buscador_itunes.datasource.remote.service.RetrofitServiceFactory
 
 object ServiceLocator {
     private val lock = Any()
@@ -39,9 +39,9 @@ object ServiceLocator {
     }
 
     private fun createRepository(): ItunesService {
-        ItunesServiceFactory()
+        RetrofitServiceFactory()
             .build()
-        return ItunesServiceFactory.retrofit.create(
+        return RetrofitServiceFactory.retrofit.create(
             ItunesService::class.java)
     }
 
