@@ -1,4 +1,4 @@
-package com.jeanpaulo.buscador_itunes.view.activity
+package com.jeanpaulo.buscador_itunes.view.music.music_search.music_detail
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -7,18 +7,22 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
+import androidx.core.widget.NestedScrollView
 import androidx.palette.graphics.Palette
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.BaseOnOffsetChangedListener
 import com.jeanpaulo.buscador_itunes.R
+import com.jeanpaulo.buscador_itunes.view.music.music_detail.MusicDetailFragmentListener
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.activity_music_detail.*
 
 
-class MusicDetailActivity : AppCompatActivity() {
+class MusicDetailActivity : AppCompatActivity(), MusicDetailFragmentListener {
 
     var appBarExpanded = true
 
@@ -28,41 +32,20 @@ class MusicDetailActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        /*fab_preview.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }*/
-
-
         setupCollapsingBar()
         setupAnimations()
     }
 
     //ANIMATIONS
     fun setupAnimations() {
-        ViewCompat.setTransitionName(img_collection, VIEW_NAME_HEADER_IMAGE);
-        ViewCompat.setTransitionName(collapseToolbar, VIEW_NAME_HEADER_TITLE);
-    }
-
-
-    //FAB
-    fun setFABListener(listener: () -> Unit) {
-        fab_preview.visibility = View.VISIBLE
-        fab_preview.setOnClickListener {
-            listener()
-        }
-    }
-
-
-    fun onChangedPlayerState(playing: Boolean) {
-        val imageResource =
-            if (playing) android.R.drawable.ic_media_pause else android.R.drawable.ic_media_play
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            fab_preview.setImageDrawable(getResources().getDrawable(imageResource, getTheme()))
-        } else {
-            fab_preview.setImageDrawable(getResources().getDrawable(imageResource))
-        }
+        ViewCompat.setTransitionName(
+            img_collection,
+            VIEW_NAME_HEADER_IMAGE
+        );
+        ViewCompat.setTransitionName(
+            collapseToolbar,
+            VIEW_NAME_HEADER_TITLE
+        );
     }
 
     //COLLAPSION TOOLBAR
@@ -95,6 +78,9 @@ class MusicDetailActivity : AppCompatActivity() {
                     setToolbarColor(bitmap)
             }
         })
+
+        val musicName = intent.getStringExtra(MUSIC_NAME_PARAM)
+        collapseToolbar.title = musicName
     }
 
     private fun setToolbarColor(bitmap: Bitmap) {
@@ -137,18 +123,42 @@ class MusicDetailActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    //FUNCTIONS CALLED BY FRAGMENT
-
-
-    fun getTrackIdParameter() = intent.getLongExtra(TRACK_ID_PARAM, 0L)
-    fun setToolbarName(name: String?) {
-        collapseToolbar.title = name
+    override fun onBackPressed() {
+        //Better visual transaction
+        fab_preview.visibility = GONE
+        findViewById<NestedScrollView>(R.id.content).visibility = GONE
+        super.onBackPressed()
     }
 
+    //FUNCTIONS CALLED BY FRAGMENT LISTENER
+
+    override fun getTrackIdParameter() = intent.getLongExtra(MUSIC_ID_PARAM, 0L)
+    override fun setTitle(title: String?) {
+        collapseToolbar.title = title
+    }
+
+    override fun setFabDrawableRes(imageResource: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            fab_preview.setImageDrawable(getResources().getDrawable(imageResource, getTheme()))
+        } else {
+            fab_preview.setImageDrawable(getResources().getDrawable(imageResource))
+        }
+    }
+
+    override fun setFabVisibility(visible: Boolean) {
+        fab_preview.visibility = if (visible) VISIBLE else GONE
+    }
+
+    override fun setFabListener(listener: () -> Unit) {
+        fab_preview.setOnClickListener {
+            listener()
+        }
+    }
 }
 
 //INTENT PARAMS
-const val TRACK_ID_PARAM = "track_id"
+const val MUSIC_ID_PARAM = "track_id"
+const val MUSIC_NAME_PARAM = "track_name"
 const val ARTWORK_URL_PARAM = "track_artwork_url"
 
 

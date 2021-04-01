@@ -1,4 +1,4 @@
-package com.jeanpaulo.buscador_itunes.view.adapter
+package com.jeanpaulo.buscador_itunes.view.music.music_search
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +8,13 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.jeanpaulo.buscador_itunes.R
+import com.jeanpaulo.buscador_itunes.databinding.ItemMusicBinding
 import com.jeanpaulo.buscador_itunes.model.Music
 import com.jeanpaulo.buscador_itunes.model.util.NetworkState
-import com.jeanpaulo.buscador_itunes.view_model.SearchViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_list_footer.view.*
 import kotlinx.android.synthetic.main.item_music.view.*
+
 
 class MusicListAdapter(
     private val viewModel: SearchViewModel,
@@ -26,11 +27,13 @@ class MusicListAdapter(
     private var state = NetworkState.LOADING
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == DATA_VIEW_TYPE) MusicViewHolder.create(
-            parent
-        ) else FooterViewHolder.create(
+        return if (viewType == DATA_VIEW_TYPE) {
+            val layoutInflater = LayoutInflater.from(parent.getContext())
+            val itemBinding: ItemMusicBinding =
+                ItemMusicBinding.inflate(layoutInflater, parent, false)
+            MusicViewHolder(itemBinding)
+        } else FooterViewHolder.create(
             {
-                //TODO Implement retry
                 viewModel.refresh()
             },
             parent
@@ -69,27 +72,15 @@ class MusicListAdapter(
         return super.getItemCount() != 0 && (state == NetworkState.LOADING || state == NetworkState.ERROR)
     }
 
-    class MusicViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    class MusicViewHolder(val binding: ItemMusicBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(music: Music?, listener: (View, Music) -> Unit) {
             if (music != null) {
-                itemView.txt_music_name.text = music.name
-                itemView.txt_artist_name.text = music.artist.name
-                itemView.txt_collection_name.text = music.collection.name
+                binding.music = music
                 Picasso.get().load(music.artworkUrl).into(itemView.img_artwork)
 
-                if (music.trackId != null)
-                    itemView.setOnClickListener { listener(view, music) }
-            }
-        }
-
-        companion object {
-            fun create(parent: ViewGroup): MusicViewHolder {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_music, parent, false)
-                return MusicViewHolder(
-                    view
-                )
+                if (music.ds_trackId != null)
+                    itemView.setOnClickListener { listener(binding.root, music) }
             }
         }
     }

@@ -42,7 +42,8 @@ object ServiceLocator {
         RetrofitServiceFactory()
             .build()
         return RetrofitServiceFactory.retrofit.create(
-            ItunesService::class.java)
+            ItunesService::class.java
+        )
     }
 
     private fun createLocalDataSource(context: Context): LocalDataSource {
@@ -51,9 +52,12 @@ object ServiceLocator {
                 context
             )
         return LocalDataSource(
-            database.musicDao()
+            database.musicDao(),
+            database.playlistDao()
         )
     }
+
+    //ROOM
 
     private fun createDataBase(context: Context): MusicDatabase {
         val result = Room.databaseBuilder(

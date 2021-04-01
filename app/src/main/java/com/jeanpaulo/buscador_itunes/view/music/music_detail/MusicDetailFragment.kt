@@ -1,5 +1,6 @@
-package com.jeanpaulo.buscador_itunes.view.fragment
+package com.jeanpaulo.buscador_itunes.view.music.music_detail
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -13,11 +14,12 @@ import com.jeanpaulo.buscador_itunes.model.Music
 import com.jeanpaulo.buscador_itunes.util.MyMediaPlayer
 import com.jeanpaulo.buscador_itunes.util.getViewModelFactory
 import com.jeanpaulo.buscador_itunes.util.setupSnackbar
-import com.jeanpaulo.buscador_itunes.view.activity.MusicDetailActivity
+import com.jeanpaulo.buscador_itunes.view.FragmentListener
 import com.jeanpaulo.buscador_itunes.view.adapter.TrackListAdapter
-import com.jeanpaulo.buscador_itunes.view_model.MusicDetailViewModel
+import com.jeanpaulo.buscador_itunes.view.music.music_search.music_detail.MusicDetailViewModel
 import kotlinx.android.synthetic.main.frag_music_detail.*
 import timber.log.Timber
+import java.lang.ClassCastException
 
 
 /**
@@ -25,12 +27,10 @@ import timber.log.Timber
  */
 class MusicDetailFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = MusicDetailFragment()
-    }
-
     private val viewModel: MusicDetailViewModel by viewModels<MusicDetailViewModel> { getViewModelFactory() }
     private lateinit var viewBinding: FragMusicDetailBinding
+
+    lateinit var listener: MusicDetailFragmentListener
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,11 +41,6 @@ class MusicDetailFragment : Fragment() {
             viewmodel = viewModel
         }
         setHasOptionsMenu(true)
-
-        //set musicID on viewModel
-        val musicId = (activity as MusicDetailActivity).getTrackIdParameter()
-        viewModel.setMusicId(musicId)
-
         return viewBinding.root
     }
 
@@ -71,13 +66,30 @@ class MusicDetailFragment : Fragment() {
         initState()
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            listener = context as MusicDetailFragmentListener
+        } catch (e: ClassCastException) {
+            throw ClassCastException("${context.toString()} must implement MusicDetailFragmentListener")
+        }
+    }
+
+    fun getMusicId() {
+        //set musicID on viewModel
+        val musicId = listener.getTrackIdParameter()
+        viewModel.setMusicId(musicId)
+    }
+
+
     private fun initState() {
+        getMusicId()
+
         viewModel.music.observe(viewLifecycleOwner, Observer { it: Music? ->
             if (it != null) {
                 viewBinding.music = it
 
                 //Load Widgets whit model
-                setupToolbar(it.name)
                 setupFab(it.isStreamable, it.previewUrl)
             }
         })
@@ -94,7 +106,7 @@ class MusicDetailFragment : Fragment() {
                 txt_error.visibility = View.GONE
         })
 
-        txt_error.setOnClickListener {
+        viewBinding.txtError.setOnClickListener {
             viewModel.refresh()
         }
     }
@@ -118,29 +130,26 @@ class MusicDetailFragment : Fragment() {
 
     var playing = false
     private fun setupFab(isStreamble: Boolean?, previewUri: String?) {
+
         if (isStreamble != null && isStreamble && previewUri != null) {
+
             player = MyMediaPlayer(previewUri) {
                 playing = it
-                (activity as MusicDetailActivity).onChangedPlayerState(it)
+                val imageResource =
+                    if (playing) android.R.drawable.ic_media_pause else android.R.drawable.ic_media_play
+
+                listener.setFabDrawableRes(imageResource)
             }
             player.create(context)
 
-            (activity as MusicDetailActivity).setFABListener {
-                if (!playing) {
-                    player.play()
-                } else {
-                    player.pause()
-                }
+            listener.setFabVisibility(true)
+            listener.setFabListener {
+                if (!playing) player.play() else player.pause()
             }
+        } else {
+            listener.setFabVisibility(true)
         }
     }
-
-    private fun setupToolbar(trackName: String?) {
-        if (activity is MusicDetailActivity) {
-            (activity as MusicDetailActivity).setToolbarName(trackName)
-        }
-    }
-
 
     private lateinit var trackListAdapter: TrackListAdapter
 
@@ -184,7 +193,12 @@ class MusicDetailFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+        listener.setFabVisibility(false)
         player.release()
     }
 
+}
+
+interface MusicDetailFragmentListener : FragmentListener {
+    fun getTrackIdParameter(): Long
 }

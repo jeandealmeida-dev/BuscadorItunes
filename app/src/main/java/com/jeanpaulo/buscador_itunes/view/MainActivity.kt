@@ -1,8 +1,10 @@
-package com.jeanpaulo.buscador_itunes.view.activity
+package com.jeanpaulo.buscador_itunes.view
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.jeanpaulo.buscador_itunes.view.activity.MusicActivity
+import com.jeanpaulo.buscador_itunes.view.music.music_search.music_detail.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,7 +35,8 @@ class MainActivity : AppCompatActivity() {
     fun generateIntent_MusicDetailActivity(musicId: Long, artworkUrl: String): Intent {
         val intent = Intent(this, MusicDetailActivity::class.java)
         val b = Bundle()
-        b.putLong(TRACK_ID_PARAM, musicId) //Your id
+        b.putLong(MUSIC_ID_PARAM, musicId) //Your id
+        b.putString(MUSIC_NAME_PARAM, "music_name") //Your id
         b.putString(ARTWORK_URL_PARAM, artworkUrl) //Your id
         intent.putExtras(b)
         return intent

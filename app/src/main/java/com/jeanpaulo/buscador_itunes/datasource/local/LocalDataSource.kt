@@ -2,8 +2,11 @@ package com.jeanpaulo.buscador_itunes.datasource.local
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
+import com.jeanpaulo.buscador_itunes.datasource.local.dao.MusicDao
+import com.jeanpaulo.buscador_itunes.datasource.local.dao.PlaylistDao
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
 import com.jeanpaulo.buscador_itunes.model.Music
+import com.jeanpaulo.buscador_itunes.model.Playlist
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,6 +18,7 @@ import com.jeanpaulo.buscador_itunes.model.util.Result
  */
 class LocalDataSource internal constructor(
     private val musicDao: MusicDao,
+    private val playlistDao: PlaylistDao,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : MusicLocalDataSource {
 
@@ -104,5 +108,59 @@ class LocalDataSource internal constructor(
 
     override suspend fun deleteMusic(taskId: Long) = withContext<Unit>(ioDispatcher) {
         musicDao.deleteMusicById(taskId)
+    }
+
+    override suspend fun getPlaylists(): Result<List<Playlist>> =
+        withContext<Result<List<Playlist>>>(ioDispatcher) {
+            try {
+                Result.Success(playlistDao.getPlaylists())
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
+                )
+            }
+        }
+
+    override suspend fun getPlaylist(playlistId: String): Result<Playlist> {
+        return withContext<Result<Playlist>>(ioDispatcher) {
+            try {
+                val playlist = playlistDao.getPlaylistById(playlistId)
+                if (playlist != null)
+                    Result.Success(playlist)
+                else
+                    Result.Error(
+                        DataSourceException(
+                            DataSourceException.Error.NOT_FOUND_EXCEPTION,
+                            "Not found!"
+                        )
+                    )
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
+                )
+            }
+        }
+    }
+
+    override suspend fun savePlaylist(playlist: Playlist) : Result<Boolean>{
+        return withContext<Result<Boolean>>(ioDispatcher) {
+            try {
+                playlistDao.insertPlaylist(playlist)
+                Result.Success(true)
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
+                )
+            }
+        }
     }
 }

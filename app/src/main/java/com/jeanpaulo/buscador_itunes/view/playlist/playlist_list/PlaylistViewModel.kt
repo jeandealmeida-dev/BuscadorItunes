@@ -1,52 +1,45 @@
-package com.jeanpaulo.buscador_itunes.view_model
+package com.jeanpaulo.buscador_itunes.view.fragment.playlist_list
 
 import androidx.lifecycle.*
 import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
-import com.jeanpaulo.buscador_itunes.model.Music
+import com.jeanpaulo.buscador_itunes.model.Playlist
 import com.jeanpaulo.buscador_itunes.model.util.NetworkState
 import com.jeanpaulo.buscador_itunes.model.util.Result
 import com.jeanpaulo.buscador_itunes.util.Event
-import com.jeanpaulo.buscador_itunes.util.MyMediaPlayer
-import com.jeanpaulo.buscador_itunes.util.params.SearchParams
-import com.jeanpaulo.buscador_itunes.view.activity.TRACK_ID_PARAM
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MusicDetailViewModel(
+class PlaylistViewModel(
     private val dataSource: MusicDataSource,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private var _music: MutableLiveData<Music> = MutableLiveData()
-    val music: LiveData<Music> = _music
+    private var _playlistList: MutableLiveData<List<Playlist>> = MutableLiveData()
+    val playlistList: LiveData<List<Playlist>> = _playlistList
 
-    init {
-        searchMusic()
+    private val _openPlaylistEvent = MutableLiveData<Event<String>>()
+    val openPlaylistEvent: LiveData<Event<String>> = _openPlaylistEvent
+
+    private val _newPlaylistEvent = MutableLiveData<Event<Unit>>()
+    val newPlaylistEvent: LiveData<Event<Unit>> = _newPlaylistEvent
+
+    fun searchPlaylist(){
+        getPlaylistList()
     }
 
-    private fun searchMusic() {
-        val music = getMusic()
-        if (music != null)
-            getMusicDetail(music)
-    }
-
-    private fun getMusic(): Long? {
-        return savedStateHandle.get(TRACK_ID_PARAM)
-    }
-
-    private fun getMusicDetail(musicId: Long) {
+    private fun getPlaylistList() {
         GlobalScope.launch {
             setNetworkState(NetworkState.LOADING)
 
             //delay para dar tempo de carregar toda a animacao
-            delay(600L)
+            delay(200L)
 
-            val response = dataSource.lookup(musicId, SearchParams.SONG_MEDIA_TYPE)
+            val response = dataSource.getPlaylists()
             if (response is Result.Success) {
                 val music = response.data
-                _music.postValue(music)
+                _playlistList.postValue(music)
                 setNetworkState(NetworkState.DONE)
             } else {
                 setNetworkState(NetworkState.ERROR)
@@ -68,16 +61,11 @@ class MusicDetailViewModel(
     }
 
     fun setNetworkState(networkState: NetworkState) {
-        _networkState.postValue(networkState)
-    }
-
-    fun setMusicId(musicId: Long) {
-        savedStateHandle.set(TRACK_ID_PARAM, musicId)
-        getMusicDetail(musicId)
+        _queryState.postValue(networkState)
     }
 
     fun refresh() {
-        searchMusic()
+        getPlaylistList()
     }
 
     //SETUP NETWORKSTATE
@@ -86,10 +74,15 @@ class MusicDetailViewModel(
         MutableLiveData()
     val errorLoading: LiveData<DataSourceException?> = _errorLoading
 
-    private var _networkState = MutableLiveData<NetworkState>()
+    private var _queryState = MutableLiveData<NetworkState>()
+
+    // This LiveData depends on another so we can use a transformation.
+    val empty: LiveData<Boolean> = Transformations.map(playlistList) {
+        it.isEmpty()
+    }
 
     val dataLoading: LiveData<Boolean> = Transformations.switchMap<NetworkState, Boolean>(
-        _networkState
+        _queryState
     ) { state ->
         when (state) {
             NetworkState.LOADING -> {

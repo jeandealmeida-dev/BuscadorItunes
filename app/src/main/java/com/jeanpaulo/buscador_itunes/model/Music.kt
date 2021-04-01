@@ -14,7 +14,7 @@ import java.util.*
 
 @Entity(tableName = "Music")
 class Music(
-    @ColumnInfo(name = "trackId") val trackId: Long?,
+    @ColumnInfo(name = "trackId") val ds_trackId: Long?,
     @ColumnInfo(name = "name") val name: String?,
 
     @ColumnInfo(name = "artworkUrl") val artworkUrl: String?,
@@ -33,13 +33,13 @@ class Music(
     lateinit var artist: Artist
 
     @PrimaryKey
-    var id: Long
-
-    init {
-        id = UUID.randomUUID().leastSignificantBits
-    }
+    var musicId = UUID.randomUUID().toString()
 
     val formatedReleaseDate: String
         get() = if (releaseDate != null) SimpleDateFormat("yyyy").format(releaseDate) else "-"
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is Music) ds_trackId == other.ds_trackId else false
+    }
 
 }

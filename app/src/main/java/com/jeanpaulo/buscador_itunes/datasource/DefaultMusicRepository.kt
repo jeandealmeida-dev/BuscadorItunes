@@ -9,6 +9,7 @@ import com.jeanpaulo.buscador_itunes.datasource.local.MusicLocalDataSource
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse2
+import com.jeanpaulo.buscador_itunes.model.Playlist
 import org.slf4j.LoggerFactory
 import retrofit2.Response
 import java.io.IOException
@@ -243,6 +244,78 @@ class DefaultMusicRepository(
             //launch { musicRemoteDataSource.deleteMusic(musicId) }
             launch { musicLocalDataSource.deleteMusic(musicId) }
         }
+    }
+
+    override suspend fun getPlaylists(): Result<List<Playlist>> {
+        return withContext(ioDispatcher) {
+            try {
+                val response =
+                    musicLocalDataSource.getPlaylists()
+                        .also {
+                            log.info("RESPONSE ->", it)
+                        }
+                if (response is Result.Success) {
+                    Result.Success(response.data)
+                } else
+                    Result.Error(
+                        DataSourceException(
+                            DataSourceException.Error.NULL_EXCEPTION,
+                            "Objeto com erro"
+                        )
+                    )
+
+            } catch (e: SocketTimeoutException) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.NO_INTERNET_EXCEPTION,
+                        "NO INTERNET CONNECTION"
+                    )
+                )
+            } catch (e: IOException) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.NO_INTERNET_EXCEPTION,
+                        e.message ?: "unknown error"
+                    )
+                )
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.message ?: "unknown error"
+                    )
+                )
+            }
+        }
+    }
+
+    override suspend fun getPlaylist(playlistId: String): Result<Playlist> {
+        return try {
+            musicLocalDataSource.getPlaylist(playlistId)
+            //Result.Error(DataSourceException(Err(result as Result.Error).exception.toString()))
+        } catch (e: Exception) {
+            Result.Error(
+                DataSourceException(
+                    DataSourceException.Error.UNKNOWN_EXCEPTION,
+                    e.toString()
+                )
+            )
+        }
+    }
+
+    override suspend fun savePlaylist(playlist: Playlist): Result<Boolean> {
+        return try {
+            musicLocalDataSource.savePlaylist(playlist)
+            Result.Success(true)
+        } catch (e: Exception) {
+            Result.Error(
+                DataSourceException(
+                    DataSourceException.Error.UNKNOWN_EXCEPTION,
+                    e.toString()
+                )
+            )
+        }
+
     }
 
     private suspend fun getMusicWithId(id: Long): Result<Music>? {

@@ -1,4 +1,4 @@
-package com.jeanpaulo.buscador_itunes.view_model
+package com.jeanpaulo.buscador_itunes.view.music.music_search
 
 import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder

@@ -1,4 +1,4 @@
-package com.jeanpaulo.buscador_itunes.datasource.local
+package com.jeanpaulo.buscador_itunes.datasource.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

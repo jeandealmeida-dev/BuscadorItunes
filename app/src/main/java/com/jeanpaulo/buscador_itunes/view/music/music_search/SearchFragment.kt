@@ -1,5 +1,6 @@
-package com.jeanpaulo.buscador_itunes.view.fragment
+package com.jeanpaulo.buscador_itunes.view.music.music_search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -11,23 +12,22 @@ import androidx.navigation.fragment.navArgs
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.jeanpaulo.buscador_itunes.R
 import com.jeanpaulo.buscador_itunes.databinding.FragMusicSearchBinding
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
 import com.jeanpaulo.buscador_itunes.model.Music
 import com.jeanpaulo.buscador_itunes.util.*
+import com.jeanpaulo.buscador_itunes.view.FragmentListener
 import com.jeanpaulo.buscador_itunes.view.activity.MusicActivity
-import com.jeanpaulo.buscador_itunes.view.activity.MusicDetailActivity
-import com.jeanpaulo.buscador_itunes.view.adapter.MusicListAdapter
-import com.jeanpaulo.buscador_itunes.view_model.SearchViewModel
+import com.jeanpaulo.buscador_itunes.view.fragment.MusicFragmentArgs
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.frag_music_detail.txt_error
 import timber.log.Timber
+import java.lang.ClassCastException
 import java.util.concurrent.TimeUnit
 
 
@@ -42,6 +42,8 @@ class SearchFragment : Fragment() {
 
     private lateinit var viewBinding: FragMusicSearchBinding
     private lateinit var musicListAdapter: MusicListAdapter
+
+    lateinit var listener: SearchFragmentListener
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,8 +87,21 @@ class SearchFragment : Fragment() {
         setupListAdapter()
         setupRefreshLayout(viewBinding.refreshLayout, viewBinding.musicList)
         setupNavigation()
-        //setupFab()
+        setupFab()
         initState()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            listener = context as SearchFragmentListener
+        } catch (e: ClassCastException) {
+            throw ClassCastException("${context.toString()} must implement OnCompleteListener")
+        }
+    }
+
+    fun setupFab(){
+        listener.setFabVisibility(false)
     }
 
     override fun onDestroy() {
@@ -98,6 +113,8 @@ class SearchFragment : Fragment() {
 
     private fun initState() {
 
+        //view model variables
+
         viewModel.musicList?.observe(viewLifecycleOwner, Observer { it: PagedList<Music> ->
             musicListAdapter.submitList(it)
             musicListAdapter.notifyDataSetChanged()
@@ -105,13 +122,15 @@ class SearchFragment : Fragment() {
 
         viewModel.errorLoading.observe(viewLifecycleOwner, Observer { exception ->
             if (exception != null) {
-                txt_error.visibility = View.VISIBLE
-                txt_error.text = showException(exception)
+                viewBinding.txtError.visibility = View.VISIBLE
+                viewBinding.txtError.text = showException(exception)
             } else
-                txt_error.visibility = View.GONE
+                viewBinding.txtError.visibility = View.GONE
         })
 
-        txt_error.setOnClickListener {
+        //view components
+
+        viewBinding.txtError.setOnClickListener {
             viewModel.refresh()
         }
     }
@@ -209,9 +228,12 @@ class SearchFragment : Fragment() {
         val viewModel = viewBinding.viewmodel
         if (viewModel != null) {
 
-            musicListAdapter = MusicListAdapter(viewModel) { view, it ->
-                openMusicDetail(view, it.trackId!!, it.artworkUrl!!)
-            }
+            musicListAdapter =
+                MusicListAdapter(
+                    viewModel
+                ) { view, it ->
+                    openMusicDetail(view, it.ds_trackId!!, it.name!!, it.artworkUrl!!)
+                }
             viewBinding.musicList.layoutManager =
                 CustomLinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             viewBinding.musicList.adapter = musicListAdapter
@@ -232,8 +254,13 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun openMusicDetail(view: View, musicId: Long, artworkUrl: String) {
-        if (activity is MusicActivity)
-            (activity as MusicActivity).startMusicDetailActivity(view, musicId, artworkUrl)
+    private fun openMusicDetail(view: View, musicId: Long, musicName: String, artworkUrl: String) {
+        listener.openMusicDetailActivity(view, musicId, musicName, artworkUrl)
     }
+}
+
+interface SearchFragmentListener : FragmentListener {
+
+    fun openMusicDetailActivity(view: View, musicId: Long, musicName: String, artworkUrl: String)
+
 }

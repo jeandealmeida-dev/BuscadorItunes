@@ -21,6 +21,7 @@ import com.jeanpaulo.buscador_itunes.model.Music
 import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse2
+import com.jeanpaulo.buscador_itunes.model.Playlist
 import retrofit2.Response
 import java.util.LinkedHashMap
 
@@ -108,6 +109,18 @@ object FakeTasksRemoteDataSource :
     }
 
     override suspend fun deleteMusic(musicId: Long) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getPlaylists(): Result<List<Playlist>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getPlaylist(playlistId: String): Result<Playlist> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun savePlaylist(playlist: Playlist): Result<Boolean> {
         TODO("Not yet implemented")
     }
 

@@ -15,7 +15,7 @@
 
         <variable
             name="viewmodel"
-            type="com.jeanpaulo.buscador_itunes.view_model.MusicDetailViewModel" />
+            type="com.jeanpaulo.buscador_itunes.view.music.music_search.music_detail.MusicDetailViewModel" />
 
     </data>
 
@@ -82,31 +82,31 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:gravity="left"
                                 android:paddingStart="24dp"
                                 android:paddingLeft="24dp"
                                 android:textColor="#333"
                                 android:textSize="16sp"
-                                android:gravity="left"
                                 tools:text="@{music.artist.primaryGenreName}" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:gravity="center"
                                 android:paddingStart="24dp"
                                 android:paddingLeft="24dp"
                                 android:textColor="#333"
                                 android:textSize="16sp"
-                                android:gravity="center"
                                 tools:text="@{music.artist.country}" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:gravity="right"
                                 android:paddingStart="24dp"
                                 android:paddingLeft="24dp"
                                 android:textColor="#333"
                                 android:textSize="16sp"
-                                android:gravity="right"
                                 tools:text="@{music.formatedReleaseDate}" />
 
 

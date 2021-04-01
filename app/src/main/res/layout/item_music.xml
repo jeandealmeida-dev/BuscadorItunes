@@ -4,15 +4,13 @@
 
     <data>
 
-        <import type="android.widget.CompoundButton" />
-
         <variable
             name="music"
             type="com.jeanpaulo.buscador_itunes.model.Music" />
 
         <variable
             name="viewmodel"
-            type="com.jeanpaulo.buscador_itunes.view_model.SearchViewModel" />
+            type="com.jeanpaulo.buscador_itunes.view.music.music_search.SearchViewModel" />
     </data>
 
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
@@ -46,20 +44,18 @@
                 android:paddingLeft="12dp"
                 android:textColor="#333"
                 android:textSize="18sp"
-                tools:text="Sample news title" />
+                tools:text="@{music.name}"  />
 
             <TextView
-                android:id="@+id/txt_artist_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="12dp"
                 android:paddingLeft="12dp"
                 android:textColor="#333"
                 android:textSize="16sp"
-                tools:text="Sample Artist title" />
+                tools:text="@{music.artist.name}" />
 
             <TextView
-                android:id="@+id/txt_collection_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="12dp"
@@ -67,7 +63,7 @@
                 android:paddingTop="10dp"
                 android:textColor="#333"
                 android:textSize="16sp"
-                tools:text="Sample news title" />
+                tools:text="@{music.collection.name}"  />
 
         </LinearLayout>
     </LinearLayout>

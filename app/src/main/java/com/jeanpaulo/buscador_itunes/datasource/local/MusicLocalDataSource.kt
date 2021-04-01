@@ -2,6 +2,7 @@ package com.jeanpaulo.buscador_itunes.datasource.local
 
 import androidx.lifecycle.LiveData
 import com.jeanpaulo.buscador_itunes.model.Music
+import com.jeanpaulo.buscador_itunes.model.Playlist
 import com.jeanpaulo.buscador_itunes.model.util.Result
 
 /**
@@ -36,4 +37,10 @@ interface MusicLocalDataSource {
     suspend fun deleteAllMusics()
 
     suspend fun deleteMusic(musicId: Long)
+
+    suspend fun getPlaylists(): Result<List<Playlist>>
+
+    suspend fun getPlaylist(playlistId: String): Result<Playlist>
+
+    suspend fun savePlaylist(playlist: Playlist): Result<Boolean>
 }

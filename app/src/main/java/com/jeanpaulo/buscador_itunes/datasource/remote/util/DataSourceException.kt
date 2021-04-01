@@ -9,15 +9,17 @@ class DataSourceException(
         TIMEOUT_EXCEPTION,
         NO_INTERNET_EXCEPTION,
         NULL_EXCEPTION,
-        UNKNOWN_EXCEPTION
+        UNKNOWN_EXCEPTION,
+        NOT_FOUND_EXCEPTION
     }
 
     override fun toString(): String {
-        return when(knownNetworkError){
-            Error.TIMEOUT_EXCEPTION-> "TIMEOUT_EXCEPTION"
-            Error.NO_INTERNET_EXCEPTION-> "NO_INTERNET_EXCEPTION"
-            Error.NULL_EXCEPTION-> "NULL_EXCEPTION"
-            Error.UNKNOWN_EXCEPTION-> "UNKNOWN_EXCEPTION"
+        return when (knownNetworkError) {
+            Error.TIMEOUT_EXCEPTION -> "TIMEOUT_EXCEPTION -> $exception"
+            Error.NO_INTERNET_EXCEPTION -> "NO_INTERNET_EXCEPTION -> $exception"
+            Error.NULL_EXCEPTION -> "NULL_EXCEPTION -> $exception"
+            Error.UNKNOWN_EXCEPTION -> "UNKNOWN_EXCEPTION -> $exception"
+            Error.NOT_FOUND_EXCEPTION -> "NOT_FOUND_EXCEPTION -> $exception"
         }
     }
 }

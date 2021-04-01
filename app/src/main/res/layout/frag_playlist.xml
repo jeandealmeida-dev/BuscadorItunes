@@ -10,7 +10,7 @@
 
         <variable
             name="viewmodel"
-            type="com.jeanpaulo.buscador_itunes.view.music.music_search.SearchViewModel" />
+            type="com.jeanpaulo.buscador_itunes.view.fragment.playlist_list.PlaylistViewModel" />
 
     </data>
 
@@ -43,7 +43,7 @@
                     android:visibility="@{viewmodel.empty ? View.GONE : View.VISIBLE}">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/music_list"
+                        android:id="@+id/playlist_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/background_light"
@@ -74,7 +74,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginBottom="@dimen/list_item_padding"
-                        android:text="@string/no_music_found" />
+                        android:text="@string/no_playlist_found" />
                 </LinearLayout>
 
                 <TextView

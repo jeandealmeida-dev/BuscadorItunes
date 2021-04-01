@@ -21,8 +21,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
-import com.jeanpaulo.buscador_itunes.view_model.MusicDetailViewModel
-import com.jeanpaulo.buscador_itunes.view_model.SearchViewModel
+import com.jeanpaulo.buscador_itunes.view.fragment.add_edit_playlist.AddEditPlaylistViewModel
+import com.jeanpaulo.buscador_itunes.view.fragment.playlist_list.PlaylistViewModel
+import com.jeanpaulo.buscador_itunes.view.music.music_search.music_detail.MusicDetailViewModel
+import com.jeanpaulo.buscador_itunes.view.music.music_search.SearchViewModel
 
 /**
  * Factory for all ViewModels.
@@ -40,16 +42,25 @@ class ViewModelFactory constructor(
         handle: SavedStateHandle
     ) = with(modelClass) {
         when {
-            /*isAssignableFrom(StatisticsViewModel::class.java) ->
-                StatisticsViewModel(musicRepository)
-            isAssignableFrom(TaskDetailViewModel::class.java) ->
-                TaskDetailViewModel(musicRepository)
-            isAssignableFrom(AddEditTaskViewModel::class.java) ->
-                AddEditTaskViewModel(musicRepository)*/
-            isAssignableFrom(MusicDetailViewModel::class.java) ->
-                MusicDetailViewModel(dataSource, handle)
             isAssignableFrom(SearchViewModel::class.java) ->
-                SearchViewModel(dataSource, handle)
+                SearchViewModel(
+                    dataSource,
+                    handle
+                )
+            isAssignableFrom(MusicDetailViewModel::class.java) ->
+                MusicDetailViewModel(
+                    dataSource,
+                    handle
+                )
+            isAssignableFrom(PlaylistViewModel::class.java) ->
+                PlaylistViewModel(
+                    dataSource,
+                    handle
+                )
+            isAssignableFrom(AddEditPlaylistViewModel::class.java) ->
+                AddEditPlaylistViewModel(
+                    dataSource
+                )
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
