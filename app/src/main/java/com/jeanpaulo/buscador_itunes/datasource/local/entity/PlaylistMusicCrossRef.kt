@@ -1,4 +1,4 @@
-package com.jeanpaulo.buscador_itunes.model
+package com.jeanpaulo.buscador_itunes.datasource.local.entity
 
 import androidx.room.Entity
 

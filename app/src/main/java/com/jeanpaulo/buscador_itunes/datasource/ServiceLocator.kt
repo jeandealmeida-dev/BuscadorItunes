@@ -13,10 +13,10 @@ object ServiceLocator {
     private var database: MusicDatabase? = null
 
     @Volatile
-    var musicRepository: MusicDataSource? = null
+    var musicRepository: IDataSource? = null
         @VisibleForTesting set
 
-    fun provideMusicRepository(context: Context): MusicDataSource {
+    fun provideMusicRepository(context: Context): IDataSource {
         synchronized(this) {
             return musicRepository
                 ?: musicRepository
@@ -26,7 +26,7 @@ object ServiceLocator {
         }
     }
 
-    private fun createMusicRepository(context: Context): MusicDataSource {
+    private fun createMusicRepository(context: Context): IDataSource {
         val newRepo =
             DefaultMusicRepository(
                 createRepository(),

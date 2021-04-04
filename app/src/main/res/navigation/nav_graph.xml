@@ -52,10 +52,41 @@
             android:id="@+id/action_playlistFragment_to_addEditPlaylistFragment"
             app:destination="@id/add_edit_playlist_fragment_dest" />
 
+        <action
+            android:id="@+id/action_playlistFragment_to_detailPlaylistFragment"
+            app:destination="@id/detail_playlist_fragment_dest" />
+
         <argument
             android:name="userMessage"
             android:defaultValue="0"
             app:argType="integer" />
+
+    </fragment>
+
+    <!-- **** DETAIL PLAYLIST FRAGMENTS **** -->
+    <fragment
+        android:id="@+id/detail_playlist_fragment_dest"
+        android:name="com.jeanpaulo.buscador_itunes.view.playlist.detail.DetailPlaylistFragment"
+        android:label="{title}">
+
+        <argument
+            android:name="playlistId"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="title"
+            app:argType="string"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/action_detailPlaylistFragment_to_addEditPlaylistFragment"
+            app:destination="@id/add_edit_playlist_fragment_dest" />
+
+
+        <action
+            android:id="@+id/action_detailPlaylistFragment_to_playlistFragment"
+            app:destination="@id/playlist_fragment_dest" />
 
     </fragment>
 

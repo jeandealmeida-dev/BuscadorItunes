@@ -1,45 +1,70 @@
 package com.jeanpaulo.buscador_itunes.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
-import com.jeanpaulo.buscador_itunes.model.Artist
-import com.jeanpaulo.buscador_itunes.model.Collection
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
-import java.text.DateFormat
+import com.jeanpaulo.buscador_itunes.datasource.local.entity.MusicEntity
 import java.text.SimpleDateFormat
 import java.util.*
 
-@Entity(tableName = "Music")
-class Music(
-    @ColumnInfo(name = "trackId") val ds_trackId: Long?,
-    @ColumnInfo(name = "name") val name: String?,
+class Music() {
 
-    @ColumnInfo(name = "artworkUrl") val artworkUrl: String?,
-    @ColumnInfo(name = "releaseDate") val releaseDate: Date?,
+    constructor(trackId: String?) : this() {
+        this.trackId = trackId
+    }
 
-    @ColumnInfo(name = "isStreamable") val isStreamable: Boolean?,
-    @ColumnInfo(name = "trackTimeMillis") val trackTimeMillis: Long?,
-    @ColumnInfo(name = "previewUrl") val previewUrl: String?
-) {
-    constructor(trackId: Long) : this(trackId, null, null, null, null, null, null)
+    constructor(
+        ds_trackId: Long?,
+        trackName: String?,
+        artworkUrl: String?,
+        releaseDate: Date?,
+        streamable: Boolean?,
+        trackTimeMillis: Long?,
+        previewUrl: String?
+    ) : this(null) { //Called By MusicJson (so it doesnt have Id)
+        this.name = trackName
+        this.ds_trackId = ds_trackId
+        this.artworkUrl = artworkUrl
+        this.releaseDate = releaseDate
+        this.isStreamable = streamable
+        this.trackTimeMillis = trackTimeMillis
+        this.previewUrl = previewUrl
+    }
 
-    @Ignore
-    lateinit var collection: Collection
+    var trackId: String? = null
+    var ds_trackId: Long? = null
+    var name: String? = null
+    var artworkUrl: String? = null
+    var releaseDate: Date? = null
+    var isStreamable: Boolean? = null
+    var trackTimeMillis: Long? = null
+    var previewUrl: String? = null
 
-    @Ignore
-    lateinit var artist: Artist
+    var collection: _Collection? = null
+    var artist: Artist? = null
 
-    @PrimaryKey
-    var musicId = UUID.randomUUID().toString()
+    override fun equals(other: Any?): Boolean {
+        return if (other is MusicEntity) ds_trackId == other.ds_trackId else false
+    }
+
+    fun toEntity(): MusicEntity =
+        if (trackId != null) MusicEntity(
+            ds_trackId,
+            name,
+            artworkUrl,
+            releaseDate,
+            isStreamable,
+            trackTimeMillis,
+            previewUrl,
+            trackId!!
+        ) else MusicEntity(
+            ds_trackId,
+            name,
+            artworkUrl,
+            releaseDate,
+            isStreamable,
+            trackTimeMillis,
+            previewUrl
+        )
 
     val formatedReleaseDate: String
         get() = if (releaseDate != null) SimpleDateFormat("yyyy").format(releaseDate) else "-"
-
-    override fun equals(other: Any?): Boolean {
-        return if (other is Music) ds_trackId == other.ds_trackId else false
-    }
 
 }

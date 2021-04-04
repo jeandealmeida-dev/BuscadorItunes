@@ -5,13 +5,10 @@ import com.jeanpaulo.buscador_itunes.model.Music
 import kotlinx.coroutines.*
 import com.jeanpaulo.buscador_itunes.model.util.Result
 import com.jeanpaulo.buscador_itunes.datasource.remote.service.ItunesService
-import com.jeanpaulo.buscador_itunes.datasource.local.MusicLocalDataSource
+import com.jeanpaulo.buscador_itunes.datasource.local.ILocalDataSource
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
-import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse
-import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse2
 import com.jeanpaulo.buscador_itunes.model.Playlist
 import org.slf4j.LoggerFactory
-import retrofit2.Response
 import java.io.IOException
 import java.net.SocketTimeoutException
 
@@ -19,10 +16,10 @@ import java.net.SocketTimeoutException
  * Default implementation of [MusicsRepository]. Single entry point for managing musics' data.
  */
 class DefaultMusicRepository(
-    private val musicRemoteDataSource: ItunesService,
-    private val musicLocalDataSource: MusicLocalDataSource,
+    private val remote: ItunesService,
+    private val local: ILocalDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) : MusicDataSource {
+) : IDataSource {
 
     private var log: org.slf4j.Logger = LoggerFactory.getLogger(DefaultMusicRepository::class.java)
 
@@ -50,7 +47,7 @@ class DefaultMusicRepository(
         return withContext(ioDispatcher) {
             try {
                 val response =
-                    musicRemoteDataSource.searchMusic(term, mediaType, offset, limit)
+                    remote.searchMusic(term, mediaType, offset, limit)
                         .also {
                             log.info("RESPONSE ->", it)
                         }
@@ -95,7 +92,7 @@ class DefaultMusicRepository(
         return withContext(ioDispatcher) {
             try {
                 val response =
-                    musicRemoteDataSource.lookUp(term, mediaType)
+                    remote.lookUp(term, mediaType)
                         .also {
                             log.info("RESPONSE ->", it)
                         }
@@ -139,7 +136,7 @@ class DefaultMusicRepository(
 
 
     override fun observeMusics(): LiveData<Result<List<Music>>> {
-        return musicLocalDataSource.observeMusics()
+        return local.observeMusics()
     }
 
     override suspend fun getMusics(): Result<List<Music>> {
@@ -169,7 +166,7 @@ class DefaultMusicRepository(
     }
 
     override fun observeMusic(musicId: Long): LiveData<Result<Music>>? {
-        return musicLocalDataSource.observeMusic(musicId)
+        return local.observeMusic(musicId)
     }
 
     override suspend fun getMusic(musicId: Long): Result<Music>? {
@@ -188,14 +185,14 @@ class DefaultMusicRepository(
     override suspend fun saveMusic(music: Music) {
         coroutineScope {
             //launch { musicRemoteDataSource.saveMusic(music) }
-            launch { musicLocalDataSource.saveMusic(music) }
+            launch { local.saveMusic(music) }
         }
     }
 
     override suspend fun completeMusic(music: Music) {
         coroutineScope {
             //launch { musicRemoteDataSource.completeMusic(music) }
-            launch { musicLocalDataSource.completeMusic(music) }
+            launch { local.completeMusic(music) }
         }
     }
 
@@ -211,7 +208,7 @@ class DefaultMusicRepository(
         withContext<Unit>(ioDispatcher) {
             coroutineScope {
                 //launch { musicRemoteDataSource.activateMusic(music) }
-                launch { musicLocalDataSource.activateMusic(music) }
+                launch { local.activateMusic(music) }
             }
         }
 
@@ -226,7 +223,7 @@ class DefaultMusicRepository(
     override suspend fun clearCompletedMusics() {
         coroutineScope {
             //launch { musicRemoteDataSource.clearCompletedMusics() }
-            launch { musicLocalDataSource.clearCompletedMusics() }
+            launch { local.clearCompletedMusics() }
         }
     }
 
@@ -234,7 +231,7 @@ class DefaultMusicRepository(
         withContext(ioDispatcher) {
             coroutineScope {
                 //launch { musicRemoteDataSource.deleteAllMusics() }
-                launch { musicLocalDataSource.deleteAllMusics() }
+                launch { local.deleteAllMusics() }
             }
         }
     }
@@ -242,7 +239,7 @@ class DefaultMusicRepository(
     override suspend fun deleteMusic(musicId: Long) {
         coroutineScope {
             //launch { musicRemoteDataSource.deleteMusic(musicId) }
-            launch { musicLocalDataSource.deleteMusic(musicId) }
+            launch { local.deleteMusic(musicId) }
         }
     }
 
@@ -250,7 +247,7 @@ class DefaultMusicRepository(
         return withContext(ioDispatcher) {
             try {
                 val response =
-                    musicLocalDataSource.getPlaylists()
+                    local.getPlaylists()
                         .also {
                             log.info("RESPONSE ->", it)
                         }
@@ -291,7 +288,7 @@ class DefaultMusicRepository(
 
     override suspend fun getPlaylist(playlistId: String): Result<Playlist> {
         return try {
-            musicLocalDataSource.getPlaylist(playlistId)
+            local.getPlaylist(playlistId)
             //Result.Error(DataSourceException(Err(result as Result.Error).exception.toString()))
         } catch (e: Exception) {
             Result.Error(
@@ -305,7 +302,7 @@ class DefaultMusicRepository(
 
     override suspend fun savePlaylist(playlist: Playlist): Result<Boolean> {
         return try {
-            musicLocalDataSource.savePlaylist(playlist)
+            local.savePlaylist(playlist)
             Result.Success(true)
         } catch (e: Exception) {
             Result.Error(
@@ -318,7 +315,21 @@ class DefaultMusicRepository(
 
     }
 
+    override suspend fun deletePlaylist(playlistId: String): Result<Boolean> {
+        return try {
+            local.deletePlaylist(playlistId)
+            Result.Success(true)
+        } catch (e: Exception) {
+            Result.Error(
+                DataSourceException(
+                    DataSourceException.Error.UNKNOWN_EXCEPTION,
+                    e.toString()
+                )
+            )
+        }
+    }
+
     private suspend fun getMusicWithId(id: Long): Result<Music>? {
-        return musicLocalDataSource.getMusic(id)
+        return local.getMusic(id)
     }
 }

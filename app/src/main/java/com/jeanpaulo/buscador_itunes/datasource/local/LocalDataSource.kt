@@ -20,17 +20,17 @@ class LocalDataSource internal constructor(
     private val musicDao: MusicDao,
     private val playlistDao: PlaylistDao,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) : MusicLocalDataSource {
+) : ILocalDataSource {
 
     override fun observeMusics(): LiveData<Result<List<Music>>> {
         return musicDao.observeMusics().map {
-            Result.Success(it)
+            Result.Success(it.map { it.toModel() })
         }
     }
 
     override suspend fun getMusics(): Result<List<Music>> {
         return try {
-            Result.Success(musicDao.getMusics())
+            Result.Success(musicDao.getMusics().map { it.toModel() })
         } catch (e: Exception) {
             Result.Error(
                 DataSourceException(
@@ -43,7 +43,7 @@ class LocalDataSource internal constructor(
 
     override fun observeMusic(taskId: Long): LiveData<Result<Music>> {
         return musicDao.observeMusicById(taskId).map {
-            Result.Success(it)
+            Result.Success(it.toModel())
         }
     }
 
@@ -57,9 +57,9 @@ class LocalDataSource internal constructor(
 
     override suspend fun getMusic(musicId: Long): Result<Music> = withContext(ioDispatcher) {
         try {
-            val task = musicDao.getMusicById(musicId)
-            if (task != null) {
-                return@withContext Result.Success(task)
+            val musicEntity = musicDao.getMusicById(musicId)
+            if (musicEntity != null) {
+                return@withContext Result.Success(musicEntity.toModel())
             } else {
                 return@withContext Result.Error(
                     DataSourceException(
@@ -78,8 +78,8 @@ class LocalDataSource internal constructor(
         }
     }
 
-    override suspend fun saveMusic(task: Music) = withContext(ioDispatcher) {
-        musicDao.insertMusic(task)
+    override suspend fun saveMusic(music: Music) = withContext(ioDispatcher) {
+        musicDao.insertMusic(music.toEntity())
     }
 
     override suspend fun completeMusic(task: Music) = withContext(ioDispatcher) {
@@ -113,7 +113,7 @@ class LocalDataSource internal constructor(
     override suspend fun getPlaylists(): Result<List<Playlist>> =
         withContext<Result<List<Playlist>>>(ioDispatcher) {
             try {
-                Result.Success(playlistDao.getPlaylists())
+                Result.Success(playlistDao.getPlaylists().map { it.toModel() })
             } catch (e: Exception) {
                 Result.Error(
                     DataSourceException(
@@ -129,7 +129,7 @@ class LocalDataSource internal constructor(
             try {
                 val playlist = playlistDao.getPlaylistById(playlistId)
                 if (playlist != null)
-                    Result.Success(playlist)
+                    Result.Success(playlist.toModel())
                 else
                     Result.Error(
                         DataSourceException(
@@ -148,10 +148,26 @@ class LocalDataSource internal constructor(
         }
     }
 
-    override suspend fun savePlaylist(playlist: Playlist) : Result<Boolean>{
+    override suspend fun savePlaylist(playlist: Playlist): Result<Boolean> {
         return withContext<Result<Boolean>>(ioDispatcher) {
             try {
-                playlistDao.insertPlaylist(playlist)
+                playlistDao.insertPlaylist(playlist.toEntity())
+                Result.Success(true)
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
+                )
+            }
+        }
+    }
+
+    override suspend fun deletePlaylist(playlistId: String): Result<Boolean> {
+        return withContext<Result<Boolean>>(ioDispatcher) {
+            try {
+                playlistDao.deletePlaylistById(playlistId = playlistId)
                 Result.Success(true)
             } catch (e: Exception) {
                 Result.Error(

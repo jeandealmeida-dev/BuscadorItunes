@@ -18,18 +18,15 @@ package com.jeanpaulo.buscador_itunes.mock.data
 import androidx.lifecycle.LiveData
 import com.jeanpaulo.buscador_itunes.model.util.Result
 import com.jeanpaulo.buscador_itunes.model.Music
-import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
-import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse
-import com.jeanpaulo.buscador_itunes.datasource.remote.util.ItunesResponse2
+import com.jeanpaulo.buscador_itunes.datasource.IDataSource
 import com.jeanpaulo.buscador_itunes.model.Playlist
-import retrofit2.Response
 import java.util.LinkedHashMap
 
 /**
  * Implementation of a remote data source with static access to the data for easy testing.
  */
 object FakeTasksRemoteDataSource :
-    MusicDataSource {
+    IDataSource {
 
     private var MUSICS_SERVICE_DATA: LinkedHashMap<String, Music> = LinkedHashMap()
     override suspend fun searchMusic(
@@ -121,6 +118,10 @@ object FakeTasksRemoteDataSource :
     }
 
     override suspend fun savePlaylist(playlist: Playlist): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deletePlaylist(playlistId: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 

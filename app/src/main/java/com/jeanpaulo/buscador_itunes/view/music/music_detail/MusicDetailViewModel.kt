@@ -1,7 +1,7 @@
 package com.jeanpaulo.buscador_itunes.view.music.music_search.music_detail
 
 import androidx.lifecycle.*
-import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
+import com.jeanpaulo.buscador_itunes.datasource.IDataSource
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
 import com.jeanpaulo.buscador_itunes.model.Music
 import com.jeanpaulo.buscador_itunes.model.util.NetworkState
@@ -13,7 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MusicDetailViewModel(
-    private val dataSource: MusicDataSource,
+    private val dataSource: IDataSource,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 

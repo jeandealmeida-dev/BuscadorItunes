@@ -2,6 +2,7 @@ package com.jeanpaulo.buscador_itunes.datasource.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.jeanpaulo.buscador_itunes.datasource.local.entity.MusicEntity
 import com.jeanpaulo.buscador_itunes.model.Music
 
 @Dao
@@ -14,7 +15,7 @@ interface MusicDao {
      * @return all tasks.
      */
     @Query("SELECT * FROM Music")
-    fun observeMusics(): LiveData<List<Music>>
+    fun observeMusics(): LiveData<List<MusicEntity>>
 
     /**
      * Select all tasks from the tasks table.
@@ -22,7 +23,7 @@ interface MusicDao {
      * @return all tasks.
      */
     @Query("SELECT * FROM Music")
-    suspend fun getMusics(): List<Music>
+    suspend fun getMusics(): List<MusicEntity>
 
     /**
      * Select a task by id.
@@ -31,7 +32,7 @@ interface MusicDao {
      * @return the task with taskId.
      */
     @Query("SELECT * FROM Music WHERE trackId = :musicId")
-    suspend fun getMusicById(musicId: Long): Music?
+    suspend fun getMusicById(musicId: Long): MusicEntity?
 
     /**
      * Observes a single task.
@@ -40,7 +41,7 @@ interface MusicDao {
      * @return the task with taskId.
      */
     @Query("SELECT * FROM Music WHERE trackId = :taskId")
-    fun observeMusicById(taskId: Long): LiveData<Music>
+    fun observeMusicById(taskId: Long): LiveData<MusicEntity>
 
     /**
      * Insert a task in the database. If the task already exists, replace it.
@@ -48,7 +49,7 @@ interface MusicDao {
      * @param task the task to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMusic(music: Music)
+    suspend fun insertMusic(music: MusicEntity)
 
     /**
      * Update a task.
@@ -57,7 +58,7 @@ interface MusicDao {
      * @return the number of tasks updated. This should always be 1.
      */
     @Update
-    suspend fun updateMusic(music: Music): Int
+    suspend fun updateMusic(music: MusicEntity): Int
 
     /**
      * Update the complete status of a task

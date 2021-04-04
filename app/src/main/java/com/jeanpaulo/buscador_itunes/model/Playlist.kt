@@ -1,15 +1,25 @@
 package com.jeanpaulo.buscador_itunes.model
 
-import androidx.room.*
-import java.text.SimpleDateFormat
-import java.util.*
+import com.jeanpaulo.buscador_itunes.datasource.local.entity.PlaylistEntity
 
-@Entity(tableName = "Playlist")
-class Playlist(
-    @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "description") val description: String?,
-    @PrimaryKey val playlistId: String = UUID.randomUUID().toString()
-) {
-    val isEmpty
-        get() = title.isEmpty()
+class Playlist() {
+
+    constructor(playlistId: String?) : this() {
+        this.playlistId = playlistId
+    }
+
+    var playlistId: String? = null
+    var title: String? = null
+    var description: String? = null
+
+    fun toEntity(): PlaylistEntity =
+        if (playlistId != null) PlaylistEntity(title!!, description, playlistId!!)
+        else PlaylistEntity(title!!, description)
+
+
+    val checkValid
+        get() = title == null || title!!.isEmpty()
+
+    val isNewObject
+        get() = playlistId == null
 }

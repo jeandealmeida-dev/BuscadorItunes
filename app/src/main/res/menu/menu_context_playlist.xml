@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.music.music_search.music_detail.MusicDetailActivity">
+    <item
+        android:id="@+id/context_action_delete"
+        android:title="@string/action_delete" />
+    <item
+        android:id="@+id/context_action_edit"
+        android:title="@string/action_edit" />
+
+</menu>

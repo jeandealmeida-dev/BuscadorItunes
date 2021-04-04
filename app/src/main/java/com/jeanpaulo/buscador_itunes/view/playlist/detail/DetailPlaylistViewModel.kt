@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.jeanpaulo.buscador_itunes.view.fragment.add_edit_playlist
+package com.jeanpaulo.buscador_itunes.view.playlist.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -30,15 +30,12 @@ import kotlinx.coroutines.launch
 /**
  * ViewModel for the Add/Edit screen.
  */
-class AddEditPlaylistViewModel(
+class DetailPlaylistViewModel(
     private val dataSource: IDataSource
 ) : ViewModel() {
 
-    // Two-way databinding, exposing MutableLiveData
-    val currentTitle = MutableLiveData<String>()
-
-    // Two-way databinding, exposing MutableLiveData
-    val currentDescription = MutableLiveData<String>()
+    private val _playlist = MutableLiveData<Playlist>()
+    val playlist: LiveData<Playlist> = _playlist
 
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
@@ -46,12 +43,7 @@ class AddEditPlaylistViewModel(
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 
-    private val _taskUpdatedEvent = MutableLiveData<Event<Unit>>()
-    val playlistUpdatedEvent: LiveData<Event<Unit>> = _taskUpdatedEvent
-
     private var playlistId: String? = null
-
-    private var isNewPlaylist: Boolean = false
 
     private var isDataLoaded = false
 
@@ -62,16 +54,12 @@ class AddEditPlaylistViewModel(
 
         this.playlistId = playlistId
         if (playlistId == null) {
-            // No need to populate, it's a new task
-            isNewPlaylist = true
             return
         }
         if (isDataLoaded) {
             // No need to populate, already have data.
             return
         }
-
-        isNewPlaylist = false
         _dataLoading.value = true
 
         viewModelScope.launch {
@@ -86,8 +74,7 @@ class AddEditPlaylistViewModel(
     }
 
     private fun onPlaylistLoaded(playlist: Playlist) {
-        currentTitle.postValue(playlist.title)
-        currentDescription.postValue(playlist.description)
+        _playlist.postValue(playlist)
 
         _dataLoading.value = false
         isDataLoaded = true
@@ -97,37 +84,9 @@ class AddEditPlaylistViewModel(
         _dataLoading.value = false
     }
 
-    // Called when clicking on fab.
-    fun savePlaylist() {
 
-        val playlist = Playlist(playlistId)
-        playlist.title = currentTitle.value
-        playlist.description = currentDescription.value
+    fun editPlaylist() {
 
-        if (playlist.checkValid) {
-            _snackbarText.value = Event(R.string.empty_playlist_message)
-            return
-        }
 
-        if (playlist.isNewObject) {
-            createPlaylist(playlist)
-        } else {
-            updatePlaylist(playlist)
-        }
-    }
-
-    private fun createPlaylist(playlist: Playlist) = viewModelScope.launch {
-        dataSource.savePlaylist(playlist)
-        _taskUpdatedEvent.value = Event(Unit)
-    }
-
-    private fun updatePlaylist(playlist: Playlist) {
-        if (isNewPlaylist) {
-            throw RuntimeException("updateTask() was called but task is new.")
-        }
-        viewModelScope.launch {
-            dataSource.savePlaylist(playlist)
-            _taskUpdatedEvent.value = Event(Unit)
-        }
     }
 }

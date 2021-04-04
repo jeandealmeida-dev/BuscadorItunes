@@ -1,10 +1,14 @@
 package com.jeanpaulo.buscador_itunes.view.activity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.ContextMenu
+import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
@@ -62,6 +66,16 @@ class MusicActivity : AppCompatActivity(),
         fab = findViewById(R.id.fab)
     }
 
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        //Removed super.onCreateContextMenu to work with context on fragment
+        //REF: https://stackoverflow.com/questions/20825118/inappropriate-context-menu-within-a-fragment
+    }
+
+
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(R.id.nav_host_fragment).navigateUp(appBarConfiguration) ||
                 super.onSupportNavigateUp()
@@ -72,16 +86,6 @@ class MusicActivity : AppCompatActivity(),
             .apply {
                 setStatusBarBackground(R.color.colorPrimaryDark)
             }
-    }
-
-    fun setupListenerFragment(fragment: Fragment?) {
-        if (fragment == null) return
-
-        when (fragment) {
-            is PlaylistFragment -> fragment.listener = this
-            is AddEditPlaylistFragmentListener -> (fragment as AddEditPlaylistFragment).listener = this
-            is SearchFragmentListener -> (fragment as SearchFragment).listener = this
-        }
     }
 
     fun startMusicDetailActivity(view: View, musicId: Long, musicName: String, artworkUrl: String) {
@@ -117,6 +121,13 @@ class MusicActivity : AppCompatActivity(),
         startMusicDetailActivity(view, musicId, musicName, artworkUrl)
     }
 
+    override fun hideKeyboard() {
+        this.currentFocus?.let { view ->
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
+
     override fun setFabListener(listener: () -> Unit) {
         fab.setOnClickListener { listener() }
     }
@@ -134,7 +145,7 @@ class MusicActivity : AppCompatActivity(),
     }
 
     override fun setTitle(title: String?) {
-        TODO("Not yet implemented")
+        supportActionBar?.title = title
     }
 
 }

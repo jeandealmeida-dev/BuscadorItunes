@@ -2,6 +2,7 @@ package com.jeanpaulo.buscador_itunes.datasource.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.jeanpaulo.buscador_itunes.datasource.local.entity.PlaylistEntity
 import com.jeanpaulo.buscador_itunes.model.Music
 import com.jeanpaulo.buscador_itunes.model.Playlist
 
@@ -16,7 +17,7 @@ interface PlaylistDao {
      */
     @Transaction
     @Query("SELECT * FROM Playlist")
-    suspend fun getPlaylists(): List<Playlist>
+    suspend fun getPlaylists(): List<PlaylistEntity>
 
     /**
      * Select a task by id.
@@ -26,7 +27,7 @@ interface PlaylistDao {
      */
     @Transaction
     @Query("SELECT * FROM Playlist WHERE playlistId = :playlistId")
-    suspend fun getPlaylistById(playlistId: String): Playlist?
+    suspend fun getPlaylistById(playlistId: String): PlaylistEntity?
 
 
     /**
@@ -35,7 +36,7 @@ interface PlaylistDao {
      * @param task the task to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPlaylist(playlist: Playlist)
+    suspend fun insertPlaylist(playlist: PlaylistEntity)
 
     /**
      * Update a task.
@@ -44,7 +45,7 @@ interface PlaylistDao {
      * @return the number of tasks updated. This should always be 1.
      */
     @Update
-    suspend fun updatePlaylist(playlist: Playlist): Int
+    suspend fun updatePlaylist(playlist: PlaylistEntity): Int
 
     /**
      * Update the complete status of a task
@@ -62,7 +63,7 @@ interface PlaylistDao {
      * @return the number of tasks deleted. This should always be 1.
      */
     @Query("DELETE FROM Playlist WHERE playlistId = :playlistId")
-    suspend fun deletePlaylistById(playlistId: Long): Int
+    suspend fun deletePlaylistById(playlistId: String): Int
 
     /**
      * Delete all tasks.

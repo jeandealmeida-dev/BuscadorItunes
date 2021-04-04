@@ -1,9 +1,8 @@
-package com.jeanpaulo.buscador_itunes.view.fragment.add_edit_playlist
+package com.jeanpaulo.buscador_itunes.view.playlist.detail
 
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -11,7 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.jeanpaulo.buscador_itunes.R
 import com.jeanpaulo.buscador_itunes.databinding.FragAddPlaylistBinding
-import com.jeanpaulo.buscador_itunes.model.Playlist
+import com.jeanpaulo.buscador_itunes.databinding.FragPlaylistDetailBinding
 import com.jeanpaulo.buscador_itunes.util.EventObserver
 import com.jeanpaulo.buscador_itunes.util.getViewModelFactory
 import com.jeanpaulo.buscador_itunes.util.setupRefreshLayout
@@ -19,18 +18,17 @@ import com.jeanpaulo.buscador_itunes.util.setupSnackbar
 import com.jeanpaulo.buscador_itunes.view.FragmentListener
 import com.jeanpaulo.buscador_itunes.view.activity.ADD_EDIT_RESULT_OK
 import com.jeanpaulo.buscador_itunes.view.fragment.MusicFragmentArgs
-import io.reactivex.disposables.Disposable
 import java.lang.ClassCastException
 
-class AddEditPlaylistFragment : Fragment() {
+class DetailPlaylistFragment : Fragment() {
 
-    private lateinit var viewDataBinding: FragAddPlaylistBinding
+    private lateinit var viewDataBinding: FragPlaylistDetailBinding
 
-    private val args: AddEditPlaylistFragmentArgs by navArgs()
+    private val args: DetailPlaylistFragmentArgs by navArgs()
 
-    private val viewModel by viewModels<AddEditPlaylistViewModel> { getViewModelFactory() }
+    private val viewModel by viewModels<DetailPlaylistViewModel> { getViewModelFactory() }
 
-    lateinit var listener: AddEditPlaylistFragmentListener
+    lateinit var listener: DetailPlaylistFragmentListener
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +36,7 @@ class AddEditPlaylistFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.frag_add_playlist, container, false)
-        viewDataBinding = FragAddPlaylistBinding.bind(root).apply {
+        viewDataBinding = FragPlaylistDetailBinding.bind(root).apply {
             this.viewmodel = viewModel
         }
         // Set the lifecycle owner to the lifecycle of the view
@@ -49,9 +47,8 @@ class AddEditPlaylistFragment : Fragment() {
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        listener.hideKeyboard()
         when (item.itemId) {
-            R.id.action_save -> viewModel.savePlaylist()
+            R.id.action_save -> viewModel.editPlaylist()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -69,7 +66,7 @@ class AddEditPlaylistFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            listener = context as AddEditPlaylistFragmentListener
+            listener = context as DetailPlaylistFragmentListener
         } catch (e: ClassCastException) {
             throw ClassCastException("${context.toString()} must implement AddEditPlaylistFragmentListener")
         }
@@ -89,13 +86,13 @@ class AddEditPlaylistFragment : Fragment() {
     }
 
     private fun setupNavigation() {
-        viewModel.playlistUpdatedEvent.observe(viewLifecycleOwner, EventObserver {
+        /*viewModel.playlistUpdatedEvent.observe(viewLifecycleOwner, EventObserver {
             val action =
                 AddEditPlaylistFragmentDirections.actionAddEditPlaylistFragmentToPlaylistFragment(
                     ADD_EDIT_RESULT_OK
                 )
             findNavController().navigate(action)
-        })
+        })*/
     }
 
     private fun setupFab() {
@@ -103,6 +100,6 @@ class AddEditPlaylistFragment : Fragment() {
     }
 }
 
-interface AddEditPlaylistFragmentListener : FragmentListener {
-    fun hideKeyboard()
+interface DetailPlaylistFragmentListener : FragmentListener {
+
 }

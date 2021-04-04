@@ -2,7 +2,7 @@ package com.jeanpaulo.buscador_itunes
 
 import android.app.Application
 import android.content.res.Configuration
-import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
+import com.jeanpaulo.buscador_itunes.datasource.IDataSource
 import com.jeanpaulo.buscador_itunes.datasource.ServiceLocator
 
 class CustomApplication : Application() {
@@ -11,7 +11,7 @@ class CustomApplication : Application() {
     // Overriding this method is totally optional!
 
     // Depends on the flavor,
-    val musicRepository: MusicDataSource
+    val musicRepository: IDataSource
         get() = ServiceLocator.provideMusicRepository(this)
 
     override fun onCreate() {

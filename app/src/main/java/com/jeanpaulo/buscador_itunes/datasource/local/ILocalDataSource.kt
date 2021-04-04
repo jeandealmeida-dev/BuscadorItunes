@@ -8,7 +8,7 @@ import com.jeanpaulo.buscador_itunes.model.util.Result
 /**
  * Interface to the data layer.
  */
-interface MusicLocalDataSource {
+interface ILocalDataSource {
 
     fun observeMusics(): LiveData<Result<List<Music>>>
 
@@ -43,4 +43,6 @@ interface MusicLocalDataSource {
     suspend fun getPlaylist(playlistId: String): Result<Playlist>
 
     suspend fun savePlaylist(playlist: Playlist): Result<Boolean>
+
+    suspend fun deletePlaylist(playlistId: String): Result<Boolean>
 }

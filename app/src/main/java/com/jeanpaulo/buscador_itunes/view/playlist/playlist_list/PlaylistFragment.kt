@@ -3,15 +3,13 @@ package com.jeanpaulo.buscador_itunes.view.fragment.playlist_list
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.widget.AdapterView.AdapterContextMenuInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.Transformations
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.jeanpaulo.buscador_itunes.R
 import com.jeanpaulo.buscador_itunes.databinding.FragPlaylistBinding
@@ -19,9 +17,7 @@ import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
 import com.jeanpaulo.buscador_itunes.model.Playlist
 import com.jeanpaulo.buscador_itunes.util.*
 import com.jeanpaulo.buscador_itunes.view.FragmentListener
-import com.jeanpaulo.buscador_itunes.view.fragment.add_edit_playlist.AddEditPlaylistFragmentListener
 import timber.log.Timber
-import java.lang.ClassCastException
 
 
 /**
@@ -43,11 +39,20 @@ class PlaylistFragment : Fragment() {
             viewmodel = viewModel
         }
         setHasOptionsMenu(true)
-
         return viewBinding.root
     }
 
     //MENU FUNCTIONS
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val playlist = listAdapter.getItemSelected()
+
+        when (item.itemId) {
+            R.id.context_action_edit -> playlist.playlistId?.let { editPlaylist(it) }
+            R.id.context_action_delete -> playlist.playlistId?.let { deletePlaylist(it) }
+        }
+        return super.onContextItemSelected(item)
+    }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         else -> super.onOptionsItemSelected(item)
@@ -127,28 +132,44 @@ class PlaylistFragment : Fragment() {
 
     private fun setupNavigation() {
 
-        /*viewModel.openPlaylistEvent.observe(this, EventObserver {
+        viewModel.openPlaylistEvent.observe(viewLifecycleOwner, EventObserver {
             openPlaylist(it)
         })
 
-        viewModel.newPlaylistEvent.observe(this, EventObserver {
+        viewModel.newPlaylistEvent.observe(viewLifecycleOwner, EventObserver {
             navigateToAddNewPlaylist()
-        })*/
+        })
     }
 
     private fun navigateToAddNewPlaylist() {
-        /*val action = MusicFragmentDirections
-            .actionTasksFragmentToAddEditTaskFragment(
+        val action = PlaylistFragmentDirections
+            .actionPlaylistFragmentToAddEditPlaylistFragment(
                 null,
                 resources.getString(R.string.add_playlist)
             )
-        findNavController().navigate(action)*/
+        findNavController().navigate(action)
     }
 
     private fun openPlaylist(playlistId: String) {
-        /*val action = PlaylistFragmentDirections
-            .actionTasksFragmentToTaskDetailFragment(playlistId)
-        findNavController().navigate(action)*/
+        val action = PlaylistFragmentDirections
+            .actionPlaylistFragmentToAddEditPlaylistFragment(
+                playlistId,
+                resources.getString(R.string.detail_playlist_title)
+            )
+        findNavController().navigate(action)
+    }
+
+    private fun editPlaylist(playlistId: String) {
+        val action = PlaylistFragmentDirections
+            .actionPlaylistFragmentToAddEditPlaylistFragment(
+                playlistId,
+                resources.getString(R.string.detail_playlist_title)
+            )
+        findNavController().navigate(action)
+    }
+
+    private fun deletePlaylist(playlistId: String) {
+        viewModel.deletePlaylist(playlistId)
     }
 
     private lateinit var listAdapter: PlaylistListAdapter
@@ -159,7 +180,7 @@ class PlaylistFragment : Fragment() {
 
             listAdapter =
                 PlaylistListAdapter {
-                    navigateToAddNewPlaylist()
+                    openPlaylist(it.playlistId!!)
                 }
             viewBinding.playlistList.layoutManager =
                 CustomLinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -174,7 +195,7 @@ class PlaylistFragment : Fragment() {
                 DividerItemDecoration.VERTICAL
             )
 
-            viewBinding.playlistList.addItemDecoration(itemDecorator);
+            viewBinding.playlistList.addItemDecoration(itemDecorator)
 
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")

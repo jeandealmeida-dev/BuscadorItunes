@@ -5,7 +5,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.jeanpaulo.buscador_itunes.model.Music
 import com.jeanpaulo.buscador_itunes.model.util.NetworkState
-import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
+import com.jeanpaulo.buscador_itunes.datasource.IDataSource
 import com.jeanpaulo.buscador_itunes.util.params.SearchParams
 import com.jeanpaulo.buscador_itunes.datasource.remote.paged_seach.PagedSearchDataSourceFactory
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
@@ -13,7 +13,7 @@ import com.jeanpaulo.buscador_itunes.util.Event
 
 
 class SearchViewModel(
-    private val dataSource: MusicDataSource,
+    private val dataSource: IDataSource,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 

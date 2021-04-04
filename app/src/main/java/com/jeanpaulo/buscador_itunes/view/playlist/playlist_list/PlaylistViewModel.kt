@@ -1,7 +1,7 @@
 package com.jeanpaulo.buscador_itunes.view.fragment.playlist_list
 
 import androidx.lifecycle.*
-import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
+import com.jeanpaulo.buscador_itunes.datasource.IDataSource
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
 import com.jeanpaulo.buscador_itunes.model.Playlist
 import com.jeanpaulo.buscador_itunes.model.util.NetworkState
@@ -12,7 +12,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class PlaylistViewModel(
-    private val dataSource: MusicDataSource,
+    private val dataSource: IDataSource,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -25,8 +25,33 @@ class PlaylistViewModel(
     private val _newPlaylistEvent = MutableLiveData<Event<Unit>>()
     val newPlaylistEvent: LiveData<Event<Unit>> = _newPlaylistEvent
 
-    fun searchPlaylist(){
+    private val _deletePlaylistEvent = MutableLiveData<Event<Unit>>()
+    val deletePlaylistEvent: LiveData<Event<Unit>> = _deletePlaylistEvent
+
+    fun searchPlaylist() {
         getPlaylistList()
+    }
+
+    fun deletePlaylist(playlistId: String) {
+        _deletePlaylist(playlistId)
+        getPlaylistList()
+    }
+
+    private fun _deletePlaylist(playlistId: String) {
+        GlobalScope.launch {
+            setNetworkState(NetworkState.LOADING)
+
+            //delay para dar tempo de carregar toda a animacao
+            delay(200L)
+
+            val response = dataSource.deletePlaylist(playlistId)
+            if (response is Result.Success) {
+                val music = response.data
+                setNetworkState(NetworkState.DONE)
+            } else {
+                setNetworkState(NetworkState.ERROR)
+            }
+        }
     }
 
     private fun getPlaylistList() {
@@ -86,7 +111,7 @@ class PlaylistViewModel(
     ) { state ->
         when (state) {
             NetworkState.LOADING -> {
-                MutableLiveData<Boolean>(true)
+                MutableLiveData<Boolean>(false)
             }
 
             NetworkState.DONE -> {

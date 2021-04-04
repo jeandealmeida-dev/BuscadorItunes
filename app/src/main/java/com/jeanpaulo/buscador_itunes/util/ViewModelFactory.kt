@@ -20,18 +20,19 @@ import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
-import com.jeanpaulo.buscador_itunes.datasource.MusicDataSource
+import com.jeanpaulo.buscador_itunes.datasource.IDataSource
 import com.jeanpaulo.buscador_itunes.view.fragment.add_edit_playlist.AddEditPlaylistViewModel
 import com.jeanpaulo.buscador_itunes.view.fragment.playlist_list.PlaylistViewModel
 import com.jeanpaulo.buscador_itunes.view.music.music_search.music_detail.MusicDetailViewModel
 import com.jeanpaulo.buscador_itunes.view.music.music_search.SearchViewModel
+import com.jeanpaulo.buscador_itunes.view.playlist.detail.DetailPlaylistViewModel
 
 /**
  * Factory for all ViewModels.
  */
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory constructor(
-    private val dataSource: MusicDataSource,
+    private val dataSource: IDataSource,
     owner: SavedStateRegistryOwner,
     defaultArgs: Bundle? = null
 ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
@@ -59,6 +60,10 @@ class ViewModelFactory constructor(
                 )
             isAssignableFrom(AddEditPlaylistViewModel::class.java) ->
                 AddEditPlaylistViewModel(
+                    dataSource
+                )
+            isAssignableFrom(DetailPlaylistViewModel::class.java) ->
+                DetailPlaylistViewModel(
                     dataSource
                 )
             else ->

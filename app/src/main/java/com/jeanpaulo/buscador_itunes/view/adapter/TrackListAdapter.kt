@@ -5,12 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jeanpaulo.buscador_itunes.R
-import com.jeanpaulo.buscador_itunes.model.Track
+import com.jeanpaulo.buscador_itunes.model._Track
 import kotlinx.android.synthetic.main.item_track.view.*
 
 class TrackListAdapter(
-    private val tracks: List<Track>,
-    private val listener: (Track) -> Unit
+    private val tracks: List<_Track>,
+    private val listener: (_Track) -> Unit
 ) : RecyclerView.Adapter<TrackListAdapter.TrackViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -25,7 +25,7 @@ class TrackListAdapter(
 
     class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(track: Track, listener: (Track) -> Unit) = with(itemView) {
+        fun bind(track: _Track, listener: (_Track) -> Unit) = with(itemView) {
             txt_track_name.text = track.name
             setOnClickListener { listener(track) }
         }

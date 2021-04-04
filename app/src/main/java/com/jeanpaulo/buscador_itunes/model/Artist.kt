@@ -1,21 +1,21 @@
 package com.jeanpaulo.buscador_itunes.model
 
-import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
-import com.squareup.moshi.Json
-import java.util.*
+class Artist() {
 
-data class Artist(
-    @ColumnInfo(name = "artistId") val artistId: Long?,
-    @ColumnInfo(name = "artistName") val name: String?,
-    @ColumnInfo(name = "country") val country: String?,
-    @ColumnInfo(name = "primaryGenreName") val primaryGenreName: String?
-) {
-
-    @PrimaryKey
-    var id: Long
-
-    init {
-        id = UUID.randomUUID().leastSignificantBits
+    constructor(
+        artistId: Long?,
+        name: String?,
+        country: String?,
+        primaryGenreName: String?
+    ) : this() {
+        this.artistId = artistId
+        this.name = name
+        this.country = country
+        this.primaryGenreName = primaryGenreName
     }
+
+    var artistId: Long? = null
+    var name: String? = null
+    var country: String? = null
+    var primaryGenreName: String? = null
 }

@@ -71,7 +71,7 @@ class MusicDetailFragment : Fragment() {
         try {
             listener = context as MusicDetailFragmentListener
         } catch (e: ClassCastException) {
-            throw ClassCastException("${context.toString()} must implement MusicDetailFragmentListener")
+            throw ClassCastException("${context} must implement MusicDetailFragmentListener")
         }
     }
 
