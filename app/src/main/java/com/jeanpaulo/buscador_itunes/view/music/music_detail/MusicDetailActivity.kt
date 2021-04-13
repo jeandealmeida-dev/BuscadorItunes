@@ -9,9 +9,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.CheckBox
+import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.widget.NestedScrollView
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.palette.graphics.Palette
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.BaseOnOffsetChangedListener
@@ -96,28 +100,41 @@ class MusicDetailActivity : AppCompatActivity(), MusicDetailFragmentListener {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_music_detail, menu)
         collapsedMenu = menu
+        val menuItem: MenuItem = collapsedMenu.findItem(R.id.action_favorite)
+
+        favoriteChecked?.let {
+            menuItem.isChecked = favoriteChecked!!
+            menuItem.setIcon(if (favoriteChecked!!) R.drawable.ic_star_white_24dp else R.drawable.ic_star_border_white_24dp)
+        }
+        favoriteVisible?.let { menuItem.setVisible(favoriteVisible!!) }
         return true
     }
 
+    //*** LEGACY CODE FOR EXAMPLE
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         if (collapsedMenu != null
             && (!appBarExpanded || collapsedMenu.size() != 1)
         ) {
             //collapsed
-            collapsedMenu.add("Preview")
-                .setIcon(android.R.drawable.ic_media_play)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+            //collapsedMenu.add("Preview")
+            //    .setIcon(android.R.drawable.ic_media_play)
+            //    .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
         } else {
             //expanded
         }
         return super.onPrepareOptionsMenu(collapsedMenu)
     }
 
+    lateinit var favoriteAction: () -> Unit
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
                 return true
+            }
+            R.id.action_favorite -> {
+                favoriteAction()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -133,6 +150,20 @@ class MusicDetailActivity : AppCompatActivity(), MusicDetailFragmentListener {
     //FUNCTIONS CALLED BY FRAGMENT LISTENER
 
     override fun getTrackIdParameter() = intent.getLongExtra(MUSIC_ID_PARAM, 0L)
+
+    override fun setFavoriteListener(listener: () -> Unit) {
+        favoriteAction = listener
+    }
+
+
+    var favoriteChecked: Boolean? = null
+    var favoriteVisible: Boolean? = null
+    override fun setFavoriteMenuOptions(checked: Boolean, visible: Boolean) {
+        favoriteChecked = checked
+        favoriteVisible = visible
+        invalidateOptionsMenu()
+    }
+
     override fun setTitle(title: String?) {
         collapseToolbar.title = title
     }

@@ -15,10 +15,8 @@ import com.jeanpaulo.buscador_itunes.util.MyMediaPlayer
 import com.jeanpaulo.buscador_itunes.util.getViewModelFactory
 import com.jeanpaulo.buscador_itunes.util.setupSnackbar
 import com.jeanpaulo.buscador_itunes.view.FragmentListener
-import com.jeanpaulo.buscador_itunes.view.adapter.TrackListAdapter
 import com.jeanpaulo.buscador_itunes.view.music.music_search.music_detail.MusicDetailViewModel
 import kotlinx.android.synthetic.main.frag_music_detail.*
-import timber.log.Timber
 import java.lang.ClassCastException
 
 
@@ -60,9 +58,9 @@ class MusicDetailFragment : Fragment() {
         // Set the lifecycle owner to the lifecycle of the view
         viewBinding.lifecycleOwner = this.viewLifecycleOwner
         setupSnackbar()
-        setupListAdapter()
         //setupRefreshLayout(viewBinding.refreshLayout, viewBinding.musicList)
         setupNavigation()
+        setupMenuActions()
         initState()
     }
 
@@ -109,6 +107,10 @@ class MusicDetailFragment : Fragment() {
         viewBinding.txtError.setOnClickListener {
             viewModel.refresh()
         }
+
+        viewModel.isOnFavorited.observe(viewLifecycleOwner, Observer {
+            listener.setFavoriteMenuOptions(checked = it!!, visible = true)
+        })
     }
 
     private fun showException(exception: DataSourceException): String {
@@ -151,32 +153,9 @@ class MusicDetailFragment : Fragment() {
         }
     }
 
-    private lateinit var trackListAdapter: TrackListAdapter
-
-    private fun setupListAdapter() {
-        val viewModel = viewBinding.viewmodel
-        if (viewModel != null) {
-
-            /*trackListAdapter = TrackListAdapter(viewModel) {
-                //openMusicDetail(it)
-            }
-            viewBinding.musicList.layoutManager =
-                CustomLinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-            viewBinding.musicList.adapter = trackListAdapter
-
-            /*val itemDecorator =
-                DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-            ContextCompat.getDrawable(this, R.drawable.divider)?.let { itemDecorator.setDrawable(it) }*/
-
-            val itemDecorator = DividerItemDecoration(
-                requireContext(),
-                DividerItemDecoration.VERTICAL
-            )
-
-            viewBinding.musicList.addItemDecoration(itemDecorator);*/
-
-        } else {
-            Timber.w("ViewModel not initialized when attempting to set up adapter.")
+    fun setupMenuActions() {
+        listener.setFavoriteListener {
+            viewModel.favoriteChanged()
         }
     }
 
@@ -201,4 +180,7 @@ class MusicDetailFragment : Fragment() {
 
 interface MusicDetailFragmentListener : FragmentListener {
     fun getTrackIdParameter(): Long
+    fun setFavoriteListener(listener: () -> Unit)
+
+    fun setFavoriteMenuOptions(checked: Boolean, visible: Boolean)
 }

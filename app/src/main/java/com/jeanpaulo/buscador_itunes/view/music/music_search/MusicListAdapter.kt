@@ -79,7 +79,7 @@ class MusicListAdapter(
                 binding.music = music
                 Picasso.get().load(music.artworkUrl).into(itemView.img_artwork)
 
-                if (music.ds_trackId != null)
+                if (music.id != null)
                     itemView.setOnClickListener { listener(binding.root, music) }
             }
         }

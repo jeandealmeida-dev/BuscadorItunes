@@ -1,83 +1,45 @@
 package com.jeanpaulo.buscador_itunes.datasource.local.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.jeanpaulo.buscador_itunes.datasource.local.entity.PlaylistEntity
-import com.jeanpaulo.buscador_itunes.model.Music
-import com.jeanpaulo.buscador_itunes.model.Playlist
 
 @Dao
 interface PlaylistDao {
 
+    //C
 
-    /**
-     * Select all tasks from the tasks table.
-     *
-     * @return all tasks.
-     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPlaylist(playlist: PlaylistEntity): kotlin.Long
+
+    //R
+
+    @Transaction
+    @Query("SELECT * FROM Playlist WHERE title NOT LIKE :filter")
+    suspend fun getPlaylistsFiltered(filter: String): List<PlaylistEntity>
+
     @Transaction
     @Query("SELECT * FROM Playlist")
     suspend fun getPlaylists(): List<PlaylistEntity>
 
-    /**
-     * Select a task by id.
-     *
-     * @param taskId the task id.
-     * @return the task with taskId.
-     */
     @Transaction
     @Query("SELECT * FROM Playlist WHERE playlistId = :playlistId")
-    suspend fun getPlaylistById(playlistId: String): PlaylistEntity?
+    suspend fun getPlaylistById(playlistId: Long): PlaylistEntity?
 
+    @Transaction
+    @Query("SELECT * FROM Playlist WHERE title LIKE :playlistTitle")
+    suspend fun getPlaylistByTitle(playlistTitle: String): List<PlaylistEntity?>?
 
-    /**
-     * Insert a task in the database. If the task already exists, replace it.
-     *
-     * @param task the task to be inserted.
-     */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPlaylist(playlist: PlaylistEntity)
+    //U
 
-    /**
-     * Update a task.
-     *
-     * @param task task to be updated
-     * @return the number of tasks updated. This should always be 1.
-     */
     @Update
     suspend fun updatePlaylist(playlist: PlaylistEntity): Int
 
-    /**
-     * Update the complete status of a task
-     *
-     * @param taskId id of the task
-     * @param completed status to be updated
+    //D
 
-    @Query("UPDATE Music SET completed = :completed WHERE entryid = :taskId")
-    suspend fun updateCompleted(taskId: String, completed: Boolean)
-     */
-
-    /**
-     * Delete a task by id.
-     *
-     * @return the number of tasks deleted. This should always be 1.
-     */
     @Query("DELETE FROM Playlist WHERE playlistId = :playlistId")
-    suspend fun deletePlaylistById(playlistId: String): Int
+    suspend fun deletePlaylistById(playlistId: kotlin.Long): Int
 
-    /**
-     * Delete all tasks.
-     */
     @Query("DELETE FROM Playlist")
     suspend fun deletePlaylists()
-
-    /**
-     * Delete all completed tasks from the table.
-     *
-     * @return the number of tasks deleted.
-
-    @Query("DELETE FROM Music WHERE completed = 1")
-    suspend fun deleteCompletedMusics(): Int
-     */
 
 }

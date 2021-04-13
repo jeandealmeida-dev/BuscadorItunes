@@ -4,11 +4,11 @@ import com.jeanpaulo.buscador_itunes.datasource.local.entity.PlaylistEntity
 
 class Playlist() {
 
-    constructor(playlistId: String?) : this() {
+    constructor(playlistId: Long?) : this() {
         this.playlistId = playlistId
     }
 
-    var playlistId: String? = null
+    var playlistId: Long? = null
     var title: String? = null
     var description: String? = null
 

@@ -1,6 +1,5 @@
 package com.jeanpaulo.buscador_itunes.datasource.local
 
-import androidx.lifecycle.LiveData
 import com.jeanpaulo.buscador_itunes.model.Music
 import com.jeanpaulo.buscador_itunes.model.Playlist
 import com.jeanpaulo.buscador_itunes.model.util.Result
@@ -10,39 +9,42 @@ import com.jeanpaulo.buscador_itunes.model.util.Result
  */
 interface ILocalDataSource {
 
-    fun observeMusics(): LiveData<Result<List<Music>>>
+    //C
+
+    suspend fun saveMusic(music: Music) : Result<Long>
+
+    suspend fun savePlaylist(playlist: Playlist): Result<Long>
+
+    suspend fun saveMusicInPlaylist(music: Music, playlistId: Long): Result<Long>
+
+    suspend fun saveMusicInFavorites(music: Music): Result<Long>
+
+    //R
+
+    suspend fun getMusic(musicId: Long): Result<Music>
 
     suspend fun getMusics(): Result<List<Music>>
 
-    suspend fun refreshMusics()
+    suspend fun getPlaylist(playlistId: Long): Result<Playlist>
 
-    fun observeMusic(musicId: Long): LiveData<Result<Music>>?
+    suspend fun getPlaylistsFiltered(): Result<List<Playlist>>
 
-    suspend fun getMusic(musicId: Long): Result<Music>?
+    suspend fun getListMusicInPlaylist(playlistId: Long): Result<List<Music>>
 
-    suspend fun refreshMusic(musicId: Long)
+    suspend fun getFavoriteMusics(): Result<List<Music>>
 
-    suspend fun saveMusic(music: Music)
+    suspend fun getMusicInPlaylist(musicId: Long, playlistId: Long): Result<Music>
 
-    suspend fun completeMusic(music: Music)
+    suspend fun isOnFavoritedPlaylist(dsTrackid: Long): Result<Boolean>
 
-    suspend fun completeMusic(musicId: Long)
+    //U
 
-    suspend fun activateMusic(music: Music)
+    //D
 
-    suspend fun activateMusic(musicId: Long)
+    suspend fun deletePlaylist(playlistId: Long): Result<Boolean>
 
-    suspend fun clearCompletedMusics()
+    suspend fun removeMusicFromPlaylist(musicId: Long, playlistId: Long): Result<Boolean>
 
-    suspend fun deleteAllMusics()
+    suspend fun removeMusicFromFavorites(musicId: Long): Result<Boolean>
 
-    suspend fun deleteMusic(musicId: Long)
-
-    suspend fun getPlaylists(): Result<List<Playlist>>
-
-    suspend fun getPlaylist(playlistId: String): Result<Playlist>
-
-    suspend fun savePlaylist(playlist: Playlist): Result<Boolean>
-
-    suspend fun deletePlaylist(playlistId: String): Result<Boolean>
 }

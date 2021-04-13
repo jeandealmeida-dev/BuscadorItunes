@@ -232,7 +232,7 @@ class SearchFragment : Fragment() {
                 MusicListAdapter(
                     viewModel
                 ) { view, it ->
-                    openMusicDetail(view, it.ds_trackId!!, it.name!!, it.artworkUrl!!)
+                    openMusicDetail(view, it.id!!, it.name!!, it.artworkUrl!!)
                 }
             viewBinding.musicList.layoutManager =
                 CustomLinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)

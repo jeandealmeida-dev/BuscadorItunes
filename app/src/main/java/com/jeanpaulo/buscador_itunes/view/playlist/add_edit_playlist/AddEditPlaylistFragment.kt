@@ -81,7 +81,8 @@ class AddEditPlaylistFragment : Fragment() {
         setupFab()
         setupNavigation()
         this.setupRefreshLayout(viewDataBinding.refreshLayout)
-        viewModel.start(args.playlistId)
+        val playlistId: Long? = args.playlistId?.toLong()
+        viewModel.start(playlistId)
     }
 
     private fun setupSnackbar() {

@@ -28,6 +28,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.jeanpaulo.buscador_itunes.view.FragmentListener
+import com.jeanpaulo.buscador_itunes.view.favorite.FavoriteFragment
+import com.jeanpaulo.buscador_itunes.view.favorite.FavoriteFragmentListener
 import com.jeanpaulo.buscador_itunes.view.fragment.add_edit_playlist.AddEditPlaylistFragment
 import com.jeanpaulo.buscador_itunes.view.fragment.add_edit_playlist.AddEditPlaylistFragmentListener
 import com.jeanpaulo.buscador_itunes.view.fragment.playlist_list.PlaylistFragment
@@ -41,7 +43,8 @@ import kotlinx.android.synthetic.main.activity_music_detail.*
 class MusicActivity : AppCompatActivity(),
     PlaylistFragmentListener,
     AddEditPlaylistFragmentListener,
-    SearchFragmentListener {
+    SearchFragmentListener,
+    FavoriteFragmentListener {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration

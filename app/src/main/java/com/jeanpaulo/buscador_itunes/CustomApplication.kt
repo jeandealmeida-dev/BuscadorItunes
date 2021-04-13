@@ -2,6 +2,7 @@ package com.jeanpaulo.buscador_itunes
 
 import android.app.Application
 import android.content.res.Configuration
+import com.facebook.stetho.Stetho
 import com.jeanpaulo.buscador_itunes.datasource.IDataSource
 import com.jeanpaulo.buscador_itunes.datasource.ServiceLocator
 
@@ -17,6 +18,7 @@ class CustomApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        Stetho.initializeWithDefaults(this)
         //DEBUG CODE
         if (BuildConfig.DEBUG) {
             //Timber.plant(Timber.DebugTree());

@@ -5,11 +5,11 @@ import com.jeanpaulo.buscador_itunes.model.Playlist
 import java.text.SimpleDateFormat
 import java.util.*
 
-@Entity(tableName = "Playlist")
+@Entity(tableName = "playlist")
 class PlaylistEntity(
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "description") val description: String?,
-    @PrimaryKey val playlistId: String = UUID.randomUUID().toString()
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "playlistId") var playlistId: Long = 0
 ) {
     fun toModel(): Playlist {
         return Playlist().let {
