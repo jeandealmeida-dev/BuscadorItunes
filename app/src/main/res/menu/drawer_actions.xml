@@ -18,14 +18,14 @@
 
     <item
         android:id="@id/search_fragment_dest"
-        android:icon="@android:drawable/ic_media_play"
+        android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/menu_search_music" />
     <item
         android:id="@id/playlist_fragment_dest"
-        android:icon="@android:drawable/ic_media_play"
+        android:icon="@drawable/ic_playlist_white_24dp"
         android:title="@string/menu_playlist" />
-    <!--<item
-        android:id="@id/statistics_fragment_dest"
-        android:icon="@android:drawable/ic_media_ff"
-        android:title="@string/menu_fav_music" /> -->
+    <item
+        android:id="@id/favorite_fragment_dest"
+        android:icon="@drawable/ic_star_white_24dp"
+        android:title="@string/menu_fav_music" />
 </menu>

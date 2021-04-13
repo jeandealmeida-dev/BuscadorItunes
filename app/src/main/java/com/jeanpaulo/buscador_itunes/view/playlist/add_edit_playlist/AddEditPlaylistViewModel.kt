@@ -49,13 +49,13 @@ class AddEditPlaylistViewModel(
     private val _taskUpdatedEvent = MutableLiveData<Event<Unit>>()
     val playlistUpdatedEvent: LiveData<Event<Unit>> = _taskUpdatedEvent
 
-    private var playlistId: String? = null
+    private var playlistId: Long? = null
 
     private var isNewPlaylist: Boolean = false
 
     private var isDataLoaded = false
 
-    fun start(playlistId: String?) {
+    fun start(playlistId: Long?) {
         if (_dataLoading.value == true) {
             return
         }
@@ -117,7 +117,8 @@ class AddEditPlaylistViewModel(
     }
 
     private fun createPlaylist(playlist: Playlist) = viewModelScope.launch {
-        dataSource.savePlaylist(playlist)
+        val result: Result<Long> = dataSource.savePlaylist(playlist)
+        val playlistId = (result is Result.Success)?.let { (result as Result.Success).data }
         _taskUpdatedEvent.value = Event(Unit)
     }
 

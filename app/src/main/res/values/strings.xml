@@ -32,4 +32,6 @@
 
     <string name="empty_playlist_message">Sua playlist precisa de pelo menos um nome!</string>
     <string name="action_edit">Editar</string>
+    <string name="action_remove_favorite">Remover</string>
+    <string name="action_favorite">Favorito</string>
 </resources>

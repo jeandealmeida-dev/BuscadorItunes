@@ -1,7 +1,8 @@
 package com.jeanpaulo.buscador_itunes.model
 
-class Artist() {
+import com.jeanpaulo.buscador_itunes.datasource.local.entity.ArtistEntity
 
+class Artist() {
     constructor(
         artistId: Long?,
         name: String?,
@@ -18,4 +19,6 @@ class Artist() {
     var name: String? = null
     var country: String? = null
     var primaryGenreName: String? = null
+
+    fun toEntity(): ArtistEntity = ArtistEntity(artistId!!, name, country, primaryGenreName)
 }

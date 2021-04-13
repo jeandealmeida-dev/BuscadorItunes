@@ -53,7 +53,10 @@ object ServiceLocator {
             )
         return LocalDataSource(
             database.musicDao(),
-            database.playlistDao()
+            database.playlistDao(),
+            database.artistDao(),
+            database.collectionDao(),
+            database.playlistMusicJoinDao()
         )
     }
 

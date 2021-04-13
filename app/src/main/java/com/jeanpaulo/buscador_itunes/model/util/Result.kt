@@ -19,6 +19,8 @@ sealed class Result<out R> {
             Loading -> "Loading"
         }
     }
+
+    val isSuccessful = this is Result.Success
 }
 
 /**

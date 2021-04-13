@@ -1,18 +1,26 @@
 package com.jeanpaulo.buscador_itunes.datasource.local.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
-import com.jeanpaulo.buscador_itunes.model.Artist
+import androidx.room.*
+import com.jeanpaulo.buscador_itunes.model.BaseModel
 import com.jeanpaulo.buscador_itunes.model.Music
-import com.jeanpaulo.buscador_itunes.model._Collection
-import java.text.SimpleDateFormat
 import java.util.*
 
-@Entity(tableName = "Music")
+@Entity(
+    tableName = "music",
+    foreignKeys = [
+        ForeignKey(
+            entity = CollectionEntity::class,
+            parentColumns = ["collectionId"],
+            childColumns = ["collectionId"]
+        ),
+        ForeignKey(
+            entity = ArtistEntity::class,
+            parentColumns = ["artistId"],
+            childColumns = ["artistId"]
+        )
+    ]
+)
 class MusicEntity(
-    @ColumnInfo(name = "trackId") val ds_trackId: Long?,
     @ColumnInfo(name = "name") val name: String?,
 
     @ColumnInfo(name = "artworkUrl") val artworkUrl: String?,
@@ -22,23 +30,36 @@ class MusicEntity(
     @ColumnInfo(name = "trackTimeMillis") val trackTimeMillis: Long?,
     @ColumnInfo(name = "previewUrl") val previewUrl: String?,
 
-    @PrimaryKey val musicId: String = UUID.randomUUID().toString()
+    @PrimaryKey @ColumnInfo(name = "musicId") var musicId: Long?
 ) {
 
-    fun toModel(): Music = Music(musicId).let {
+    @Ignore
+    var collection: CollectionEntity? = null
+    @ColumnInfo(name = "collectionId")
+    var collectionId: Long? = null
 
-        it.name = name
-        it.ds_trackId = ds_trackId
+    @Ignore
+    var artist: ArtistEntity? = null
+    @ColumnInfo(name = "artistId")
+    var artistId: Long? = null
 
-        it.artworkUrl = artworkUrl
-        it.previewUrl = previewUrl
+    fun toModel(): Music = Music(musicId).let { music ->
 
-        it.isStreamable = isStreamable
-        it.trackTimeMillis = trackTimeMillis
+        music.name = name
 
-        it.releaseDate = releaseDate
+        music.artworkUrl = artworkUrl
+        music.previewUrl = previewUrl
 
-        it
+        music.isStreamable = isStreamable
+        music.trackTimeMillis = trackTimeMillis
+
+        music.releaseDate = releaseDate
+
+        music.origin = BaseModel.Origin.LOCAL
+
+        artist?.let { music.artist = it.toModel() }
+        collection?.let { music.collection = it.toModel() }
+
+        music
     }
-
 }

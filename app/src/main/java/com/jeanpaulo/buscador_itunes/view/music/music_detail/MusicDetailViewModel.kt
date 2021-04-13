@@ -3,6 +3,7 @@ package com.jeanpaulo.buscador_itunes.view.music.music_search.music_detail
 import androidx.lifecycle.*
 import com.jeanpaulo.buscador_itunes.datasource.IDataSource
 import com.jeanpaulo.buscador_itunes.datasource.remote.util.DataSourceException
+import com.jeanpaulo.buscador_itunes.model.BaseModel
 import com.jeanpaulo.buscador_itunes.model.Music
 import com.jeanpaulo.buscador_itunes.model.util.NetworkState
 import com.jeanpaulo.buscador_itunes.model.util.Result
@@ -34,6 +35,9 @@ class MusicDetailViewModel(
         return savedStateHandle.get(MUSIC_ID_PARAM)
     }
 
+    var _isOnFavorited = MutableLiveData<Boolean>()
+    val isOnFavorited = _isOnFavorited
+
     private fun getMusicDetail(musicId: Long) {
         GlobalScope.launch {
             setNetworkState(NetworkState.LOADING)
@@ -48,6 +52,50 @@ class MusicDetailViewModel(
                 setNetworkState(NetworkState.DONE)
             } else {
                 setNetworkState(NetworkState.ERROR)
+            }
+
+            _isOnFavorited.postValue(
+                try {
+                    val result = dataSource.isOnFavoritedPlaylist(musicId)
+                    if (result.isSuccessful) (result as Result.Success).data else false
+                } catch (e: Exception) {
+                    Result.Error(
+                        DataSourceException(
+                            DataSourceException.Error.UNKNOWN_EXCEPTION,
+                            e.toString()
+                        )
+                    )
+                    false
+                }
+
+            )
+
+        }
+    }
+
+    private fun favorite() {
+        GlobalScope.launch {
+            isOnFavorited.value?.let {
+
+                val music = _music.value!!
+                if (music.origin == BaseModel.Origin.REMOTE) {
+                    val response = dataSource.saveMusic(music)
+                    if (response.isSuccessful) music.origin = BaseModel.Origin.LOCAL
+                    _music.postValue(music)
+                }
+
+                if (it) {
+                    val response = dataSource.removeMusicFromFavorites(music.id!!)
+                    if (response.isSuccessful) {
+                        _isOnFavorited.postValue(!it)
+                    }
+                } else {
+                    val response = dataSource.saveMusicInFavorites(music)
+                    if (response.isSuccessful) {
+                        _isOnFavorited.postValue(!it)
+                    }
+
+                }
             }
         }
     }
@@ -78,6 +126,10 @@ class MusicDetailViewModel(
         searchMusic()
     }
 
+    fun favoriteChanged() {
+        favorite()
+    }
+
     //SETUP NETWORKSTATE
 
     private var _errorLoading: MutableLiveData<DataSourceException?> =
@@ -100,7 +152,7 @@ class MusicDetailViewModel(
             }
 
             NetworkState.ERROR -> {
-                _errorLoading.postValue(state.exception)
+                _errorLoading.postValue(state.exception!!)
                 MutableLiveData<Boolean>(false)
             }
         }

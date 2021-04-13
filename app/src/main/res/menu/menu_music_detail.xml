@@ -3,8 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.music.music_search.music_detail.MusicDetailActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_favorite"
+        android:checkable="true"
+        android:icon="@drawable/check_favorite"
         android:orderInCategory="100"
+        android:title="@string/action_favorite"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="200"
         android:title="@string/action_settings"
+        android:visible="false"
         app:showAsAction="never" />
 </menu>

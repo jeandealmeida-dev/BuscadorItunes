@@ -20,7 +20,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jeanpaulo.buscador_itunes.R
 import com.jeanpaulo.buscador_itunes.datasource.IDataSource
 import com.jeanpaulo.buscador_itunes.model.Playlist
 import com.jeanpaulo.buscador_itunes.model.util.Result
@@ -43,11 +42,11 @@ class DetailPlaylistViewModel(
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 
-    private var playlistId: String? = null
+    private var playlistId: Long? = null
 
     private var isDataLoaded = false
 
-    fun start(playlistId: String?) {
+    fun start(playlistId: Long?) {
         if (_dataLoading.value == true) {
             return
         }

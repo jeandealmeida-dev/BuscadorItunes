@@ -1,15 +1,18 @@
 package com.jeanpaulo.buscador_itunes.model
 
+import com.jeanpaulo.buscador_itunes.datasource.local.entity.ArtistEntity
+import com.jeanpaulo.buscador_itunes.datasource.local.entity.CollectionEntity
 import com.jeanpaulo.buscador_itunes.datasource.local.entity.MusicEntity
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Music() {
+class Music() : BaseModel() {
 
-    constructor(trackId: String?) : this() {
-        this.trackId = trackId
+    constructor(trackId: Long?) : this() {
+        this.id = trackId
     }
 
+    //CALLED BY REMOTE MUSICJSON
     constructor(
         ds_trackId: Long?,
         trackName: String?,
@@ -18,18 +21,18 @@ class Music() {
         streamable: Boolean?,
         trackTimeMillis: Long?,
         previewUrl: String?
-    ) : this(null) { //Called By MusicJson (so it doesnt have Id)
+    ) : this(ds_trackId) { //Called By MusicJson (so it doesnt have Id)
         this.name = trackName
-        this.ds_trackId = ds_trackId
         this.artworkUrl = artworkUrl
         this.releaseDate = releaseDate
         this.isStreamable = streamable
         this.trackTimeMillis = trackTimeMillis
         this.previewUrl = previewUrl
+
+        this.origin = Origin.REMOTE
     }
 
-    var trackId: String? = null
-    var ds_trackId: Long? = null
+    var id: Long? = null
     var name: String? = null
     var artworkUrl: String? = null
     var releaseDate: Date? = null
@@ -37,32 +40,24 @@ class Music() {
     var trackTimeMillis: Long? = null
     var previewUrl: String? = null
 
-    var collection: _Collection? = null
+    var collection: Collection? = null
     var artist: Artist? = null
 
+    override lateinit var origin: Origin
+
     override fun equals(other: Any?): Boolean {
-        return if (other is MusicEntity) ds_trackId == other.ds_trackId else false
+        return if (other is MusicEntity) id == other.musicId else false
     }
 
-    fun toEntity(): MusicEntity =
-        if (trackId != null) MusicEntity(
-            ds_trackId,
-            name,
-            artworkUrl,
-            releaseDate,
-            isStreamable,
-            trackTimeMillis,
-            previewUrl,
-            trackId!!
-        ) else MusicEntity(
-            ds_trackId,
-            name,
-            artworkUrl,
-            releaseDate,
-            isStreamable,
-            trackTimeMillis,
-            previewUrl
-        )
+    fun toEntity(): MusicEntity = MusicEntity(
+        name,
+        artworkUrl,
+        releaseDate,
+        isStreamable,
+        trackTimeMillis,
+        previewUrl,
+        id!!
+    )
 
     val formatedReleaseDate: String
         get() = if (releaseDate != null) SimpleDateFormat("yyyy").format(releaseDate) else "-"

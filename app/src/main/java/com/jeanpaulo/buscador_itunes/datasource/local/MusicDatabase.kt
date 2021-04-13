@@ -19,12 +19,9 @@ package com.jeanpaulo.buscador_itunes.datasource.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.jeanpaulo.buscador_itunes.datasource.local.dao.MusicDao
-import com.jeanpaulo.buscador_itunes.datasource.local.dao.PlaylistDao
+import com.jeanpaulo.buscador_itunes.datasource.local.dao.*
 import com.jeanpaulo.buscador_itunes.datasource.local.entity.*
 import com.jeanpaulo.buscador_itunes.datasource.local.util.DateConverter
-import com.jeanpaulo.buscador_itunes.model.Music
-import com.jeanpaulo.buscador_itunes.model.Playlist
 
 /**
  * The Room Database that contains the Task table.
@@ -32,7 +29,7 @@ import com.jeanpaulo.buscador_itunes.model.Playlist
  * Note that exportSchema should be true in production databases.
  */
 @Database(
-    entities = [MusicEntity::class, ArtistEntity::class, PlaylistEntity::class],
+    entities = [MusicEntity::class, ArtistEntity::class, CollectionEntity::class, PlaylistEntity::class, PlaylistMusicJoin::class],
     version = 1,
     exportSchema = false
 )
@@ -44,4 +41,10 @@ abstract class MusicDatabase : RoomDatabase() {
     abstract fun musicDao(): MusicDao
 
     abstract fun playlistDao(): PlaylistDao
+
+    abstract fun artistDao(): ArtistDao
+
+    abstract fun collectionDao(): CollectionDao
+
+    abstract fun playlistMusicJoinDao(): PlaylistWithMusicDao
 }

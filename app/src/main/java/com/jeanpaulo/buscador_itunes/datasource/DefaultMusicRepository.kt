@@ -1,6 +1,5 @@
 package com.jeanpaulo.buscador_itunes.datasource
 
-import androidx.lifecycle.LiveData
 import com.jeanpaulo.buscador_itunes.model.Music
 import kotlinx.coroutines.*
 import com.jeanpaulo.buscador_itunes.model.util.Result
@@ -23,20 +22,7 @@ class DefaultMusicRepository(
 
     private var log: org.slf4j.Logger = LoggerFactory.getLogger(DefaultMusicRepository::class.java)
 
-    /*override suspend fun getMusics(forceUpdate: Boolean): Result<List<Music>> {
-        // Set app as busy while this function executes.
-        wrapEspressoIdlingResource {
-
-            if (forceUpdate) {
-                try {
-                    updateMusicsFromRemoteDataSource()
-                } catch (ex: Exception) {
-                    return Result.Error(ex)
-                }
-            }
-            return musicLocalDataSource.getMusics()
-        }
-    }*/
+    //REMOTE
 
     override suspend fun searchMusic(
         term: String,
@@ -88,11 +74,18 @@ class DefaultMusicRepository(
 
     }
 
-    override suspend fun lookup(term: Long, mediaType: String): Result<Music> {
+    override suspend fun lookup(musicId: Long, mediaType: String): Result<Music> {
         return withContext(ioDispatcher) {
             try {
+
+                //TRY TO GET ON  ** LOCAL DATABASE **  FIRST
+                val localQuery = local.getMusic(musicId)
+                if (localQuery.isSuccessful)
+                    return@withContext localQuery
+
+                //IF I DIDNT WORK TRY TO GET ** REMOTE DATABASE **
                 val response =
-                    remote.lookUp(term, mediaType)
+                    remote.lookUp(musicId, mediaType)
                         .also {
                             log.info("RESPONSE ->", it)
                         }
@@ -134,120 +127,126 @@ class DefaultMusicRepository(
 
     }
 
+    //LOCAL
 
-    override fun observeMusics(): LiveData<Result<List<Music>>> {
-        return local.observeMusics()
+    //C
+
+    override suspend fun saveMusic(music: Music): Result<Long> {
+        return withContext(ioDispatcher) {
+            try {
+                local.saveMusic(music)
+            } catch (e: java.lang.Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
+                )
+            }
+        }
+    }
+
+    override suspend fun savePlaylist(playlist: Playlist): Result<Long> {
+        return withContext(ioDispatcher) {
+            try {
+                local.savePlaylist(playlist)
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
+                )
+            }
+        }
+    }
+
+    override suspend fun saveMusicInPlaylist(
+        music: Music,
+        playlistId: Long
+    ): Result<Long> {
+        return withContext(ioDispatcher) {
+            try {
+                local.saveMusicInPlaylist(music, playlistId)
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
+                )
+            }
+        }
+    }
+
+    override suspend fun saveMusicInFavorites(music: Music): Result<Long> {
+        return withContext(ioDispatcher) {
+            try {
+                local.saveMusicInFavorites(music)
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
+                )
+            }
+        }
+    }
+
+    //R
+
+    override suspend fun getMusic(musicId: Long): Result<Music> {
+        return withContext(ioDispatcher) {
+            try {
+                local.getMusic(musicId)
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
+                )
+            }
+        }
     }
 
     override suspend fun getMusics(): Result<List<Music>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun refreshMusics() {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun refreshMusic(musicId: Long) {
-        updateMusicFromRemoteDataSource(musicId)
-    }
-
-    private suspend fun updateMusicsFromRemoteDataSource() {
-        /*val remoteMusics = musicRemoteDataSource.getMusics()
-
-        if (remoteMusics is Result.Success) {
-            // Real apps might want to do a proper sync, deleting, modifying or adding each music.
-            musicLocalDataSource.deleteAllMusics()
-            remoteMusics.data.forEach { music ->
-                musicLocalDataSource.saveMusic(music)
-            }
-        } else if (remoteMusics is Result.Error) {
-            throw remoteMusics.exception
-        }*/
-    }
-
-    override fun observeMusic(musicId: Long): LiveData<Result<Music>>? {
-        return local.observeMusic(musicId)
-    }
-
-    override suspend fun getMusic(musicId: Long): Result<Music>? {
-        return null
-    }
-
-    private suspend fun updateMusicFromRemoteDataSource(musicId: Long) {
-        /*val remoteMusic = musicRemoteDataSource.getMusic(musicId)
-
-        if (remoteMusic is Result.Success) {
-            musicLocalDataSource.saveMusic(remoteMusic.data)
-        }*/
-    }
-
-
-    override suspend fun saveMusic(music: Music) {
-        coroutineScope {
-            //launch { musicRemoteDataSource.saveMusic(music) }
-            launch { local.saveMusic(music) }
-        }
-    }
-
-    override suspend fun completeMusic(music: Music) {
-        coroutineScope {
-            //launch { musicRemoteDataSource.completeMusic(music) }
-            launch { local.completeMusic(music) }
-        }
-    }
-
-    override suspend fun completeMusic(musicId: Long) {
-        withContext(ioDispatcher) {
-            (getMusicWithId(musicId) as? Result.Success)?.let { it ->
-                completeMusic(it.data)
+        return withContext(ioDispatcher) {
+            try {
+                local.getMusics()
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
+                )
             }
         }
     }
 
-    override suspend fun activateMusic(music: Music) =
-        withContext<Unit>(ioDispatcher) {
-            coroutineScope {
-                //launch { musicRemoteDataSource.activateMusic(music) }
-                launch { local.activateMusic(music) }
-            }
-        }
-
-    override suspend fun activateMusic(musicId: Long) {
-        withContext(ioDispatcher) {
-            (getMusicWithId(musicId) as? Result.Success)?.let { it ->
-                activateMusic(it.data)
-            }
-        }
-    }
-
-    override suspend fun clearCompletedMusics() {
-        coroutineScope {
-            //launch { musicRemoteDataSource.clearCompletedMusics() }
-            launch { local.clearCompletedMusics() }
-        }
-    }
-
-    override suspend fun deleteAllMusics() {
-        withContext(ioDispatcher) {
-            coroutineScope {
-                //launch { musicRemoteDataSource.deleteAllMusics() }
-                launch { local.deleteAllMusics() }
+    override suspend fun getPlaylist(playlistId: Long): Result<Playlist> {
+        return withContext(ioDispatcher) {
+            try {
+                local.getPlaylist(playlistId)
+                //Result.Error(DataSourceException(Err(result as Result.Error).exception.toString()))
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
+                )
             }
         }
     }
 
-    override suspend fun deleteMusic(musicId: Long) {
-        coroutineScope {
-            //launch { musicRemoteDataSource.deleteMusic(musicId) }
-            launch { local.deleteMusic(musicId) }
-        }
-    }
-
-    override suspend fun getPlaylists(): Result<List<Playlist>> {
+    override suspend fun getPlaylistsFiltered(): Result<List<Playlist>> {
         return withContext(ioDispatcher) {
             try {
                 val response =
-                    local.getPlaylists()
+                    local.getPlaylistsFiltered()
                         .also {
                             log.info("RESPONSE ->", it)
                         }
@@ -286,50 +285,122 @@ class DefaultMusicRepository(
         }
     }
 
-    override suspend fun getPlaylist(playlistId: String): Result<Playlist> {
-        return try {
-            local.getPlaylist(playlistId)
-            //Result.Error(DataSourceException(Err(result as Result.Error).exception.toString()))
-        } catch (e: Exception) {
-            Result.Error(
-                DataSourceException(
-                    DataSourceException.Error.UNKNOWN_EXCEPTION,
-                    e.toString()
+    override suspend fun getListMusicInPlaylist(playlistId: Long): Result<List<Music>> {
+        return withContext(ioDispatcher) {
+            try {
+                local.getListMusicInPlaylist(playlistId)
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
                 )
-            )
+            }
         }
     }
 
-    override suspend fun savePlaylist(playlist: Playlist): Result<Boolean> {
-        return try {
-            local.savePlaylist(playlist)
-            Result.Success(true)
-        } catch (e: Exception) {
-            Result.Error(
-                DataSourceException(
-                    DataSourceException.Error.UNKNOWN_EXCEPTION,
-                    e.toString()
+    override suspend fun getFavoriteMusics(): Result<List<Music>> {
+        return withContext(ioDispatcher) {
+            try {
+                local.getFavoriteMusics()
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
                 )
-            )
-        }
-
-    }
-
-    override suspend fun deletePlaylist(playlistId: String): Result<Boolean> {
-        return try {
-            local.deletePlaylist(playlistId)
-            Result.Success(true)
-        } catch (e: Exception) {
-            Result.Error(
-                DataSourceException(
-                    DataSourceException.Error.UNKNOWN_EXCEPTION,
-                    e.toString()
-                )
-            )
+            }
         }
     }
 
-    private suspend fun getMusicWithId(id: Long): Result<Music>? {
-        return local.getMusic(id)
+    override suspend fun getMusicInPlaylist(musicId: Long, playlistId: Long): Result<Music> {
+        return withContext(ioDispatcher) {
+            try {
+                local.getMusicInPlaylist(musicId, playlistId)
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
+                )
+            }
+        }
     }
+
+    override suspend fun isOnFavoritedPlaylist(dsTrackid: Long): Result<Boolean> {
+        return withContext(ioDispatcher) {
+            try {
+                local.isOnFavoritedPlaylist(dsTrackid)
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
+                )
+            }
+        }
+    }
+
+
+    //U
+
+    //D
+
+    override suspend fun deletePlaylist(playlistId: Long): Result<Boolean> {
+        return withContext(ioDispatcher) {
+            try {
+                local.deletePlaylist(playlistId)
+                Result.Success(true)
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
+                )
+            }
+        }
+    }
+
+
+    override suspend fun removeMusicFromPlaylist(
+        musicId: Long,
+        playlistId: Long
+    ): Result<Boolean> {
+        return withContext(ioDispatcher) {
+            try {
+                local.deletePlaylist(playlistId)
+                Result.Success(true)
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
+                )
+            }
+        }
+    }
+
+
+    override suspend fun removeMusicFromFavorites(musicId: Long): Result<Boolean> {
+        return withContext(ioDispatcher) {
+            try {
+                local.removeMusicFromFavorites(musicId)
+            } catch (e: Exception) {
+                Result.Error(
+                    DataSourceException(
+                        DataSourceException.Error.UNKNOWN_EXCEPTION,
+                        e.toString()
+                    )
+                )
+            }
+        }
+    }
+
+
 }

@@ -22,9 +22,14 @@
         android:id="@+id/search_fragment_dest"
         android:name="com.jeanpaulo.buscador_itunes.view.music.music_search.SearchFragment"
         android:label="@string/app_name">
+
         <action
             android:id="@+id/action_searchFragment_to_playlistFragment"
             app:destination="@id/playlist_fragment_dest" />
+
+        <action
+            android:id="@+id/action_searchFragment_to_favoriteFragment"
+            app:destination="@id/favorite_fragment_dest" />
 
         <!--<action
             android:id="@+id/action_tasksFragment_to_taskDetailFragment"
@@ -90,12 +95,26 @@
 
     </fragment>
 
+    <!-- **** DETAIL PLAYLIST FRAGMENTS **** -->
+    <fragment
+        android:id="@+id/favorite_fragment_dest"
+        android:name="com.jeanpaulo.buscador_itunes.view.favorite.FavoriteFragment"
+        android:label="@string/menu_fav_music">
+
+        <action
+            android:id="@+id/action_favoriteFragment_to_searchFragment"
+            app:destination="@id/search_fragment_dest" />
+
+    </fragment>
+
+
     <!-- **** ADD OR EDIT PLAYLIST FRAGMENTS **** -->
     <fragment
         android:id="@+id/add_edit_playlist_fragment_dest"
         android:name="com.jeanpaulo.buscador_itunes.view.fragment.add_edit_playlist.AddEditPlaylistFragment"
         android:label="{title}">
 
+        <!-- https://stackoverflow.com/questions/50934760/is-it-possible-to-send-arguments-other-than-string-or-integer-in-androids-new-n -->
         <argument
             android:name="playlistId"
             app:argType="string"

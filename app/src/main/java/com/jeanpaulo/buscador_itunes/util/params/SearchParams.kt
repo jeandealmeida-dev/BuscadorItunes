@@ -6,5 +6,6 @@ class SearchParams {
         const val INIT_SEARCH_TERM = "Nirvana"
         const val MUSIC_MEDIA_TYPE = "musicTrack"
         const val SONG_MEDIA_TYPE = "song"
+        const val FAV_PLAYLIST_ID = "##fav##"
     }
 }

@@ -78,7 +78,8 @@ class DetailPlaylistFragment : Fragment() {
         setupFab()
         setupNavigation()
         this.setupRefreshLayout(viewDataBinding.refreshLayout)
-        viewModel.start(args.playlistId)
+        val playlistId = args.playlistId?.toLong()
+        viewModel.start(playlistId)
     }
 
     private fun setupSnackbar() {

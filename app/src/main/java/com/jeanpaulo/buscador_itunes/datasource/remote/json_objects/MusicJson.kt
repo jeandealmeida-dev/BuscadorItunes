@@ -1,7 +1,7 @@
 package com.jeanpaulo.buscador_itunes.datasource.remote.json_objects
 
 import com.jeanpaulo.buscador_itunes.model.Artist
-import com.jeanpaulo.buscador_itunes.model._Collection
+import com.jeanpaulo.buscador_itunes.model.Collection
 import com.jeanpaulo.buscador_itunes.model.Music
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -29,7 +29,8 @@ data class MusicJson(
 ) {
 
     fun convert(): Music {
-        val collection = _Collection(collectionId, collectionName, trackCount = trackCount)
+        val collection =
+            Collection(collectionId, collectionName)
         val artist = Artist(artistId, artistName, country, primaryGenreName)
         val music = Music(ds_trackId, trackName, artworkUrl, releaseDate, isStreamable, trackTimeMillis, previewUrl)
 

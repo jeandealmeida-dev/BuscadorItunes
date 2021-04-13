@@ -6,6 +6,4 @@ import com.jeanpaulo.buscador_itunes.datasource.remote.MusicRemoteDataSource
 /**
  * Interface to the data layer.
  */
-interface IDataSource : MusicRemoteDataSource, ILocalDataSource{
-
-}
+interface IDataSource : MusicRemoteDataSource, ILocalDataSource
