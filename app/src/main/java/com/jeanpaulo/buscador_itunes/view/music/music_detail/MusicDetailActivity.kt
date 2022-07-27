@@ -111,7 +111,7 @@ class MusicDetailActivity : AppCompatActivity(), MusicDetailFragmentListener {
     }
 
     //*** LEGACY CODE FOR EXAMPLE
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         if (collapsedMenu != null
             && (!appBarExpanded || collapsedMenu.size() != 1)
         ) {
