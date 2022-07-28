@@ -11,7 +11,7 @@
 
         <variable
             name="music"
-            type="com.jeanpaulo.buscador_itunes.model.Music" />
+            type="com.jeanpaulo.buscador_itunes.music.domain.model.Music" />
 
         <variable
             name="viewmodel"

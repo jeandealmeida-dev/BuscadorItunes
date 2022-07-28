@@ -6,11 +6,11 @@
 
         <variable
             name="music"
-            type="com.jeanpaulo.buscador_itunes.model.Music" />
+            type="com.jeanpaulo.buscador_itunes.music.domain.model.Music" />
 
         <variable
             name="viewmodel"
-            type="com.jeanpaulo.buscador_itunes.view.music.music_search.SearchViewModel" />
+            type="com.jeanpaulo.buscador_itunes.music._music_search.SearchViewModel" />
     </data>
 
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"

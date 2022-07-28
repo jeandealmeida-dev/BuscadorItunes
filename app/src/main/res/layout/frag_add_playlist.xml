@@ -27,7 +27,7 @@
 
         <variable
             name="playlist"
-            type="com.jeanpaulo.buscador_itunes.model.Playlist" />
+            type="com.jeanpaulo.buscador_itunes.music.domain.model.Playlist" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
