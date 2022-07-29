@@ -1,16 +1,16 @@
-package com.jeanpaulo.buscador_itunes.favorite
+package com.jeanpaulo.buscador_itunes.favorite.data
 
-import com.jeanpaulo.buscador_itunes.music.data.local.dao.ArtistDao
-import com.jeanpaulo.buscador_itunes.music.data.local.dao.CollectionDao
 import com.jeanpaulo.buscador_itunes.util.DataSourceException
-import com.jeanpaulo.buscador_itunes.music.domain.model.Music
-import com.jeanpaulo.buscador_itunes.music.domain.model.Playlist
-import com.jeanpaulo.buscador_itunes.music.domain.model.util.Result
-import com.jeanpaulo.buscador_itunes.playlist.data.PlaylistMusicJoin
-import com.jeanpaulo.buscador_itunes.playlist.data.dao.PlaylistDao
-import com.jeanpaulo.buscador_itunes.playlist.data.dao.PlaylistWithMusicDao
-import com.jeanpaulo.buscador_itunes.playlist.data.entity.PlaylistEntity
+import com.jeanpaulo.buscador_itunes.music.mvvm.data.local.dao.ArtistDao
+import com.jeanpaulo.buscador_itunes.music.mvvm.data.local.dao.CollectionDao
+import com.jeanpaulo.buscador_itunes.music.mvvm.domain.model.Music
+import com.jeanpaulo.buscador_itunes.music.mvvm.domain.model.Playlist
+import com.jeanpaulo.buscador_itunes.playlist.mvvm.data.PlaylistMusicJoin
+import com.jeanpaulo.buscador_itunes.playlist.mvvm.data.dao.PlaylistDao
+import com.jeanpaulo.buscador_itunes.playlist.mvvm.data.dao.PlaylistWithMusicDao
+import com.jeanpaulo.buscador_itunes.playlist.mvvm.data.entity.PlaylistEntity
 import com.jeanpaulo.buscador_itunes.util.params.SearchParams
+import com.jeanpaulo.buscador_itunes.music.mvvm.domain.model.util.Result
 
 interface FavoriteRepository {
     suspend fun isOnFavoritedPlaylist(dsTrackid: Long): Result<Boolean>

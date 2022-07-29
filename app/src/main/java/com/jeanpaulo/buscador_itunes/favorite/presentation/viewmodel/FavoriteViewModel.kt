@@ -1,11 +1,11 @@
 package com.jeanpaulo.buscador_itunes.favorite.presentation.viewmodel
 
 import androidx.lifecycle.*
-import com.jeanpaulo.buscador_itunes.datasource.IDataSource
+import com.jeanpaulo.buscador_itunes.music.mvvm.domain.IDataSource
+import com.jeanpaulo.buscador_itunes.music.mvvm.domain.model.Music
+import com.jeanpaulo.buscador_itunes.music.mvvm.domain.model.util.NetworkState
 import com.jeanpaulo.buscador_itunes.util.DataSourceException
-import com.jeanpaulo.buscador_itunes.music.domain.model.Music
-import com.jeanpaulo.buscador_itunes.music.domain.model.util.NetworkState
-import com.jeanpaulo.buscador_itunes.music.domain.model.util.Result
+import com.jeanpaulo.buscador_itunes.music.mvvm.domain.model.util.Result
 import com.jeanpaulo.buscador_itunes.util.Event
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay

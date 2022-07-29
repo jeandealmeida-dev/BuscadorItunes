@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".view.music.music_search.music_detail.MusicDetailActivity"
+            android:name=".music.music_detail.MusicDetailActivity"
             android:label="@string/title_activity_music_detail"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -31,12 +31,12 @@
         </activity>
 
         <activity
-            android:name=".music.presentation.MusicActivity"
+            android:name=".music.mvvm.presentation.MusicActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name=".music.presentation.view.MainActivity"
+            android:name=".music.mvvm.presentation.view.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

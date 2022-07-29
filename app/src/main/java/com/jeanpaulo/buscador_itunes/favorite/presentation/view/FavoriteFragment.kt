@@ -12,10 +12,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.jeanpaulo.buscador_itunes.R
 import com.jeanpaulo.buscador_itunes.databinding.FragFavoriteBinding
 import com.jeanpaulo.buscador_itunes.util.DataSourceException
-import com.jeanpaulo.buscador_itunes.music.domain.model.Music
 import com.jeanpaulo.buscador_itunes.util.*
 import com.jeanpaulo.buscador_itunes.util.FragmentListener
 import com.jeanpaulo.buscador_itunes.favorite.presentation.viewmodel.FavoriteViewModel
+import com.jeanpaulo.buscador_itunes.music.mvvm.domain.model.Music
 import timber.log.Timber
 
 
@@ -47,7 +47,7 @@ class FavoriteFragment : Fragment() {
         val music = listAdapter.getItemSelected()
 
         when (item.itemId) {
-            R.id.context_action_remove_fav -> music.id?.let { removeMusicFromFavorite(it) }
+            R.id.context_action_remove_fav -> music.id?.let { it -> removeMusicFromFavorite(it) }
         }
         return super.onContextItemSelected(item)
     }

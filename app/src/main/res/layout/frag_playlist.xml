@@ -10,7 +10,7 @@
 
         <variable
             name="viewmodel"
-            type="com.jeanpaulo.buscador_itunes.view.fragment.playlist_list.PlaylistViewModel" />
+            type="com.jeanpaulo.buscador_itunes.playlist.playlist_list.PlaylistViewModel" />
 
     </data>
 

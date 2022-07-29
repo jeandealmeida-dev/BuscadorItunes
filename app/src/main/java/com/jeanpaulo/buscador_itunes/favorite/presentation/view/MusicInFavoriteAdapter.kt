@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jeanpaulo.buscador_itunes.databinding.ItemMusicBinding
-import com.jeanpaulo.buscador_itunes.music.domain.model.Music
+import com.jeanpaulo.buscador_itunes.music.mvvm.domain.model.Music
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_music.view.*
 
