@@ -3,8 +3,8 @@ package com.jeanpaulo.buscador_itunes
 import android.app.Application
 import android.content.res.Configuration
 import com.facebook.stetho.Stetho
-import com.jeanpaulo.buscador_itunes.datasource.IDataSource
-import com.jeanpaulo.buscador_itunes.datasource.ServiceLocator
+import com.jeanpaulo.buscador_itunes.music.mvvm.domain.IDataSource
+import com.jeanpaulo.buscador_itunes.music.mvvm.domain.ServiceLocator
 
 class CustomApplication : Application() {
 

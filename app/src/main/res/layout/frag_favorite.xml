@@ -24,11 +24,11 @@
 
         <variable
             name="viewmodel"
-            type="com.jeanpaulo.buscador_itunes.view.favorite.FavoriteViewModel" />
+            type="com.jeanpaulo.buscador_itunes.favorite.presentation.viewmodel.FavoriteViewModel" />
 
         <variable
             name="playlist"
-            type="com.jeanpaulo.buscador_itunes.model.Playlist" />
+            type="com.jeanpaulo.buscador_itunes.music.mvvm.domain.model.Playlist" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

@@ -11,11 +11,11 @@
 
         <variable
             name="music"
-            type="com.jeanpaulo.buscador_itunes.model.Music" />
+            type="com.jeanpaulo.buscador_itunes.music.mvvm.domain.model.Music" />
 
         <variable
             name="viewmodel"
-            type="com.jeanpaulo.buscador_itunes.view.music.music_search.music_detail.MusicDetailViewModel" />
+            type="com.jeanpaulo.buscador_itunes.music.music_detail.MusicDetailViewModel" />
 
     </data>
 

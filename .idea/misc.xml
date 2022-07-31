@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/layout/_activity_music.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/activity_music.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/activity_music_detail.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/content_collection.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/content_main.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/frag_add_playlist.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/frag_favorite.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/frag_music_detail.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/frag_music_search.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/frag_playlist.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/frag_playlist_detail.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/item_list_footer.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/item_music.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_playlist.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/item_track.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/nav_header.xml" value="0.12228260869565218" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

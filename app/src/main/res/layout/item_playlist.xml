@@ -8,7 +8,7 @@
 
         <variable
             name="playlist"
-            type="com.jeanpaulo.buscador_itunes.model.Playlist" />
+            type="com.jeanpaulo.buscador_itunes.music.mvvm.domain.model.Playlist" />
 
     </data>
 

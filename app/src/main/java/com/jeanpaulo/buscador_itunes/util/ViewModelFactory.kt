@@ -20,13 +20,13 @@ import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
-import com.jeanpaulo.buscador_itunes.datasource.IDataSource
-import com.jeanpaulo.buscador_itunes.view.favorite.FavoriteViewModel
-import com.jeanpaulo.buscador_itunes.view.fragment.add_edit_playlist.AddEditPlaylistViewModel
-import com.jeanpaulo.buscador_itunes.view.fragment.playlist_list.PlaylistViewModel
-import com.jeanpaulo.buscador_itunes.view.music.music_search.music_detail.MusicDetailViewModel
-import com.jeanpaulo.buscador_itunes.view.music.music_search.SearchViewModel
-import com.jeanpaulo.buscador_itunes.view.playlist.detail.DetailPlaylistViewModel
+import com.jeanpaulo.buscador_itunes.music.mvvm.domain.IDataSource
+import com.jeanpaulo.buscador_itunes.favorite.presentation.viewmodel.FavoriteViewModel
+import com.jeanpaulo.buscador_itunes.playlist.playlist_create.AddEditPlaylistViewModel
+import com.jeanpaulo.buscador_itunes.playlist.playlist_list.PlaylistViewModel
+import com.jeanpaulo.buscador_itunes.music.music_detail.MusicDetailViewModel
+import com.jeanpaulo.buscador_itunes.music.music_search.SearchViewModel
+import com.jeanpaulo.buscador_itunes.playlist.playlist_detail.DetailPlaylistViewModel
 
 /**
  * Factory for all ViewModels.
