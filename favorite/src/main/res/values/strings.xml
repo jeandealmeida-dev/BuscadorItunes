@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_fav_music">Favoritos</string>
+    <string name="action_remove_favorite">Remover</string>
+
+    <string name="loading_music_detail_error">Erro ao carregar detalhes da musica. Por favor tente novamente!</string>
+</resources>

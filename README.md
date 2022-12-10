@@ -20,3 +20,5 @@ Follow examples and guidelines
 SOME REF
 
 https://github.com/android/architecture-components-samples/tree/main/BasicSample
+
+https://medium.com/androiddevelopers/room-rxjava-acb0cd4f3757

@@ -3,26 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/_activity_music.xml" value="0.12228260869565218" />
-        <entry key="app/src/main/res/layout/activity_music.xml" value="0.12228260869565218" />
-        <entry key="app/src/main/res/layout/activity_music_detail.xml" value="0.12228260869565218" />
-        <entry key="app/src/main/res/layout/content_collection.xml" value="0.12228260869565218" />
-        <entry key="app/src/main/res/layout/content_main.xml" value="0.12228260869565218" />
-        <entry key="app/src/main/res/layout/frag_add_playlist.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/frag_favorite.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/frag_music_detail.xml" value="0.12228260869565218" />
-        <entry key="app/src/main/res/layout/frag_music_search.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/frag_playlist.xml" value="0.12228260869565218" />
-        <entry key="app/src/main/res/layout/frag_playlist_detail.xml" value="0.12228260869565218" />
-        <entry key="app/src/main/res/layout/item_list_footer.xml" value="0.12228260869565218" />
-        <entry key="app/src/main/res/layout/item_music.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/item_playlist.xml" value="0.12228260869565218" />
-        <entry key="app/src/main/res/layout/item_track.xml" value="0.12228260869565218" />
-        <entry key="app/src/main/res/layout/nav_header.xml" value="0.12228260869565218" />
+        <entry key="../../../../layout/custom_preview.xml" value="0.1" />
+        <entry key="app/playlist/src/main/res/layout/frag_playlist.xml" value="0.16134751773049646" />
+        <entry key="app/src/main/res/menu/drawer_actions.xml" value="0.17395833333333333" />
+        <entry key="app/src/main/res/menu/menu_context_playlist.xml" value="0.175" />
+        <entry key="commons/src/main/res/layout/item_music.xml" value="0.16134751773049646" />
+        <entry key="favorite/src/main/res/layout/favorite_fragment.xml" value="0.14719202898550723" />
+        <entry key="favorite/src/main/res/menu/menu_context_favorite.xml" value="0.1" />
+        <entry key="playlist/create/src/main/res/menu/menu_playlist_detail.xml" value="0.1" />
+        <entry key="playlist/detail/src/main/res/menu/menu_playlist_detail.xml" value="0.1" />
+        <entry key="playlist/src/main/res/layout/item_playlist.xml" value="0.1" />
+        <entry key="playlist/src/main/res/menu/menu_context_playlist.xml" value="0.1037037037037037" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
