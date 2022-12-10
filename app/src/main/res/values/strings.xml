@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Biblioteca Musical</string>
     <string name="action_settings">Configuracoes</string>
-    <string name="action_delete">Apagar</string>
+
     <string name="action_preview">Previa</string>
     <string name="search_hint">Música, Album ou Artista..</string>
     <string name="title_activity_music_detail">...</string>
@@ -16,14 +16,14 @@
     <!-- NavMenu Descriptions -->
     <string name="menu_search_music">Pesquisar músicas</string>
     <string name="menu_fav_music">Favoritos</string>
+    <string name="menu_playlist">Playlists</string>
     <string name="loading_search_music_error">Erro ao carregar lista de musica. Por favor tente novamente!</string>
-    <string name="loading_music_detail_error">Erro ao carregar detalhes da musica. Por favor tente novamente!</string>
     <string name="no_music_found">Nenhuma música encontrada com esse termo!</string>
     <string name="no_playlist_found">Crie já sua primeira playlist!</string>
     <string name="no_internet_connection">Sem conexao com Internet</string>
     <string name="title_activity_xuxu">XuxuActivity</string>
     <string name="error_not_identified">Ocorreu um erro nao identificado!</string>
-    <string name="menu_playlist">Playlists</string>
+
     <string name="add_playlist">Nova playlist</string>
     <string name="description_hint">Qual é o tema da sua playlist? Conta aí</string>
     <string name="title_hint">Título</string>
@@ -31,7 +31,6 @@
     <string name="action_save">Salvar</string>
 
     <string name="empty_playlist_message">Sua playlist precisa de pelo menos um nome!</string>
-    <string name="action_edit">Editar</string>
-    <string name="action_remove_favorite">Remover</string>
+
     <string name="action_favorite">Favorito</string>
 </resources>

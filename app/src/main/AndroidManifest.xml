@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".CustomApplication"
+        android:name=".app.CustomApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,8 +15,9 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".music.music_detail.MusicDetailActivity"
+            android:name=".app.music_detail.presentation.MusicDetailActivity"
             android:label="@string/title_activity_music_detail"
+            android:exported="true"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -31,12 +32,13 @@
         </activity>
 
         <activity
-            android:name=".music.mvvm.presentation.MusicActivity"
+            android:name="com.jeanpaulo.buscador_itunes.app.music.presentation.MusicActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name=".music.mvvm.presentation.view.MainActivity"
+            android:name=".app.MainActivity"
+            android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

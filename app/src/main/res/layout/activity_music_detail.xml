@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".music.music_detail.MusicDetailActivity">
+    tools:context=".app.music_detail.presentation.MusicDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
@@ -67,7 +67,13 @@
         android:layout_gravity="fill_vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include layout="@layout/content_collection" />
+        <FrameLayout
+            android:id="@+id/fragment"
+            android:name="com.jeanpaulo.buscador_itunes.music.music_detail.presentation.MusicDetailFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:layout="@layout/frag_music_detail" />
 
     </androidx.core.widget.NestedScrollView>
 
