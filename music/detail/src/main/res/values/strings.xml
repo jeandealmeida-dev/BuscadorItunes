@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_activity_music_detail">...</string>
+    <string name="action_settings">Configuracoes</string>
+    <string name="action_favorite">Favorito</string>
+</resources>

@@ -7,4 +7,7 @@ include(
     ":playlist",
     ":playlist:create",
     ":playlist:detail",
+    ":music",
+    ":music:detail",
+    ":search",
 )

@@ -10,6 +10,7 @@ buildscript {
         classpath(Depends.Android.BuildGradle())
         classpath(Depends.Kotlin.GradlePlugin())
         classpath(Depends.AndroidX.Navigation.SafeArgs())
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21")
     }
 }
 

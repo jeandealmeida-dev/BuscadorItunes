@@ -16,9 +16,12 @@
             <option value="$PROJECT_DIR$/commons" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/favorite" />
+            <option value="$PROJECT_DIR$/music" />
+            <option value="$PROJECT_DIR$/music/detail" />
             <option value="$PROJECT_DIR$/playlist" />
             <option value="$PROJECT_DIR$/playlist/create" />
             <option value="$PROJECT_DIR$/playlist/detail" />
+            <option value="$PROJECT_DIR$/search" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

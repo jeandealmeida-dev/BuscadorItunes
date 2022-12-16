@@ -25,10 +25,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
@@ -50,28 +47,4 @@ dependencies {
     androidTestImplementation(Depends.AndroidX.JUnit())
     androidTestImplementation(Depends.AndroidX.Espresso())
 
-    // Android X
-    implementation(Depends.AndroidX.SwipeRefreshLayout())
-    // --> Navigation
-    implementation(Depends.AndroidX.Navigation.Fragment())
-    implementation(Depends.AndroidX.Navigation.UI())
-
-    // Dagger
-    implementation(Depends.Dagger.core())
-    kapt(Depends.Dagger.Compiler())
-    implementation(Depends.Dagger.Android.core())
-    implementation(Depends.Dagger.Android.Support())
-    kapt(Depends.Dagger.Android.Support())
-    kapt(Depends.Dagger.Android.Processor())
-
-    // RxJava
-    implementation(Depends.RxJava3.RxAndroid())
-    implementation(Depends.RxJava3.RxJava())
-    implementation(Depends.RxJava3.RxKotlin())
-
-    // Room
-    implementation(Depends.Room.Runtime())
-    kapt(Depends.Room.Compiler())
-    implementation(Depends.Room.Ktx())
-    implementation(Depends.Room.RxJava3())
 }

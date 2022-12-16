@@ -6,6 +6,9 @@ object Depends {
         const val commons = ":commons"
         const val favorite = ":favorite"
         const val playlist = ":playlist"
+        const val music = ":music"
+        const val search = ":search"
+        const val music_detail = ":music:detail"
         const val playlist_create = ":playlist:create"
         const val playlist_detail = ":playlist:detail"
     }

@@ -52,6 +52,7 @@ dependencies {
 
     // Android X
     implementation(Depends.AndroidX.AppCompat())
+    implementation(Depends.AndroidX.SwipeRefreshLayout())
     // --> Navigation
     implementation(Depends.AndroidX.Navigation.Fragment())
     implementation(Depends.AndroidX.Navigation.UI())
