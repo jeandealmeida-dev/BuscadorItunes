@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_favorite"
+    app:startDestination="@id/favorite_fragment_dest">
+    <fragment
+        android:id="@+id/favorite_fragment_dest"
+        android:name="com.jeanpaulo.musiclibrary.favorite.ui.view.FavoriteFragment"
+        android:label="@string/menu_fav_music">
+    </fragment>
+</navigation>

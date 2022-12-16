@@ -13,6 +13,8 @@
         <entry key="favorite/src/main/res/layout/favorite_fragment.xml" value="0.14719202898550723" />
         <entry key="favorite/src/main/res/layout/frag_favorite.xml" value="0.1" />
         <entry key="favorite/src/main/res/menu/menu_context_favorite.xml" value="0.1" />
+        <entry key="favorite/ui/src/main/res/layout/frag_favorite.xml" value="0.1828774062816616" />
+        <entry key="favorite/ui/src/main/res/menu/menu_context_favorite.xml" value="0.26851851851851855" />
         <entry key="music/detail/src/main/res/drawable/check_favorite.xml" value="0.1515" />
         <entry key="music/detail/src/main/res/drawable/ic_star_border_white_24dp.xml" value="0.1515" />
         <entry key="music/detail/src/main/res/drawable/ic_star_white_24dp.xml" value="0.1515" />
@@ -25,9 +27,16 @@
         <entry key="playlist/detail/src/main/res/menu/menu_playlist_detail.xml" value="0.1" />
         <entry key="playlist/src/main/res/layout/item_playlist.xml" value="0.1" />
         <entry key="playlist/src/main/res/menu/menu_context_playlist.xml" value="0.1037037037037037" />
+        <entry key="playlist/ui/src/main/res/layout/frag_add_playlist.xml" value="0.1828774062816616" />
+        <entry key="playlist/ui/src/main/res/layout/frag_playlist_detail.xml" value="0.1828774062816616" />
+        <entry key="playlist/ui/src/main/res/menu/menu_playlist_detail.xml" value="0.37025641025641026" />
         <entry key="search/src/main/res/layout/frag_music_search.xml" value="0.1" />
         <entry key="search/src/main/res/layout/item_list_footer.xml" value="0.1" />
         <entry key="search/src/main/res/menu/menu_search.xml" value="0.1" />
+        <entry key="search/ui/src/main/res/drawable/ic_search_white_24dp.xml" value="0.125" />
+        <entry key="search/ui/src/main/res/layout/frag_music_search.xml" value="0.1" />
+        <entry key="search/ui/src/main/res/layout/item_list_footer.xml" value="0.1" />
+        <entry key="search/ui/src/main/res/menu/menu_search.xml" value="0.11018518518518519" />
       </map>
     </option>
   </component>

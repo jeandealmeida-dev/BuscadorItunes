@@ -57,20 +57,10 @@ dependencies {
     kapt(Depends.Dagger.Android.Support())
     kapt(Depends.Dagger.Android.Processor())
 
-    // Retrofit
-    implementation(Depends.Retrofit.core())
-    implementation(Depends.Retrofit.Converter.Moshi())
-    implementation(Depends.Retrofit.Adapter.RxJava3())
-    implementation(Depends.Retrofit.Converter.Gson())
-
     // RxJava
     implementation(Depends.RxJava3.RxAndroid())
     implementation(Depends.RxJava3.RxJava())
     implementation(Depends.RxJava3.RxKotlin())
 
-    // Android X
-    implementation(Depends.AndroidX.Paging())
 
-    // Picasso
-    implementation(Depends.Picasso())
 }

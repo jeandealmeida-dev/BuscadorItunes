@@ -32,15 +32,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }
 
 dependencies {
     // Project
-    implementation(project(Depends.Module.playlist_create))
-    implementation(project(Depends.Module.playlist_detail))
+    // → Playlist
+    implementation(project(Depends.Module.UI.playlist))
     implementation(project(Depends.Module.commons))
     implementation(project(Depends.Module.core))
 
@@ -54,7 +54,7 @@ dependencies {
 
     // Android X
     implementation(Depends.AndroidX.SwipeRefreshLayout())
-    // --> Navigation
+    // → Navigation
     implementation(Depends.AndroidX.Navigation.Fragment())
     implementation(Depends.AndroidX.Navigation.UI())
 
