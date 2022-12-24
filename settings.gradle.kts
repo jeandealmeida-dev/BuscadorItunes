@@ -3,21 +3,24 @@ include(
     ":app",
     ":core",
     ":commons",
-    ":favorite",
+
     ":playlist",
     ":playlist:ui",
-    ":playlist:domain",
     ":playlist:data",
+    ":playlist:domain",
+
     ":music",
-    ":music:detail",
+    ":music:ui",
+    ":music:data",
+    ":music:domain",
+
     ":search",
+    ":search:ui",
+    ":search:data",
+    ":search:domain",
+
+    ":favorite",
+    ":favorite:ui",
+    ":favorite:domain",
+    ":favorite:data",
 )
-include(":search:ui")
-include(":search:domain")
-include(":search:data")
-include(":favorite:ui")
-include(":favorite:domain")
-include(":favorite:data")
-include(":music:data")
-include(":music:domain")
-include(":music:ui")

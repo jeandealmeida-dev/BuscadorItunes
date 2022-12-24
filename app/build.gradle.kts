@@ -68,8 +68,11 @@ dependencies {
     implementation(project(Depends.Module.Domain.favorite))
     implementation(project(Depends.Module.Data.favorite))
 
-    //implementation(project(Depends.Module.music_detail))
-    implementation(project(Depends.Module.music))
+    // → Music
+    implementation(project(Depends.Module.UI.music))
+    implementation(project(Depends.Module.Domain.music))
+    implementation(project(Depends.Module.Data.music))
+
     implementation(project(Depends.Module.commons))
     implementation(project(Depends.Module.core))
 

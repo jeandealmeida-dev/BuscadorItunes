@@ -1,5 +1,6 @@
 package com.jeanpaulo.musiclibrary.core.di
 
+import com.jeanpaulo.musiclibrary.core.repository.remote.ItunesService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -54,5 +55,11 @@ abstract class NetworkModule {
                     if (value.contentLength() != 0L) nextResponseBodyConverter.convert(value) else null
             }
         }
+
+        @JvmStatic
+        @Provides
+        fun provideService(retrofit: Retrofit): ItunesService = retrofit.create(
+            ItunesService::class.java
+        )
     }
 }

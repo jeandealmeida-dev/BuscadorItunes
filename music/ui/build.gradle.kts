@@ -1,14 +1,22 @@
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
+    id("kotlin-kapt")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
-    compileSdk = 33
+    compileSdk = Config.compileSdkVersion
+
+    buildFeatures {
+        dataBinding = false
+        viewBinding = true
+    }
 
     defaultConfig {
-        minSdk = 21
-        targetSdk = 33
+        minSdk = Config.minSdkVersion
+        targetSdk = Config.targetSdkVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -24,20 +32,40 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }
 
 dependencies {
+    implementation(project(Depends.Module.commons))
+    implementation(project(Depends.Module.core))
+    implementation(project(Depends.Module.Domain.music))
 
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("com.google.android.material:material:1.7.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.4")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
+    // Base
+    implementation(Depends.AndroidX.core())
+    implementation(Depends.AndroidX.AppCompat())
+    implementation(Depends.Android.MaterialComponents())
+    testImplementation(Depends.JUnit())
+    androidTestImplementation(Depends.AndroidX.JUnit())
+    androidTestImplementation(Depends.AndroidX.Espresso())
+
+    // Dagger
+    implementation(Depends.Dagger.core())
+    kapt(Depends.Dagger.Compiler())
+    implementation(Depends.Dagger.Android.core())
+    implementation(Depends.Dagger.Android.Support())
+    kapt(Depends.Dagger.Android.Support())
+    kapt(Depends.Dagger.Android.Processor())
+
+    // RxJava
+    implementation(Depends.RxJava3.RxAndroid())
+    implementation(Depends.RxJava3.RxJava())
+    implementation(Depends.RxJava3.RxKotlin())
+
+    // Palette
+    implementation(Depends.Android.Palette())
+
+    // Picasso
+    implementation(Depends.Picasso())
 }
