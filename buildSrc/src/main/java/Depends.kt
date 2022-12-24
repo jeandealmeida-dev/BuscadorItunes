@@ -6,8 +6,27 @@ object Depends {
         const val commons = ":commons"
         const val favorite = ":favorite"
         const val playlist = ":playlist"
-        const val playlist_create = ":playlist:create"
-        const val playlist_detail = ":playlist:detail"
+        const val music = ":music"
+        const val music_detail = ":music:detail"
+
+        object UI {
+            const val search = ":search:ui"
+            const val playlist = ":playlist:ui"
+            const val music = ":music:ui"
+            const val favorite = ":favorite:ui"
+        }
+        object Domain {
+            const val search = ":search:domain"
+            const val playlist = ":playlist:domain"
+            const val music = ":music:domain"
+            const val favorite = ":favorite:domain"
+        }
+        object Data {
+            const val search = ":search:data"
+            const val playlist = ":playlist:data"
+            const val music = ":music:data"
+            const val favorite = ":favorite:data"
+        }
     }
 
     // updated 10/12/2022

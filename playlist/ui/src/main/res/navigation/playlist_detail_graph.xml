@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/playlist_detail_graph">
+    <fragment
+        android:id="@+id/playlist_detail_fragment_dest"
+        android:name="com.jeanpaulo.musiclibrary.playlist.ui.fragments.PlaylistDetailFragment"
+        android:label="{title}">
+
+        <argument
+            android:name="playlistId"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="title"
+            app:argType="string"
+            app:nullable="false" />
+
+    </fragment>
+
+</navigation>

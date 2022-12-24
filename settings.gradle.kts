@@ -3,8 +3,24 @@ include(
     ":app",
     ":core",
     ":commons",
-    ":favorite",
+
     ":playlist",
-    ":playlist:create",
-    ":playlist:detail",
+    ":playlist:ui",
+    ":playlist:data",
+    ":playlist:domain",
+
+    ":music",
+    ":music:ui",
+    ":music:data",
+    ":music:domain",
+
+    ":search",
+    ":search:ui",
+    ":search:data",
+    ":search:domain",
+
+    ":favorite",
+    ":favorite:ui",
+    ":favorite:domain",
+    ":favorite:data",
 )

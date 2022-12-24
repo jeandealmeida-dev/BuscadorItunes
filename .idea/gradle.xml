@@ -16,9 +16,21 @@
             <option value="$PROJECT_DIR$/commons" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/favorite" />
+            <option value="$PROJECT_DIR$/favorite/data" />
+            <option value="$PROJECT_DIR$/favorite/domain" />
+            <option value="$PROJECT_DIR$/favorite/ui" />
+            <option value="$PROJECT_DIR$/music" />
+            <option value="$PROJECT_DIR$/music/data" />
+            <option value="$PROJECT_DIR$/music/domain" />
+            <option value="$PROJECT_DIR$/music/ui" />
             <option value="$PROJECT_DIR$/playlist" />
-            <option value="$PROJECT_DIR$/playlist/create" />
-            <option value="$PROJECT_DIR$/playlist/detail" />
+            <option value="$PROJECT_DIR$/playlist/data" />
+            <option value="$PROJECT_DIR$/playlist/domain" />
+            <option value="$PROJECT_DIR$/playlist/ui" />
+            <option value="$PROJECT_DIR$/search" />
+            <option value="$PROJECT_DIR$/search/data" />
+            <option value="$PROJECT_DIR$/search/domain" />
+            <option value="$PROJECT_DIR$/search/ui" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

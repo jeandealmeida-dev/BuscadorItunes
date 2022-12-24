@@ -52,9 +52,28 @@ dependencies {
     implementation(Depends.Kotlin.Stdlib())
 
     // Project
-    implementation(project(Depends.Module.commons))
-    implementation(project(Depends.Module.favorite))
+    // → Search
+    implementation(project(Depends.Module.UI.search))
+    implementation(project(Depends.Module.Domain.search))
+    implementation(project(Depends.Module.Data.search))
+
+    // → Playlist
     implementation(project(Depends.Module.playlist))
+    implementation(project(Depends.Module.UI.playlist))
+    implementation(project(Depends.Module.Domain.playlist))
+    implementation(project(Depends.Module.Data.playlist))
+
+    // → Favorite
+    implementation(project(Depends.Module.UI.favorite))
+    implementation(project(Depends.Module.Domain.favorite))
+    implementation(project(Depends.Module.Data.favorite))
+
+    // → Music
+    implementation(project(Depends.Module.UI.music))
+    implementation(project(Depends.Module.Domain.music))
+    implementation(project(Depends.Module.Data.music))
+
+    implementation(project(Depends.Module.commons))
     implementation(project(Depends.Module.core))
 
     // Base
@@ -67,7 +86,6 @@ dependencies {
 
     // Android
     implementation(Depends.Android.Multidex())
-    implementation(Depends.Android.Palette())
 
     // Android X
     implementation(Depends.AndroidX.Paging())
@@ -76,35 +94,18 @@ dependencies {
     implementation(Depends.AndroidX.SwipeRefreshLayout())
     implementation(Depends.AndroidX.CardView())
     implementation(Depends.AndroidX.RecyclerView())
-    // --> Lyfecycle
+    // → Lyfecycle
     implementation(Depends.AndroidX.Lyfecycle.LiveData())
     implementation(Depends.AndroidX.Lyfecycle.ViewModel())
     implementation(Depends.AndroidX.Lyfecycle.Extensions())
-    // --> Navigation
+    // → Navigation
     implementation(Depends.AndroidX.Navigation.Fragment())
     implementation(Depends.AndroidX.Navigation.UI())
-
-    // Moshi
-    implementation(Depends.Moshi.Kotlin())
-    kapt(Depends.Moshi.Codegen())
-    implementation(Depends.Moshi.Adapters())
-
-    // Retrofit
-    implementation(Depends.Retrofit.core())
-    implementation(Depends.Retrofit.Converter.Moshi())
-    implementation(Depends.Retrofit.Adapter.RxJava3())
-    implementation(Depends.Retrofit.Converter.Gson())
 
     // RxJava
     implementation(Depends.RxJava3.RxAndroid())
     implementation(Depends.RxJava3.RxJava())
     implementation(Depends.RxJava3.RxKotlin())
-
-    // Room
-    implementation(Depends.Room.Runtime())
-    kapt(Depends.Room.Compiler())
-    implementation(Depends.Room.Ktx())
-    implementation(Depends.Room.RxJava3())
 
     // Dagger
     implementation(Depends.Dagger.core())
@@ -114,8 +115,13 @@ dependencies {
     kapt(Depends.Dagger.Android.Support())
     kapt(Depends.Dagger.Android.Processor())
 
+    // Retrofit
+    implementation(Depends.Retrofit.core())
+    implementation(Depends.Retrofit.Converter.Moshi())
+    implementation(Depends.Retrofit.Adapter.RxJava3())
+    implementation(Depends.Retrofit.Converter.Gson())
+
     // Others
-    implementation(Depends.Picasso())
     implementation(Depends.SLF4J())
     implementation(Depends.Logback())
     implementation(Depends.Timber())

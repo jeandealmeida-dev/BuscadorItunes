@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Biblioteca Musical</string>
-    <string name="action_settings">Configuracoes</string>
+
 
     <string name="action_preview">Previa</string>
     <string name="search_hint">Música, Album ou Artista..</string>
@@ -31,6 +31,4 @@
     <string name="action_save">Salvar</string>
 
     <string name="empty_playlist_message">Sua playlist precisa de pelo menos um nome!</string>
-
-    <string name="action_favorite">Favorito</string>
 </resources>
