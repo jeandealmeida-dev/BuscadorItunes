@@ -1,8 +1,5 @@
 package com.jeanpaulo.musiclibrary.app
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.ContextMenu
 import android.view.View
@@ -14,11 +11,10 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.jeanpaulo.musiclibrary.app.databinding.ActivityMusicBinding
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmActivity
-import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
 
 class MainActivity : BaseMvvmActivity() {
 
-    private val vm by appViewModel<MusicViewModel>()
+    private val vm by appViewModel<MainViewModel>()
 
     private lateinit var binding: ActivityMusicBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -37,21 +33,22 @@ class MainActivity : BaseMvvmActivity() {
     fun setupListeners() {
         vm.actMusicFragment.observe(this) { fragmentEnum ->
             when (fragmentEnum) {
-                MusicFragmentEnum.FavoritesFragment -> {
+                MainFragmentEnum.FavoritesFragment -> {
                 }
-                MusicFragmentEnum.PlaylistFragment -> {
+                MainFragmentEnum.PlaylistFragment -> {
 
                 }
-                MusicFragmentEnum.SearchFragment -> {
+                MainFragmentEnum.SearchFragment -> {
 
                 }
             }
         }
         vm.state.observe(this) { state ->
             when (state) {
-                is MusicActivityState.OpenMusicDetail -> {
-                    startMusicDetailActivity(state.view, state.music)
-                }
+//                is MusicActivityState.OpenMusicDetail -> {
+//                    startMusicDetailActivity(state.view, state.music)
+//                }
+                else -> {}
             }
         }
     }
@@ -95,24 +92,7 @@ class MainActivity : BaseMvvmActivity() {
     }
 
 
-    fun startMusicDetailActivity(view: View, music: SimpleMusicDetailUIModel) {
-//        val intent = MusicDetailActivity.newInstance(
-//            this,
-//            music,
-//        )
-//
-//        //Animations
-//        val titleElement = Pair.create<View, String>(
-//            view.findViewById(R.id.musicName),
-//            VIEW_NAME_HEADER_TITLE
-//        )
-//        val imageElement =
-//            Pair.create<View, String>(view.findViewById(R.id.artwork), VIEW_NAME_HEADER_IMAGE)
-//
-//        val activityOptions =
-//            ActivityOptionsCompat.makeSceneTransitionAnimation(this, titleElement, imageElement)
-//        ActivityCompat.startActivity(this, intent, activityOptions.toBundle())
-    }
+
 
 //    override fun hideKeyboard() {
 //        this.currentFocus?.let { view ->

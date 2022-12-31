@@ -42,6 +42,8 @@ dependencies {
     implementation(project(Depends.Module.core))
     implementation(project(Depends.Module.Domain.search))
 
+    implementation(project(Depends.Module.UI.music))
+
     // Base
     implementation(Depends.AndroidX.core())
     implementation(Depends.AndroidX.AppCompat())

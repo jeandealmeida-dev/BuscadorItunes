@@ -1,26 +1,27 @@
 package com.jeanpaulo.musiclibrary.core.repository.database.entity
 
 import androidx.room.*
-import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import java.util.*
 
 @Entity(
-    tableName = MusicEntity.TABLE_NAME,
+    tableName = MusicEntity.TABLE,
     foreignKeys = [
         ForeignKey(
             entity = CollectionEntity::class,
-            parentColumns = ["collectionId"],
-            childColumns = ["collectionId"]
+            parentColumns = [CollectionEntity.ID],
+            childColumns = [MusicEntity.COLLECTION_ID]
         ),
         ForeignKey(
             entity = ArtistEntity::class,
-            parentColumns = ["artistId"],
-            childColumns = ["artistId"]
+            parentColumns = [ArtistEntity.ID],
+            childColumns = [MusicEntity.ARTIST_ID]
         )
     ]
 )
 class MusicEntity(
-    @ColumnInfo(name = "remoteMusicId") val remoteMusicId: Long?,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = ID) var musicId: Long = 0,
+
+    @ColumnInfo(name = REMOTE_ID) val remoteId: Long?,
     @ColumnInfo(name = "name") val name: String?,
 
     @ColumnInfo(name = "artworkUrl") val artworkUrl: String?,
@@ -30,41 +31,26 @@ class MusicEntity(
     @ColumnInfo(name = "trackTimeMillis") val trackTimeMillis: Long?,
     @ColumnInfo(name = "previewUrl") val previewUrl: String?,
 
-
-    @PrimaryKey @ColumnInfo(name = "musicId") var musicId: Long?
+    @ColumnInfo(name = COLLECTION_ID) var collectionId: Long = 0,
+    @ColumnInfo(name = ARTIST_ID) var artistId: Long = 0
 ) {
 
     @Ignore
     var collection: CollectionEntity? = null
 
-    @ColumnInfo(name = "collectionId")
-    var collectionId: Long? = null
-
     @Ignore
     var artist: ArtistEntity? = null
 
-    @ColumnInfo(name = "artistId")
-    var artistId: Long? = null
-
-    fun toModel(): Music = Music(
-        ds_trackId = musicId,
-        trackName = name,
-        artworkUrl = artworkUrl,
-        previewUrl = previewUrl,
-        trackTimeMillis = trackTimeMillis,
-        releaseDate = releaseDate,
-        streamable = isStreamable
-    ).let { music ->
-        artist?.let { music.artist = it.toModel() }
-        collection?.let { music.collection = it.toModel() }
-        music
-    }
-
     companion object {
-        const val TABLE_NAME = "music"
+        const val TABLE = "music"
 
-        const val MUSIC_ID = "$TABLE_NAME.musicId"
-        const val PLAYLIST_ID = "$TABLE_NAME.playlistId"
+        const val ID = "id"
+        const val REMOTE_ID = "remoteId"
+        const val ARTIST_ID = "artistId"
+        const val COLLECTION_ID = "collectionId"
+
+        const val T_ID = "$TABLE.$ID"
+        const val T_REMOTE_ID = "$TABLE.$REMOTE_ID"
     }
 
 }

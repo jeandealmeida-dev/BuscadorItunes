@@ -2,22 +2,29 @@ package com.jeanpaulo.musiclibrary.core.repository.database.dao
 
 import androidx.room.*
 import com.jeanpaulo.musiclibrary.core.repository.database.entity.ArtistEntity
+import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface ArtistDao {
 
-    //C
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertArtist(music: ArtistEntity): kotlin.Long
+    fun insertArtist(music: ArtistEntity): Single<Long>
+
+    @Query(
+        "SELECT * " +
+                "FROM ${ArtistEntity.TABLE} " +
+                "WHERE ${ArtistEntity.ID} = :id"
+    )
+    fun getArtistById(id: Long): Single<ArtistEntity>
 
     //R
 
-    @Query("SELECT * FROM artist")
+    @Query(
+        "SELECT * " +
+                "FROM ${ArtistEntity.TABLE}"
+    )
     fun getArtists(): List<ArtistEntity>
 
-    @Query("SELECT * FROM artist WHERE artistId = :id")
-    fun getArtistById(id: Long): ArtistEntity?
 
     //U
 
@@ -25,10 +32,17 @@ interface ArtistDao {
     fun updateArtist(music: ArtistEntity): Int
     //D
 
-    @Query("DELETE FROM artist WHERE artistId = :id")
+    @Query(
+        "DELETE " +
+                "FROM ${ArtistEntity.TABLE} " +
+                "WHERE ${ArtistEntity.ID} = :id"
+    )
     fun deleteArtistById(id: kotlin.Long): Int
 
-    @Query("DELETE FROM artist")
+    @Query(
+        "DELETE " +
+                "FROM ${ArtistEntity.TABLE}"
+    )
     fun deleteArtists(): kotlin.Int
 
 }

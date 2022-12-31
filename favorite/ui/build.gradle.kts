@@ -42,6 +42,7 @@ dependencies {
     implementation(project(Depends.Module.commons))
     implementation(project(Depends.Module.core))
     implementation(project(Depends.Module.Domain.favorite))
+    implementation(project(Depends.Module.UI.music))
 
     // Base
     implementation(Depends.AndroidX.core())

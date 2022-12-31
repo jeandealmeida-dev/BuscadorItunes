@@ -1,11 +1,17 @@
 package com.jeanpaulo.musiclibrary.music.ui
 
+import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
 import com.jeanpaulo.musiclibrary.commons.extensions.gone
+import com.jeanpaulo.musiclibrary.commons.extensions.menuChecked
 import com.jeanpaulo.musiclibrary.commons.extensions.visible
 import com.jeanpaulo.musiclibrary.music.ui.databinding.FragMusicDetailBinding
+import com.jeanpaulo.musiclibrary.music.ui.model.MusicDetailUIModel
+import com.jeanpaulo.musiclibrary.music.ui.viewmodel.FavoriteState
 import com.jeanpaulo.musiclibrary.music.ui.viewmodel.MusicDetailState
 import com.jeanpaulo.musiclibrary.music.ui.viewmodel.MusicDetailViewModel
 
@@ -17,7 +23,12 @@ class MusicDetailFragment : BaseMvvmFragment() {
     val viewModel by appActivityViewModel<MusicDetailViewModel>()
 
     private var _binding: FragMusicDetailBinding? = null
-    private val binding: FragMusicDetailBinding  get() = _binding!!
+    private val binding: FragMusicDetailBinding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //setHasOptionsMenu(true) // use fragment menu
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,9 +41,35 @@ class MusicDetailFragment : BaseMvvmFragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val menuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_music_detail, menu)
+                menu.findItem(R.id.action_favorite).menuChecked(viewModel.isFavorite)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        requireActivity().onBackPressed()
+                        true
+                    }
+                    R.id.action_favorite -> {
+                        viewModel.clickFavoriteMenu()
+                        true
+                    }
+                    else -> {
+                        false
+                    }
+                }
+            }
+
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
     }
 
@@ -51,14 +88,29 @@ class MusicDetailFragment : BaseMvvmFragment() {
                 MusicDetailState.Success -> {
                     binding.txtError.gone()
                     binding.layoutProgress.gone()
+
+                    setupMusicDetail(viewModel.musicDetailUIModel)
+                }
+                else -> {
+
                 }
             }
         }
 
-        viewModel.musicDetailUIModel.observe(viewLifecycleOwner) { musicDetailUIModel ->
-            binding.artist.text = musicDetailUIModel.artist
-            binding.album.text = musicDetailUIModel.album
+        viewModel.favoriteState.observe(viewLifecycleOwner) { favoriteState ->
+            when (favoriteState) {
+                FavoriteState.Error -> {}
+                FavoriteState.Loading -> {}
+                is FavoriteState.Success -> {
+                    activity?.invalidateOptionsMenu()
+                }
+            }
         }
+    }
+
+    fun setupMusicDetail(musicDetailUIModel: MusicDetailUIModel) {
+        binding.artist.text = musicDetailUIModel.artist
+        binding.album.text = musicDetailUIModel.album
     }
 
     fun setupWidgets() {
@@ -67,16 +119,9 @@ class MusicDetailFragment : BaseMvvmFragment() {
         // Text Error
         //binding.txtError.text = getString(R.string.loading_music_detail_error)
         binding.txtError.setOnClickListener {
-            viewModel.refresh()
+            //viewModel.refresh()
         }
     }
-
-//    private fun setupSnackbar() {
-//        view?.setupSnackbar(this, vm.snackbarTextLiveData, Snackbar.LENGTH_SHORT)
-//        arguments?.let {
-//            vm.snackbarTextLiveData.value = R.string.no_internet_connection
-//        }
-//    }
 
     companion object {
         fun newInstance() =

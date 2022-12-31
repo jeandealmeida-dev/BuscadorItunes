@@ -13,28 +13,50 @@ interface PlaylistDao {
     fun insertPlaylist(playlist: PlaylistEntity): Single<Long>
 
     @Transaction
-    @Query("SELECT * FROM Playlist WHERE title NOT LIKE :filter")
+    @Query(
+        "SELECT * " +
+                "FROM ${PlaylistEntity.TABLE} " +
+                "WHERE ${PlaylistEntity.TITTLE} NOT LIKE :filter"
+    )
     fun getPlaylistsFiltered(filter: String): Single<List<PlaylistEntity>>
 
     @Transaction
-    @Query("SELECT * FROM Playlist")
+    @Query(
+        "SELECT * " +
+                "FROM ${PlaylistEntity.TABLE} "
+    )
     fun getPlaylists(): Flowable<List<PlaylistEntity>>
 
     @Transaction
-    @Query("SELECT * FROM Playlist WHERE playlistId = :playlistId")
+    @Query(
+        "SELECT * " +
+                "FROM ${PlaylistEntity.TABLE} " +
+                "WHERE ${PlaylistEntity.ID} = :playlistId"
+    )
     fun getPlaylistById(playlistId: Long): Single<PlaylistEntity?>
 
     @Transaction
-    @Query("SELECT * FROM Playlist WHERE title LIKE :playlistTitle")
+    @Query(
+        "SELECT * " +
+                "FROM ${PlaylistEntity.TABLE} " +
+                "WHERE ${PlaylistEntity.TITTLE} LIKE :playlistTitle"
+    )
     fun getPlaylistByTitle(playlistTitle: String): Single<List<PlaylistEntity>>
 
     @Update
     fun updatePlaylist(playlist: PlaylistEntity): Int
 
-    @Query("DELETE FROM Playlist WHERE playlistId = :playlistId")
-    fun deletePlaylistById(playlistId: kotlin.Long): Completable
+    @Query(
+        "DELETE " +
+                "FROM ${PlaylistEntity.TABLE} " +
+                "WHERE ${PlaylistEntity.ID} = :playlistId"
+    )
+    fun deletePlaylistById(playlistId: Long): Completable
 
-    @Query("DELETE FROM Playlist")
+    @Query(
+        "DELETE " +
+                "FROM ${PlaylistEntity.TABLE} "
+    )
     fun deletePlaylists()
 
 }

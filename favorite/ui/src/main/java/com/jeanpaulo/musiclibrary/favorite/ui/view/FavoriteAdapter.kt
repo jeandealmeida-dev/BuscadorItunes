@@ -48,6 +48,8 @@ class FavoriteAdapter(
 
         fun bind(music: Music, listener: (View, Music) -> Unit) = with(itemView) {
             binding.musicName.text = music.trackName
+            binding.artistName.text = music.musicArtist?.name ?: "-"
+            binding.collectionName.text = music.musicCollection?.name  ?: "-"
             Picasso.with(binding.root.context).load(music.artworkUrl).into(binding.artwork)
             setOnClickListener { listener(itemView, music) }
         }

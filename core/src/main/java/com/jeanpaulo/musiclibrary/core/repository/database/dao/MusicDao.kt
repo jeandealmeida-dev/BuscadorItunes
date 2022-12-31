@@ -2,36 +2,56 @@ package com.jeanpaulo.musiclibrary.core.repository.database.dao
 
 import androidx.room.*
 import com.jeanpaulo.musiclibrary.core.repository.database.entity.MusicEntity
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface MusicDao {
 
-    //C
+    // Insert
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertMusic(music: MusicEntity): kotlin.Long
+    fun insertMusic(music: MusicEntity): Single<Long>
 
-    //R
+    // Select
 
-    @Query("SELECT * FROM Music")
+    @Query(
+        "SELECT * " +
+                "FROM ${MusicEntity.TABLE} " +
+                "WHERE ${MusicEntity.REMOTE_ID} = :remoteId"
+    )
+    fun getMusicByRemoteId(remoteId: Long): Single<MusicEntity>
+
+    @Query(
+        "SELECT * " +
+                "FROM ${MusicEntity.TABLE} " +
+                "WHERE ${MusicEntity.ID} = :id"
+    )
+    fun getMusicById(id: Long): Single<MusicEntity>
+
+    @Query(
+        "SELECT * " +
+                "FROM ${MusicEntity.TABLE}"
+    )
     fun getMusics(): List<MusicEntity>
 
-    @Query("SELECT * FROM Music WHERE musicId = :id")
-    fun getMusicById(id: Long): MusicEntity?
-
-    @Query("SELECT * FROM Music WHERE remoteMusicId = :remoteMusicId")
-    fun getMusicByRemoteId(remoteMusicId: Long): MusicEntity?
-
-    //U
+    // Update
 
     @Update
-    fun updateMusic(music: MusicEntity): Int
-    //D
+    fun updateMusic(music: MusicEntity): Completable
 
-    @Query("DELETE FROM music WHERE musicId = :id")
-    fun deleteMusicById(id: kotlin.Long): Int
+    // Delete
 
-    @Query("DELETE FROM music")
-    fun deleteMusics(): kotlin.Int
+    @Query(
+        "DELETE " +
+                "FROM ${MusicEntity.TABLE} " +
+                "WHERE ${MusicEntity.ID} = :id"
+    )
+    fun deleteMusicById(id: Long): Completable
 
+    @Query(
+        "DELETE " +
+                "FROM ${MusicEntity.TABLE}"
+    )
+    fun deleteMusics(): Completable
 }

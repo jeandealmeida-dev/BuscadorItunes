@@ -5,10 +5,14 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.jeanpaulo.musiclibrary.core.domain.model.Collection
 
-@Entity(tableName = "collection")
+@Entity(tableName = CollectionEntity.TABLE)
 data class CollectionEntity(
-    @PrimaryKey @ColumnInfo(name = "collectionId") val collectionId: Long,
-    @ColumnInfo(name = "name") val name: String?
+    @PrimaryKey @ColumnInfo(name = ID) val id: Long,
+    @ColumnInfo(name = NAME) val name: String
 ) {
-    fun toModel(): Collection =  Collection(collectionId, name)
+    companion object {
+        const val TABLE = "collection"
+        const val ID = "collectionId"
+        const val NAME = "name"
+    }
 }

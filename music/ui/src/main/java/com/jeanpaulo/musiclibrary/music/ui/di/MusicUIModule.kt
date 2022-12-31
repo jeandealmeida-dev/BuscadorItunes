@@ -2,10 +2,12 @@ package com.jeanpaulo.musiclibrary.music.ui.di
 
 import androidx.lifecycle.ViewModel
 import com.jeanpaulo.musiclibrary.commons.di.ViewModelKey
+import com.jeanpaulo.musiclibrary.commons.extensions.requireBoolean
 import com.jeanpaulo.musiclibrary.commons.extensions.requireParcelable
 import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
-import com.jeanpaulo.musiclibrary.favorite.domain.MusicDetailInteractor
-import com.jeanpaulo.musiclibrary.favorite.domain.MusicDetailInteractorImpl
+import com.jeanpaulo.musiclibrary.music.domain.MusicInteractor
+import com.jeanpaulo.musiclibrary.music.domain.MusicInteractorImpl
+import com.jeanpaulo.musiclibrary.music.domain.di.MusicDomainModule
 import com.jeanpaulo.musiclibrary.music.ui.MusicDetailActivity
 import com.jeanpaulo.musiclibrary.music.ui.MusicDetailFragment
 import com.jeanpaulo.musiclibrary.music.ui.viewmodel.MusicDetailViewModel
@@ -16,18 +18,20 @@ import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 
 @Module(
-    includes = [MusicDetailModule::class]
+    includes = [
+        MusicUIModule::class,
+        MusicDomainModule::class,
+    ]
 )
-abstract class MusicDetailModuleBuilder {
+abstract class MusicModuleBuilder {
+
     @ContributesAndroidInjector
     abstract fun bindMusicDetailFragment(): MusicDetailFragment
 
-    @ContributesAndroidInjector
-    abstract fun bindMusicDetailActivity(): MusicDetailActivity
 }
 
 @Module
-abstract class MusicDetailModule {
+abstract class MusicUIModule {
 
     @Binds
     @IntoMap
@@ -35,7 +39,7 @@ abstract class MusicDetailModule {
     abstract fun provideViewModel(viewModel: MusicDetailViewModel): ViewModel
 
     @Binds
-    abstract fun provideInteractor(interactor: MusicDetailInteractorImpl): MusicDetailInteractor
+    abstract fun provideInteractor(interactor: MusicInteractorImpl): MusicInteractor
 
     @Module
     companion object {
@@ -43,7 +47,15 @@ abstract class MusicDetailModule {
         @JvmStatic
         @Provides
         @SimpleMusicUI
-        fun provideMusic(activity: MusicDetailActivity): SimpleMusicDetailUIModel = activity.requireParcelable(MusicDetailActivity.MUSIC_PARAM)
+        fun provideMusic(activity: MusicDetailActivity): SimpleMusicDetailUIModel =
+            activity.requireParcelable(MusicDetailActivity.MUSIC_PARAM)
+
+
+        @JvmStatic
+        @Provides
+        @FromRemote
+        fun provideFromRemote(activity: MusicDetailActivity): Boolean =
+            activity.requireBoolean(MusicDetailActivity.FROM_REMOTE_PARAM)
 
     }
 

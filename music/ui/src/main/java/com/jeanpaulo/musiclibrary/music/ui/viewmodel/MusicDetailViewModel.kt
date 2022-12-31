@@ -2,13 +2,23 @@ package com.jeanpaulo.musiclibrary.music.ui.viewmodel
 
 import androidx.lifecycle.*
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
+import com.jeanpaulo.musiclibrary.commons.exceptions.EmptyResultException
+import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
-import com.jeanpaulo.musiclibrary.favorite.domain.MusicDetailInteractor
+import com.jeanpaulo.musiclibrary.music.domain.MusicInteractor
+import com.jeanpaulo.musiclibrary.music.ui.di.FromRemote
 import com.jeanpaulo.musiclibrary.music.ui.di.SimpleMusicUI
 import com.jeanpaulo.musiclibrary.music.ui.model.MusicDetailUIModel
+import com.jeanpaulo.musiclibrary.music.ui.model.mapper.convertToMusicUI
 import io.reactivex.rxjava3.core.Scheduler
 import javax.inject.Inject
 import javax.inject.Named
+
+sealed class FavoriteState {
+    class Success(val isFavorite: Boolean) : FavoriteState()
+    object Loading : FavoriteState()
+    object Error : FavoriteState()
+}
 
 sealed class MusicPlayerState {
     class Setup(val uri: String) : MusicPlayerState()
@@ -25,12 +35,16 @@ sealed class MusicDetailState {
 class MusicDetailViewModel @Inject constructor(
     @Named("MainScheduler") private val mainScheduler: Scheduler,
     @Named("IOScheduler") private val ioScheduler: Scheduler,
-    private val interactor: MusicDetailInteractor,
-    @SimpleMusicUI val music: SimpleMusicDetailUIModel,
+    private val interactor: MusicInteractor,
+    @SimpleMusicUI val simpleMusicDetail: SimpleMusicDetailUIModel,
+    @FromRemote val fromRemote: Boolean,
 ) : BaseViewModel() {
 
-    private val _musicDetailUIModel = MutableLiveData<com.jeanpaulo.musiclibrary.music.ui.model.MusicDetailUIModel>()
-    val musicDetailUIModel: LiveData<com.jeanpaulo.musiclibrary.music.ui.model.MusicDetailUIModel> get() = _musicDetailUIModel
+    private var _isFavorited = false
+    val isFavorite: Boolean get() = _isFavorited
+
+    private lateinit var _music: Music
+    val musicDetailUIModel: MusicDetailUIModel get() = _music.convertToMusicUI()
 
     private val _musicDetailState = MutableLiveData<MusicDetailState>()
     val musicDetailState: LiveData<MusicDetailState> get() = _musicDetailState
@@ -38,11 +52,20 @@ class MusicDetailViewModel @Inject constructor(
     private val _musicPlayerState = MutableLiveData<MusicPlayerState>()
     val musicPlayerState: LiveData<MusicPlayerState> get() = _musicPlayerState
 
-    override fun onCreate() {
-        super.onCreate()
-        getMusicDetail(music.id)
+    private val _favoriteState = MutableLiveData<FavoriteState>()
+    val favoriteState: LiveData<FavoriteState> get() = _favoriteState
+
+    override fun onStart() {
+        super.onStart()
+        getDetail()
     }
 
+    fun getDetail() {
+        if (fromRemote)
+            getMusicDetail(simpleMusicDetail.id)
+        else
+            findLocalMusicDetail(simpleMusicDetail.id)
+    }
 
     private fun getMusicDetail(musicId: Long) {
         compositeDisposable.add(
@@ -50,15 +73,7 @@ class MusicDetailViewModel @Inject constructor(
                 .subscribeOn(ioScheduler)
                 .observeOn(mainScheduler)
                 .subscribe({
-                    val musicDetail = MusicDetailUIModel(
-                        id = it.ds_trackId ?: 0L,
-                        name = it.trackName ?: "",
-                        artwork = it.artworkUrl ?: "",
-                        previewURL = it.previewUrl ?: "",
-                        artist = it.artist?.name ?: "",
-                        album = it.collection?.name ?: ""
-                    )
-                    setupMusicDetail(musicDetail)
+                    setupMusicDetail(it)
                     _musicDetailState.value = MusicDetailState.Success
                 }, {
                     it.message
@@ -67,42 +82,113 @@ class MusicDetailViewModel @Inject constructor(
         )
     }
 
-    fun setupMusicDetail(musicDetail: com.jeanpaulo.musiclibrary.music.ui.model.MusicDetailUIModel){
-        _musicDetailUIModel.value = musicDetail
-        if(musicDetail.hasPreview()){
-            _musicPlayerState.value = MusicPlayerState.Setup(musicDetail.getPreview())
+    private fun findLocalMusicDetail(musicId: Long) {
+        compositeDisposable.add(
+            interactor.findLocal(musicId)
+                .subscribeOn(ioScheduler)
+                .observeOn(mainScheduler)
+                .subscribe({
+                    setupMusicDetail(it)
+                    _musicDetailState.value = MusicDetailState.Success
+                }, {
+                    it.message
+                    _musicDetailState.value = MusicDetailState.Error
+                })
+        )
+    }
+
+    fun setupMusicDetail(music: Music) {
+        _music = music
+
+        isFavorited(music.ds_trackId ?: 0L)
+
+        _music.previewUrl?.let {
+            _musicPlayerState.value = MusicPlayerState.Setup(it)
         }
     }
 
-//    private fun isFavorited(musicId: Long){
+    private fun isFavorited(remoteId: Long) {
+        compositeDisposable.add(
+            interactor.isFavorite(remoteId)
+                .subscribeOn(ioScheduler)
+                .observeOn(mainScheduler)
+                .doOnSubscribe {
+                    _favoriteState.value = FavoriteState.Loading
+                }
+                //.delay(600, TimeUnit.MILLISECONDS)
+                .subscribe({ it ->
+                    _isFavorited = it
+                    _favoriteState.value = FavoriteState.Success(it)
+                }, {
+                    if (it is EmptyResultException) {
+                        _isFavorited = false
+                        _favoriteState.value = FavoriteState.Success(_isFavorited)
+                    } else {
+                        _favoriteState.value = FavoriteState.Error
+                    }
+                })
+        )
+    }
+
+    private fun saveInFavorite() {
+        compositeDisposable.add(
+            interactor.saveMusicInFavorite(_music)
+                .subscribeOn(ioScheduler)
+                .observeOn(mainScheduler)
+                .doOnSubscribe {
+                    _favoriteState.value = FavoriteState.Loading
+                }
+                //.delay(600, TimeUnit.MILLISECONDS)
+                .subscribe({
+                    _isFavorited = true
+                    _favoriteState.value = FavoriteState.Success(_isFavorited)
+                }, {
+                    _favoriteState.value = FavoriteState.Error
+                })
+        )
+    }
+
+//    private fun saveInFavorite(musicId: Long) {
 //        compositeDisposable.add(
-//            interactor.isFavorited(musicId)
+//            favoriteInteractor.saveInFavorite(musicId)
 //                .subscribeOn(ioScheduler)
 //                .observeOn(mainScheduler)
 //                .doOnSubscribe {
-//                    stateLiveData.postValue(MusicDetailState.Loading)
-//                }.delay(600, TimeUnit.MILLISECONDS)
+//                    _favoriteState.value = FavoriteState.Loading
+//                }
+//                //.delay(600, TimeUnit.MILLISECONDS)
 //                .subscribe({
-//                    isFavoritedLiveData.postValue(it)
+//                    _favoriteState.value = FavoriteState.Success(true)
+//                    _musicDetailUIModel.isFavorite()
 //                }, {
-//                    isFavoritedLiveData.postValue(false)
-//                    stateLiveData.postValue(MusicDetailState.Error)
+//                    _favoriteState.value = FavoriteState.Error
 //                })
 //        )
 //    }
 
-
-//    private fun favorite() {
-//        musicLiveData.value?.let { interactor.saveFavorite(it) }
-//    }
-
-
-    fun refresh() {
-        //searchMusic()
+    private fun removeFavorite() {
+        compositeDisposable.add(
+            interactor.removeFromFavorites(musicDetailUIModel.remoteId)
+                .subscribeOn(ioScheduler)
+                .observeOn(mainScheduler)
+                .doOnSubscribe {
+                    _favoriteState.value = FavoriteState.Loading
+                }
+                //.delay(600, TimeUnit.MILLISECONDS)
+                .subscribe({
+                    _isFavorited = false
+                    _favoriteState.value = FavoriteState.Success(_isFavorited)
+                }, {
+                    _favoriteState.value = FavoriteState.Error
+                })
+        )
     }
 
-    fun favoriteChanged() {
-        //favorite()
+    fun clickFavoriteMenu() {
+        when (isFavorite) {
+            true -> removeFavorite()
+            false -> saveInFavorite()
+        }
     }
 
     fun changePlayerState() {
@@ -117,4 +203,6 @@ class MusicDetailViewModel @Inject constructor(
             else -> {}
         }
     }
+
+
 }

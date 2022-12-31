@@ -5,12 +5,18 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.jeanpaulo.musiclibrary.core.domain.model.Artist
 
-@Entity(tableName = "artist")
+@Entity(tableName = ArtistEntity.TABLE)
 data class ArtistEntity(
-    @PrimaryKey @ColumnInfo(name = "artistId") val artistId: Long,
-    @ColumnInfo(name = "artistName") val name: String?,
-    @ColumnInfo(name = "country") val country: String?,
-    @ColumnInfo(name = "primaryGenreName") val primaryGenreName: String?
+    @PrimaryKey @ColumnInfo(name = ID) val artistId: Long,
+    @ColumnInfo(name = NAME) val name: String,
+    @ColumnInfo(name = COUNTRY) val country: String?,
+    @ColumnInfo(name = PRIMARY_GENRE_NAME) val primaryGenreName: String?
 ) {
-    fun toModel(): Artist = Artist(artistId, name, country, primaryGenreName)
+    companion object {
+        const val TABLE = "artist"
+        const val ID = "id"
+        const val NAME = "name"
+        const val COUNTRY = "country"
+        const val PRIMARY_GENRE_NAME = "primaryGenreName"
+    }
 }
