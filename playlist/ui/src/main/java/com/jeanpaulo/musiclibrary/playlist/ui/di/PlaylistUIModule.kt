@@ -7,12 +7,10 @@ import com.jeanpaulo.musiclibrary.playlist.domain.di.PlaylistDomainModule
 import com.jeanpaulo.musiclibrary.playlist.ui.fragments.PlaylistCreateFragment
 import com.jeanpaulo.musiclibrary.playlist.ui.fragments.PlaylistDetailFragment
 import com.jeanpaulo.musiclibrary.playlist.ui.fragments.PlaylistFragment
-import com.jeanpaulo.musiclibrary.playlist.ui.viewmodel.PlaylistCreateViewModel
 import com.jeanpaulo.musiclibrary.playlist.ui.viewmodel.PlaylistDetailViewModel
-import com.jeanpaulo.musiclibrary.playlist.view.PlaylistViewModel
+import com.jeanpaulo.musiclibrary.playlist.ui.viewmodel.PlaylistViewModel
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 

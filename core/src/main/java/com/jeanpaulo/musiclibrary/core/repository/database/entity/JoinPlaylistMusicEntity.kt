@@ -10,25 +10,29 @@ import androidx.room.PrimaryKey
     foreignKeys = [
         ForeignKey(
             entity = PlaylistEntity::class,
-            parentColumns = ["playlistId"],
-            childColumns = ["playlistId"]
+            parentColumns = [PlaylistEntity.ID],
+            childColumns = [JoinPlaylistMusicEntity.PLAYLIST_ID]
         ),
         ForeignKey(
             entity = MusicEntity::class,
-            parentColumns = ["musicId"],
-            childColumns = ["musicId"]
+            parentColumns = [MusicEntity.ID],
+            childColumns = [JoinPlaylistMusicEntity.MUSIC_ID]
         )
     ]
 )
 data class JoinPlaylistMusicEntity(
-    @ColumnInfo(name = "playlistId") val playlistId: Long,
-    @ColumnInfo(name = "musicId") val musicId: Long,
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "playlistMusicJoinId") var id: Long = 0
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = ID) var id: Long = 0,
+    @ColumnInfo(name = PLAYLIST_ID) val playlistId: Long,
+    @ColumnInfo(name = MUSIC_ID) val musicId: Long
 ){
     companion object {
         const val TABLE_NAME = "join_playlist_music"
 
-        const val MUSIC_ID = "$TABLE_NAME.musicId"
-        const val PLAYLIST_ID = "$TABLE_NAME.playlistId"
+        const val ID = "id"
+        const val MUSIC_ID = "musicId"
+        const val PLAYLIST_ID = "playlistId"
+
+        const val T_MUSIC_ID = "$TABLE_NAME.$MUSIC_ID"
+        const val T_PLAYLIST_ID = "$TABLE_NAME.$PLAYLIST_ID"
     }
 }

@@ -1,4 +1,4 @@
-package com.jeanpaulo.musiclibrary.playlist.view
+package com.jeanpaulo.musiclibrary.playlist.ui.viewmodel
 
 import androidx.lifecycle.*
 import com.jeanpaulo.musiclibrary.core.domain.model.Playlist

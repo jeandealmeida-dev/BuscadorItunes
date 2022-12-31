@@ -4,4 +4,12 @@ import com.jeanpaulo.musiclibrary.core.repository.database.entity.CollectionEnti
 import com.jeanpaulo.musiclibrary.core.domain.model.Collection
 
 fun Collection.toEntity(): CollectionEntity =
-    CollectionEntity(collectionId!!, name)
+    CollectionEntity(
+        id = id,
+        name = name
+    )
+
+fun CollectionEntity.toModel() = Collection(
+        id = id,
+        name = name
+    )

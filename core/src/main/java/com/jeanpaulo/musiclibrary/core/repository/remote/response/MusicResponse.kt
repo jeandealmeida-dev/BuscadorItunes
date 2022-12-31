@@ -6,7 +6,7 @@ import java.util.*
 
 @JsonClass(generateAdapter = true)
 data class MusicResponse(
-    @Json(name = "trackId") val ds_trackId: Long?,
+    @Json(name = "trackId") val remoteId: Long?,
     @Json(name = "trackName") val trackName: String?,
     @Json(name = "artistId") val artistId: Long?,
     @Json(name = "artistName") val artistName: String?,

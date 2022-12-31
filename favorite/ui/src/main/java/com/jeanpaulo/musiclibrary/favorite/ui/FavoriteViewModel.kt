@@ -2,6 +2,7 @@ package com.jeanpaulo.musiclibrary.favorite.presentation.viewmodel
 
 import androidx.lifecycle.*
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
+import com.jeanpaulo.musiclibrary.commons.exceptions.EmptyResultException
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
 import io.reactivex.rxjava3.core.Scheduler
@@ -14,6 +15,7 @@ sealed class FavoriteState {
     object Error : FavoriteState()
     object Success : FavoriteState()
 }
+
 class FavoriteViewModel @Inject constructor(
     @Named("MainScheduler") private val mainScheduler: Scheduler,
     @Named("IOScheduler") private val ioScheduler: Scheduler,
@@ -45,18 +47,22 @@ class FavoriteViewModel @Inject constructor(
                 }
                 .delay(200, TimeUnit.MILLISECONDS)
                 .subscribe({ favorites ->
-                    val musicFiltered = favorites.filter { true }.map { it.music!! }.toList()
+                    val musicFiltered = favorites.map { it.music!! }
                     _musicList.postValue(musicFiltered)
                     _favoriteState.postValue(FavoriteState.Success)
                 }, {
-                    _favoriteState.postValue(FavoriteState.Error)
+                    if (it is EmptyResultException) {
+                        _favoriteState.postValue(FavoriteState.Success)
+                    } else {
+                        _favoriteState.postValue(FavoriteState.Error)
+                    }
                 })
         )
     }
 
     fun removeMusicFromFavorite(trackId: Long) {
         compositeDisposable.add(
-            interactor.removeMusicFromFavorites(trackId)
+            interactor.removeFromFavorites(trackId)
                 .subscribeOn(ioScheduler)
                 .observeOn(mainScheduler)
                 .doOnSubscribe {

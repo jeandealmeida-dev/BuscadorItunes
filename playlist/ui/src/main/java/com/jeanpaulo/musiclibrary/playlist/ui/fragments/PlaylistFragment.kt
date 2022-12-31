@@ -8,14 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
 import com.jeanpaulo.musiclibrary.commons.extensions.setupRefreshLayout
-import com.jeanpaulo.musiclibrary.commons.extensions.setupSnackbar
 import com.jeanpaulo.musiclibrary.commons.extensions.showSnackbar
 import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
 import com.jeanpaulo.musiclibrary.playlist.ui.PlaylistListAdapter
 import com.jeanpaulo.musiclibrary.playlist.ui.R
 import com.jeanpaulo.musiclibrary.playlist.ui.databinding.PlaylistFragmentBinding
-import com.jeanpaulo.musiclibrary.playlist.view.PlaylistState
-import com.jeanpaulo.musiclibrary.playlist.view.PlaylistViewModel
+import com.jeanpaulo.musiclibrary.playlist.ui.viewmodel.PlaylistState
+import com.jeanpaulo.musiclibrary.playlist.ui.viewmodel.PlaylistViewModel
 
 class PlaylistFragment : BaseMvvmFragment() {
     val viewModel by appActivityViewModel<PlaylistViewModel>()

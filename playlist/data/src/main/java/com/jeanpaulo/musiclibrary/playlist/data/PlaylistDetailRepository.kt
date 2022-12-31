@@ -6,6 +6,7 @@ import com.jeanpaulo.musiclibrary.core.repository.database.entity.JoinPlaylistMu
 import com.jeanpaulo.musiclibrary.core.repository.database.mapper.toEntity
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.core.domain.model.Playlist
+import com.jeanpaulo.musiclibrary.core.repository.database.mapper.toModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
@@ -36,7 +37,7 @@ class PlaylistDetailRepositoryImpl @Inject constructor(
 
 
     override fun saveMusicInPlaylist(music: Music, playlistId: Long): Completable =
-        joinPlaylistMusicDao.insert(JoinPlaylistMusicEntity(playlistId, music.id));
+        joinPlaylistMusicDao.insert(JoinPlaylistMusicEntity(playlistId = playlistId, musicId = music.id));
 
 
     override fun removeMusicFromPlaylist(

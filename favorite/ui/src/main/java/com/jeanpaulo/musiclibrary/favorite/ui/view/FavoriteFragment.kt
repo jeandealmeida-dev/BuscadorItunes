@@ -2,6 +2,9 @@ package com.jeanpaulo.musiclibrary.favorite.ui.view
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -10,10 +13,12 @@ import com.jeanpaulo.musiclibrary.commons.extensions.setupRefreshLayout
 import com.jeanpaulo.musiclibrary.commons.extensions.showSnackbar
 import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
+import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
 import com.jeanpaulo.musiclibrary.favorite.presentation.viewmodel.FavoriteState
 import com.jeanpaulo.musiclibrary.favorite.presentation.viewmodel.FavoriteViewModel
 import com.jeanpaulo.musiclibrary.favorite.ui.R
 import com.jeanpaulo.musiclibrary.favorite.ui.databinding.FavoriteFragmentBinding
+import com.jeanpaulo.musiclibrary.music.ui.MusicDetailActivity
 
 
 /**
@@ -46,7 +51,7 @@ class FavoriteFragment : BaseMvvmFragment() {
 
     fun setupListeners() {
         viewModel.favoriteState.observe(viewLifecycleOwner) {
-            when(it){
+            when (it) {
                 FavoriteState.Error -> showSnackBar("Error")
                 FavoriteState.Loading -> showSnackBar("Loading")
                 FavoriteState.Success -> showSnackBar("Success")
@@ -73,7 +78,7 @@ class FavoriteFragment : BaseMvvmFragment() {
     private fun setupListAdapter() {
         listAdapter =
             FavoriteAdapter { view, music ->
-                openMusicDetail(view, music.id ?: 0L, music.name!!, music.artworkUrl!!)
+                openMusicDetail(view, music.ds_trackId ?: 0L, music.trackName!!, music.artworkUrl!!)
             }
         binding.favoriteList.layoutManager =
             CustomLinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -102,14 +107,6 @@ class FavoriteFragment : BaseMvvmFragment() {
         return super.onContextItemSelected(item)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        else -> super.onOptionsItemSelected(item)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        return super.onCreateOptionsMenu(menu, inflater)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -121,12 +118,29 @@ class FavoriteFragment : BaseMvvmFragment() {
     }
 
     private fun openMusicDetail(view: View, musicId: Long, musicName: String, artworkUrl: String) {
-//        val action = FavoriteFragmentDirections
-//        listener.openMusicDetailActivity(view, musicId, musicName, artworkUrl)
-    }
+        val intent = MusicDetailActivity.newInstance(
+            context = requireContext(),
+            music = SimpleMusicDetailUIModel(
+                id = musicId,
+                name = musicName,
+                artworkUrl = artworkUrl
+            ),
+            fromRemote = false
+        )
 
-    private fun removeMusicFromFavorite(musicId: Long) {
-        viewModel.removeMusicFromFavorite(musicId)
+        //Animations
+        val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            requireBaseActivity(),
+            Pair<View, String>(
+                view.findViewById(R.id.musicName),
+                MusicDetailActivity.VIEW_NAME_HEADER_TITLE
+            ),
+            Pair<View, String>(
+                view.findViewById(R.id.artwork),
+                MusicDetailActivity.VIEW_NAME_HEADER_IMAGE
+            )
+        )
+        ActivityCompat.startActivity(requireContext(), intent, activityOptions.toBundle())
     }
 }
 

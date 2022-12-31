@@ -3,15 +3,19 @@ package com.jeanpaulo.musiclibrary.core.repository.database.entity
 import androidx.room.*
 import com.jeanpaulo.musiclibrary.core.domain.model.Playlist
 
-@Entity(tableName = "playlist")
+@Entity(tableName = PlaylistEntity.TABLE)
 class PlaylistEntity(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "playlistId") var playlistId: Long = 0,
-    @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "description") val description: String?
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = ID) var playlistId: Long = 0,
+    @ColumnInfo(name = TITTLE) val title: String,
+    @ColumnInfo(name = DESCRIPTION) val description: String?
 ) {
-    fun toModel() = Playlist(playlistId, title, description)
+    companion object {
+        const val TABLE = "playlist"
 
-    fun setId(id: Long){
-        this.playlistId = id
+        const val ID = "id"
+        const val TITTLE = "tittle"
+        const val DESCRIPTION = "description"
+
+        const val T_ID = "$TABLE.$ID"
     }
 }

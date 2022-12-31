@@ -5,7 +5,7 @@ import com.jeanpaulo.musiclibrary.search.domain.model.SearchMusic
 
 fun MusicResponse.toSearchMusic() =
     SearchMusic(
-        musicId = this.ds_trackId ?: 0L,
+        musicId = this.remoteId ?: 0L,
         musicName = this.trackName ?: "",
         artworkUrl = this.artworkUrl ?: "",
         artistName = this.artistName ?: "",
