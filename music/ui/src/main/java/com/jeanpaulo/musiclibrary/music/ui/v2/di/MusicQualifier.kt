@@ -1,4 +1,4 @@
-package com.jeanpaulo.musiclibrary.music.ui.di
+package com.jeanpaulo.musiclibrary.music.ui.v2.di
 
 import javax.inject.Qualifier
 

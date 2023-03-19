@@ -1,9 +1,13 @@
+val kotlin_version: String by extra
 plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-android-extensions")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
+}
+apply {
+    plugin("kotlin-android")
 }
 
 android {
@@ -62,4 +66,7 @@ dependencies {
     implementation(Depends.RxJava3.RxAndroid())
     implementation(Depends.RxJava3.RxJava())
     implementation(Depends.RxJava3.RxKotlin())
+}
+repositories {
+    mavenCentral()
 }

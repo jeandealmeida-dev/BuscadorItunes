@@ -18,7 +18,7 @@ import com.jeanpaulo.musiclibrary.favorite.presentation.viewmodel.FavoriteState
 import com.jeanpaulo.musiclibrary.favorite.presentation.viewmodel.FavoriteViewModel
 import com.jeanpaulo.musiclibrary.favorite.ui.R
 import com.jeanpaulo.musiclibrary.favorite.ui.databinding.FavoriteFragmentBinding
-import com.jeanpaulo.musiclibrary.music.ui.MusicDetailActivity
+import com.jeanpaulo.musiclibrary.music.ui.v2.view.MusicDetailActivity
 
 
 /**

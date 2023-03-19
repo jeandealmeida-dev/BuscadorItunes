@@ -1,9 +1,13 @@
+val kotlin_version: String by extra
 plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-android-extensions")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
+}
+apply {
+    plugin("kotlin-android")
 }
 
 android {
@@ -12,6 +16,7 @@ android {
     buildFeatures {
         dataBinding = false
         viewBinding = true
+        compose = true
     }
 
     defaultConfig {
@@ -35,6 +40,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    composeOptions {
+        //kotlinCompilerVersion = Depends.Kotlin.version
+        kotlinCompilerExtensionVersion = Depends.Compose.version
+    }
 }
 
 dependencies {
@@ -49,6 +59,9 @@ dependencies {
     testImplementation(Depends.JUnit())
     androidTestImplementation(Depends.AndroidX.JUnit())
     androidTestImplementation(Depends.AndroidX.Espresso())
+
+    //AndroidX
+    implementation(Depends.AndroidX.Compose())
 
     // Dagger
     implementation(Depends.Dagger.core())
@@ -68,4 +81,22 @@ dependencies {
 
     // Picasso
     implementation(Depends.Picasso())
+
+    // Compose
+    debugImplementation(Depends.Compose.UI.Tooling())
+    implementation(Depends.Compose.UI.ToolingPreview())
+
+    //implementation(Depends.Compose.Compiler())
+    implementation(Depends.Compose.Runtime())
+    implementation(Depends.Compose.UI.core())
+    implementation(Depends.Compose.Foundation.core())
+    implementation(Depends.Compose.Foundation.Layout())
+    implementation(Depends.Compose.Material.core())
+    implementation(Depends.Compose.Material.IconsExtended())
+    implementation(Depends.Compose.UI.Text())
+    implementation(Depends.Compose.CustomView.core())
+    implementation(Depends.Compose.CustomView.PoolingContainer())
+}
+repositories {
+    mavenCentral()
 }

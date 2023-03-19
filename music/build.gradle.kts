@@ -1,9 +1,13 @@
+val kotlin_version: String by extra
 plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-android-extensions")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
+}
+apply {
+    plugin("kotlin-android")
 }
 
 android {
@@ -47,4 +51,7 @@ dependencies {
     androidTestImplementation(Depends.AndroidX.JUnit())
     androidTestImplementation(Depends.AndroidX.Espresso())
 
+}
+repositories {
+    mavenCentral()
 }

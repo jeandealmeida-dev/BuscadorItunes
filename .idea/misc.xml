@@ -3,9 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/compose-model-1675024567773.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1675032915613.xml" value="0.21851851851851853" />
+        <entry key="../../../../layout/compose-model-1675039603874.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1675549196198.xml" value="0.2905405405405405" />
+        <entry key="../../../../layout/compose-model-1675552411323.xml" value="0.2905405405405405" />
+        <entry key="../../../../layout/compose-model-1675604078879.xml" value="0.2905405405405405" />
+        <entry key="../../../../layout/compose-model-1675606382897.xml" value="0.2905405405405405" />
+        <entry key="../../../../layout/compose-model-1676243425099.xml" value="0.2905405405405405" />
+        <entry key="../../../../layout/compose-model-1677106613034.xml" value="0.2905405405405405" />
+        <entry key="../../../../layout/compose-model-1677193393982.xml" value="0.2905405405405405" />
+        <entry key="../../../../layout/compose-model-1677193769886.xml" value="0.2905405405405405" />
+        <entry key="../../../../layout/compose-model-1677196104968.xml" value="0.2905405405405405" />
         <entry key="../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="app/playlist/src/main/res/layout/frag_playlist.xml" value="0.16134751773049646" />
         <entry key="app/src/main/res/drawable/ic_star_white_24dp.xml" value="0.1515" />
+        <entry key="app/src/main/res/layout/content_main.xml" value="0.1828774062816616" />
         <entry key="app/src/main/res/menu/drawer_actions.xml" value="0.17395833333333333" />
         <entry key="app/src/main/res/menu/menu_context_playlist.xml" value="0.175" />
         <entry key="app/src/main/res/menu/menu_xuxu.xml" value="0.1" />
@@ -25,7 +38,9 @@
         <entry key="music/ui/src/main/res/drawable/ic_star_border_white_24dp.xml" value="0.1325" />
         <entry key="music/ui/src/main/res/drawable/ic_star_white_24dp.xml" value="0.1325" />
         <entry key="music/ui/src/main/res/layout/activity_music_detail.xml" value="0.1" />
+        <entry key="music/ui/src/main/res/layout/activity_music_detail_v2.xml" value="0.1" />
         <entry key="music/ui/src/main/res/layout/frag_music_detail.xml" value="0.1" />
+        <entry key="music/ui/src/main/res/layout/frag_music_detail_v2.xml" value="0.1" />
         <entry key="music/ui/src/main/res/menu/menu_music_detail.xml" value="0.1" />
         <entry key="playlist/create/src/main/res/layout/frag_add_playlist.xml" value="0.1" />
         <entry key="playlist/create/src/main/res/menu/menu_playlist_detail.xml" value="0.1" />
