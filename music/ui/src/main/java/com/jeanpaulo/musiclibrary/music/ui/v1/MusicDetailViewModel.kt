@@ -1,4 +1,4 @@
-package com.jeanpaulo.musiclibrary.music.ui.viewmodel
+package com.jeanpaulo.musiclibrary.music.ui.v1
 
 import androidx.lifecycle.*
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
@@ -6,10 +6,13 @@ import com.jeanpaulo.musiclibrary.commons.exceptions.EmptyResultException
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
 import com.jeanpaulo.musiclibrary.music.domain.MusicInteractor
-import com.jeanpaulo.musiclibrary.music.ui.di.FromRemote
-import com.jeanpaulo.musiclibrary.music.ui.di.SimpleMusicUI
+import com.jeanpaulo.musiclibrary.music.ui.v1.di.FromRemote
+import com.jeanpaulo.musiclibrary.music.ui.v1.di.SimpleMusicUI
 import com.jeanpaulo.musiclibrary.music.ui.model.MusicDetailUIModel
 import com.jeanpaulo.musiclibrary.music.ui.model.mapper.convertToMusicUI
+import com.jeanpaulo.musiclibrary.music.ui.v1.FavoriteState
+import com.jeanpaulo.musiclibrary.music.ui.v1.MusicDetailState
+import com.jeanpaulo.musiclibrary.music.ui.v1.MusicPlayerState
 import io.reactivex.rxjava3.core.Scheduler
 import javax.inject.Inject
 import javax.inject.Named

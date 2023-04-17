@@ -127,3 +127,6 @@ dependencies {
     implementation(Depends.Timber())
     implementation(Depends.Stetho())
 }
+repositories {
+    mavenCentral()
+}

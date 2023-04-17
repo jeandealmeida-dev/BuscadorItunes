@@ -15,12 +15,14 @@ object Depends {
             const val music = ":music:ui"
             const val favorite = ":favorite:ui"
         }
+
         object Domain {
             const val search = ":search:domain"
             const val playlist = ":playlist:domain"
             const val music = ":music:domain"
             const val favorite = ":favorite:domain"
         }
+
         object Data {
             const val search = ":search:data"
             const val playlist = ":playlist:data"
@@ -32,16 +34,18 @@ object Depends {
     // updated 10/12/2022
     object Android {
         fun BuildGradle() = "com.android.tools.build:gradle:2.3.0"
-        fun MaterialComponents() = "com.google.android.material:material:1.6.0" // Stable (https://stackoverflow.com/questions/74191324/cant-determine-type-for-tag-macro-name-m3-comp-bottom-app-bar-container-colo)
+        fun MaterialComponents() =
+            "com.google.android.material:material:1.6.0" // Stable (https://stackoverflow.com/questions/74191324/cant-determine-type-for-tag-macro-name-m3-comp-bottom-app-bar-container-colo)
+
         fun Multidex() = "com.android.support:multidex:2.0.1"
 
         //${CustomVersions.kt.gradle_plugin_version}
         fun Palette() = "com.android.support:palette-v7:31.0.0"
     }
 
-    // updated 10/12/2022
+    // updated 29/01/2022
     object Kotlin {
-        val version = "1.7.22"
+        val version = "1.7.10"
         fun GradlePlugin() = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         fun Stdlib() = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.22"
     }
@@ -112,6 +116,7 @@ object Depends {
         fun RecyclerView() = "androidx.recyclerview:recyclerview:1.2.1"
         fun SwipeRefreshLayout() = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
         fun ConstraintLayout() = "androidx.constraintlayout:constraintlayout:2.1.4"
+        fun Compose() = "androidx.activity:activity-compose:1.6.1"
 
         object Navigation {
             val version = "2.5.3"
@@ -125,6 +130,38 @@ object Depends {
             fun Extensions() = "androidx.lifecycle:lifecycle-extensions:2.2.0"
             fun ViewModel() = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
             fun LiveData() = "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+        }
+    }
+
+    object Compose {
+        const val version = "1.3.1"
+
+        //fun Compiler() = "androidx.compose.compiler:compiler:1.3.2"
+        object CustomView {
+            fun core() = "androidx.customview:customview:1.1.0"
+            fun PoolingContainer() = "androidx.customview:customview-poolingcontainer:1.0.0"
+        }
+
+        object UI {
+            fun core() = "androidx.compose.ui:ui:$version"
+            fun Tooling() = "androidx.compose.ui:ui-tooling:$version"
+            fun ToolingPreview() = "androidx.compose.ui:ui-tooling-preview:$version"
+
+            fun Text() = "androidx.compose.ui:ui-text:$version"
+        }
+
+        fun Runtime() = "androidx.compose.runtime:runtime:$version"
+
+        object Foundation {
+            const val version = "1.3.1"
+            fun core() = "androidx.compose.foundation:foundation:$version"
+            fun Layout() = "androidx.compose.foundation:foundation-layout:$version"
+        }
+
+        object Material {
+            const val version = "1.3.1"
+            fun core() = "androidx.compose.material:material:$version"
+            fun IconsExtended() = "androidx.compose.material:material-icons-extended:$version"
         }
     }
 

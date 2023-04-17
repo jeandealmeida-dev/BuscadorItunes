@@ -1,6 +1,5 @@
-package com.jeanpaulo.musiclibrary.music.ui
+package com.jeanpaulo.musiclibrary.music.ui.v1.view
 
-import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.MenuProvider
@@ -9,11 +8,12 @@ import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
 import com.jeanpaulo.musiclibrary.commons.extensions.gone
 import com.jeanpaulo.musiclibrary.commons.extensions.menuChecked
 import com.jeanpaulo.musiclibrary.commons.extensions.visible
+import com.jeanpaulo.musiclibrary.music.ui.R
 import com.jeanpaulo.musiclibrary.music.ui.databinding.FragMusicDetailBinding
 import com.jeanpaulo.musiclibrary.music.ui.model.MusicDetailUIModel
-import com.jeanpaulo.musiclibrary.music.ui.viewmodel.FavoriteState
-import com.jeanpaulo.musiclibrary.music.ui.viewmodel.MusicDetailState
-import com.jeanpaulo.musiclibrary.music.ui.viewmodel.MusicDetailViewModel
+import com.jeanpaulo.musiclibrary.music.ui.v1.FavoriteState
+import com.jeanpaulo.musiclibrary.music.ui.v1.MusicDetailState
+import com.jeanpaulo.musiclibrary.music.ui.v1.MusicDetailViewModel
 
 
 /**

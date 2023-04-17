@@ -7,7 +7,7 @@ object Config {
     const val core = "core"
 
     const val compileSdkVersion = 33
-    const val minSdkVersion = 15
+    const val minSdkVersion = 21
     const val targetSdkVersion = 31
 
     const val versionName = "1.0"
