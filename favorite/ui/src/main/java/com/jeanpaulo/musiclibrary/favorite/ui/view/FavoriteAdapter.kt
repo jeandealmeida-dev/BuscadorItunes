@@ -39,6 +39,7 @@ class FavoriteAdapter(
 
     fun submitList(it: List<Music>) {
         list = it
+        notifyDataSetChanged()
     }
 
     fun getItemSelected(): Music = list[positionSelected]

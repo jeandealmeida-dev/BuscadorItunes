@@ -1,4 +1,4 @@
-package com.jeanpaulo.musiclibrary.favorite.presentation.viewmodel
+package com.jeanpaulo.musiclibrary.favorite.ui
 
 import androidx.lifecycle.*
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
@@ -13,7 +13,7 @@ import javax.inject.Named
 sealed class FavoriteState {
     object Loading : FavoriteState()
     object Error : FavoriteState()
-    object Success : FavoriteState()
+    data class Success(val musicList: List<Music>) : FavoriteState()
 }
 
 class FavoriteViewModel @Inject constructor(
@@ -21,9 +21,6 @@ class FavoriteViewModel @Inject constructor(
     @Named("IOScheduler") private val ioScheduler: Scheduler,
     private val interactor: FavoriteInteractor
 ) : BaseViewModel() {
-
-    private var _musicList: MutableLiveData<List<Music>> = MutableLiveData()
-    val musicList: LiveData<List<Music>> = _musicList
 
     private val _favoriteState = MutableLiveData<FavoriteState>()
     val favoriteState: LiveData<FavoriteState> get() = _favoriteState
@@ -45,34 +42,16 @@ class FavoriteViewModel @Inject constructor(
                 .doOnSubscribe {
                     _favoriteState.postValue(FavoriteState.Loading)
                 }
-                .delay(200, TimeUnit.MILLISECONDS)
+                .delay(500, TimeUnit.MILLISECONDS)
                 .subscribe({ favorites ->
-                    val musicFiltered = favorites.map { it.music!! }
-                    _musicList.postValue(musicFiltered)
-                    _favoriteState.postValue(FavoriteState.Success)
+                    val musicFiltered = favorites.map { it.music }
+                    _favoriteState.postValue(FavoriteState.Success(musicFiltered))
                 }, {
                     if (it is EmptyResultException) {
-                        _favoriteState.postValue(FavoriteState.Success)
+                        _favoriteState.postValue(FavoriteState.Success(emptyList()))
                     } else {
                         _favoriteState.postValue(FavoriteState.Error)
                     }
-                })
-        )
-    }
-
-    fun removeMusicFromFavorite(trackId: Long) {
-        compositeDisposable.add(
-            interactor.removeFromFavorites(trackId)
-                .subscribeOn(ioScheduler)
-                .observeOn(mainScheduler)
-                .doOnSubscribe {
-                    _favoriteState.postValue(FavoriteState.Loading)
-                }
-                .delay(200, TimeUnit.MILLISECONDS)
-                .subscribe({
-                    _favoriteState.postValue(FavoriteState.Success)
-                }, {
-                    _favoriteState.postValue(FavoriteState.Error)
                 })
         )
     }
