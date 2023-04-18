@@ -77,6 +77,10 @@ dependencies {
 
     // Picasso
     implementation(Depends.Picasso())
+
+    // Testing
+    testImplementation(Depends.Mockk())
+    testImplementation(Depends.AndroidX.ArchCoreTesting())
 }
 repositories {
     mavenCentral()

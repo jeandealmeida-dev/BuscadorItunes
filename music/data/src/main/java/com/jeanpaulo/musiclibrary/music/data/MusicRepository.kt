@@ -76,7 +76,7 @@ class MusicRepositoryImpl @Inject constructor(
             .onErrorResumeNext {
                 throw when (it) {
                     is EmptyResultSetException -> {
-                        EmptyResultException(it)
+                        EmptyResultException()
                     }
                     else -> {
                         it
@@ -96,7 +96,7 @@ class MusicRepositoryImpl @Inject constructor(
             .onErrorResumeNext {
                 when (it) {
                     is EmptyResultSetException -> {
-                        Single.error(EmptyResultException(it))
+                        Single.error(EmptyResultException())
                     }
                     else -> {
                         Single.error(it)

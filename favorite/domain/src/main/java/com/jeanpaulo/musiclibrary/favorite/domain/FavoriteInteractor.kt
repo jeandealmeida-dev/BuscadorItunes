@@ -40,6 +40,4 @@ class FavoriteInteractorImpl @Inject constructor(
                 return@map favoriteList
             }
     }
-
-
 }

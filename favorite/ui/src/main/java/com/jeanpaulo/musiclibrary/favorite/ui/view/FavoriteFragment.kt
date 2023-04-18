@@ -9,13 +9,15 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
+import com.jeanpaulo.musiclibrary.commons.extensions.gone
 import com.jeanpaulo.musiclibrary.commons.extensions.setupRefreshLayout
 import com.jeanpaulo.musiclibrary.commons.extensions.showSnackbar
+import com.jeanpaulo.musiclibrary.commons.extensions.visible
 import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
-import com.jeanpaulo.musiclibrary.favorite.presentation.viewmodel.FavoriteState
-import com.jeanpaulo.musiclibrary.favorite.presentation.viewmodel.FavoriteViewModel
+import com.jeanpaulo.musiclibrary.favorite.ui.FavoriteState
+import com.jeanpaulo.musiclibrary.favorite.ui.FavoriteViewModel
 import com.jeanpaulo.musiclibrary.favorite.ui.R
 import com.jeanpaulo.musiclibrary.favorite.ui.databinding.FavoriteFragmentBinding
 //--> v2
@@ -53,18 +55,33 @@ class FavoriteFragment : BaseMvvmFragment() {
     }
 
     fun setupListeners() {
-        viewModel.favoriteState.observe(viewLifecycleOwner) {
-            when (it) {
-                FavoriteState.Error -> showSnackBar("Error")
-                FavoriteState.Loading -> showSnackBar("Loading")
-                FavoriteState.Success -> showSnackBar("Success")
+        viewModel.favoriteState.observe(viewLifecycleOwner) { state ->
+            //reset
+            binding.layoutNoFavorite.gone()
+            binding.txtFavoriteError.gone()
+            binding.txtFavoriteLoading.gone()
+
+            when (state) {
+                FavoriteState.Error -> {
+                    binding.txtFavoriteError.let {
+                        it.visible()
+                        it.setOnClickListener {
+                            viewModel.refresh()
+                        }
+                    }
+                }
+                FavoriteState.Loading -> {
+                    binding.txtFavoriteLoading.visible()
+                }
+                is FavoriteState.Success -> {
+                    if(state.musicList.isEmpty()){
+                        binding.layoutNoFavorite.visible()
+                    } else {
+                        listAdapter.submitList(state.musicList)
+                    }
+                }
                 else -> {}
             }
-        }
-
-        viewModel.musicList.observe(viewLifecycleOwner) { it: List<Music> ->
-            listAdapter.submitList(it)
-            listAdapter.notifyDataSetChanged()
         }
     }
 
@@ -72,10 +89,6 @@ class FavoriteFragment : BaseMvvmFragment() {
         setupListAdapter()
         setupRefreshLayout(binding.refreshLayout, binding.favoriteList)
 
-        binding.txtError.text = getString(R.string.loading_music_detail_error)
-        binding.txtError.setOnClickListener {
-            viewModel.refresh()
-        }
     }
 
     private fun setupListAdapter() {

@@ -36,7 +36,7 @@ class FavoriteRepositoryImpl @Inject constructor(
             .onErrorResumeNext {
                 when (it) {
                     is EmptyResultSetException -> {
-                        Single.error(EmptyResultException(it))
+                        Single.error(EmptyResultException())
                     }
                     else -> {
                         Single.error(it)

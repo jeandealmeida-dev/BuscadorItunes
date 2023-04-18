@@ -5,7 +5,7 @@ import com.jeanpaulo.musiclibrary.core.repository.database.entity.FavoriteEntity
 data class Favorite(
     val musicId: Long
 ) {
-    var music: Music? = null
+    lateinit var music: Music
 
     fun toEntity(): FavoriteEntity = FavoriteEntity(musicId = musicId)
 }
