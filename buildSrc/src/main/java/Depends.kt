@@ -117,6 +117,7 @@ object Depends {
         fun SwipeRefreshLayout() = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
         fun ConstraintLayout() = "androidx.constraintlayout:constraintlayout:2.1.4"
         fun Compose() = "androidx.activity:activity-compose:1.6.1"
+        fun ArchCoreTesting() = "androidx.arch.core:core-testing:2.1.0"
 
         object Navigation {
             val version = "2.5.3"
@@ -164,6 +165,8 @@ object Depends {
             fun IconsExtended() = "androidx.compose.material:material-icons-extended:$version"
         }
     }
+
+    fun Mockk() = "io.mockk:mockk:1.13.5"
 
     fun Picasso() = "com.squareup.picasso:picasso:2.5.2"
     fun SLF4J() = "org.slf4j:slf4j-api:2.0.5"
