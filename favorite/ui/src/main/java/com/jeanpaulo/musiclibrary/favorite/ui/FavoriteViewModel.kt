@@ -13,6 +13,7 @@ import javax.inject.Named
 sealed class FavoriteState {
     object Loading : FavoriteState()
     object Error : FavoriteState()
+    object Empty : FavoriteState()
     data class Success(val musicList: List<Music>) : FavoriteState()
 }
 
@@ -48,7 +49,7 @@ class FavoriteViewModel @Inject constructor(
                     _favoriteState.postValue(FavoriteState.Success(musicFiltered))
                 }, {
                     if (it is EmptyResultException) {
-                        _favoriteState.postValue(FavoriteState.Success(emptyList()))
+                        _favoriteState.postValue(FavoriteState.Empty)
                     } else {
                         _favoriteState.postValue(FavoriteState.Error)
                     }

@@ -73,12 +73,11 @@ class FavoriteFragment : BaseMvvmFragment() {
                 FavoriteState.Loading -> {
                     binding.txtFavoriteLoading.visible()
                 }
+                FavoriteState.Empty -> {
+                    binding.layoutNoFavorite.visible()
+                }
                 is FavoriteState.Success -> {
-                    if(state.musicList.isEmpty()){
-                        binding.layoutNoFavorite.visible()
-                    } else {
-                        listAdapter.submitList(state.musicList)
-                    }
+                    listAdapter.submitList(state.musicList)
                 }
                 else -> {}
             }

@@ -56,10 +56,10 @@ class FavoriteViewModelTest {
     }
 
     @Test
-    fun `GIVEN user open favorite tab WHEN it has NOT favorites THEN update state to Success but empty`() {
+    fun `GIVEN user open favorite tab WHEN it has NOT favorites THEN update state to Empty`() {
         every { interactor.getFavoriteMusics() } returns Flowable.error(EmptyResultException())
         viewModel.getFavoriteList()
-        favoriteStateObserver.onChanged(FavoriteState.Success(emptyList()))
+        favoriteStateObserver.onChanged(FavoriteState.Empty)
     }
 
     @Test
