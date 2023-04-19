@@ -6,10 +6,23 @@ jobs:
   run-github-actions:
     runs-on: ubuntu-latest
     steps:
+      - name: List Files
+        run: |
+          pwd
+          ls
+          echo $GITHUB_SHA
+          echo $GITHUB_REPOSITORY
+          echo $GITHUB_WORKSPACE
+          echo "${{ github.token }}"
+
+      - name: Checkout
+        uses: actions/checkout@v1
+
       - name: Simple JS Action
         id: greet
         uses: actions/hello-world-javascript-action@master
         with:
           who-to-greet: John
+
       - name: Log Greeting Time
         run: echo "${{ steps.greet.outputs.time }}"
