@@ -54,7 +54,6 @@ class PlaylistFragment : BaseMvvmFragment() {
 
         viewModel.playlistList.observe(viewLifecycleOwner) {
             listAdapter.submitList(it)
-            listAdapter.notifyDataSetChanged()
         }
     }
 

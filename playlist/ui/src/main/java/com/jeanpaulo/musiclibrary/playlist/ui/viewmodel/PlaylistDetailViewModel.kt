@@ -29,7 +29,7 @@ import javax.inject.Named
 sealed class PlaylistDetailState {
     object Loading : PlaylistDetailState()
     object Error : PlaylistDetailState()
-    object Success : PlaylistDetailState()
+    data class Success(val playlist: Playlist) : PlaylistDetailState()
 }
 class PlaylistDetailViewModel @Inject constructor(
     @Named("MainScheduler") private val mainScheduler: Scheduler,
@@ -40,8 +40,6 @@ class PlaylistDetailViewModel @Inject constructor(
     private val _playlistDetailState = MutableLiveData<PlaylistDetailState>()
     val playlistDetailState: LiveData<PlaylistDetailState> get() = _playlistDetailState
 
-    val playlistLiveData = MutableLiveData<Playlist>()
-
     fun getPlaylist(playlistId: Long) {
         compositeDisposable.add(
             interactor.getPlaylist(playlistId)
@@ -50,10 +48,9 @@ class PlaylistDetailViewModel @Inject constructor(
                 .doOnSubscribe {
                     _playlistDetailState.value = PlaylistDetailState.Loading
                 }
-                .delay(200, TimeUnit.MILLISECONDS)
+                .delay(500, TimeUnit.MILLISECONDS)
                 .subscribe({ playlist ->
-                    playlistLiveData.value = playlist
-                    _playlistDetailState.value = PlaylistDetailState.Success
+                    _playlistDetailState.value = PlaylistDetailState.Success(playlist)
                 }, {
                     _playlistDetailState.value = PlaylistDetailState.Error
                 })

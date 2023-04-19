@@ -38,6 +38,7 @@ class PlaylistListAdapter(
 
     fun submitList(it: List<Playlist>) {
         list = it
+        notifyDataSetChanged()
     }
 
     fun getItem(position: Int) = list[position]

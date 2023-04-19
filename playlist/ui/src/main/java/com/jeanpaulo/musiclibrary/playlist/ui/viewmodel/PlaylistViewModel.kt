@@ -44,7 +44,7 @@ class PlaylistViewModel @Inject constructor(
                 .doOnSubscribe {
                     _playlistState.value = PlaylistState.Loading
                 }
-                .delay(200, TimeUnit.MILLISECONDS)
+                .delay(500, TimeUnit.MILLISECONDS)
                 .subscribe({
                     _playlistState.value = PlaylistState.Success
                     refresh()
@@ -62,7 +62,7 @@ class PlaylistViewModel @Inject constructor(
                 .doOnSubscribe {
                     _playlistState.postValue(PlaylistState.Loading)
                 }
-                .delay(200, TimeUnit.MILLISECONDS)
+                .delay(500, TimeUnit.MILLISECONDS)
                 .subscribe({ playlistList ->
                     _playlistList.postValue(playlistList)
                     _playlistState.postValue(PlaylistState.Success)

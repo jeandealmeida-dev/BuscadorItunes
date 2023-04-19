@@ -28,7 +28,7 @@ import javax.inject.Named
 sealed class PlaylistCreateState {
     object Loading : PlaylistCreateState()
     object Error : PlaylistCreateState()
-    object Success : PlaylistCreateState()
+    data class Success(val playlistId: Long) : PlaylistCreateState()
 }
 class PlaylistCreateViewModel(
     @Named("MainScheduler") private val mainScheduler: Scheduler,
@@ -47,9 +47,9 @@ class PlaylistCreateViewModel(
                 .doOnSubscribe {
                     _playlistCreateState.value = PlaylistCreateState.Loading
                 }
-                .delay(200, TimeUnit.MILLISECONDS)
+                .delay(500, TimeUnit.MILLISECONDS)
                 .subscribe({ playlistId ->
-                    _playlistCreateState.value = PlaylistCreateState.Success
+                    _playlistCreateState.value = PlaylistCreateState.Success(playlistId)
                 }, {
                     _playlistCreateState.value = PlaylistCreateState.Error
                 })
