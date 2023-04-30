@@ -23,6 +23,7 @@ import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
 import com.jeanpaulo.musiclibrary.playlist.domain.PlaylistCreateInteractor
 import io.reactivex.rxjava3.core.Scheduler
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import javax.inject.Named
 
 sealed class PlaylistCreateState {
@@ -30,7 +31,8 @@ sealed class PlaylistCreateState {
     object Error : PlaylistCreateState()
     data class Success(val playlistId: Long) : PlaylistCreateState()
 }
-class PlaylistCreateViewModel(
+
+class PlaylistCreateViewModel @Inject constructor(
     @Named("MainScheduler") private val mainScheduler: Scheduler,
     @Named("IOScheduler") private val ioScheduler: Scheduler,
     private val playlistInteractor: PlaylistCreateInteractor,
@@ -39,9 +41,14 @@ class PlaylistCreateViewModel(
     private val _playlistCreateState = MutableLiveData<PlaylistCreateState>()
     val playlistCreateState: LiveData<PlaylistCreateState> get() = _playlistCreateState
 
-    private fun createPlaylist(playlist: Playlist) {
+    fun createPlaylist(title: String, description: String?) {
         compositeDisposable.add(
-            playlistInteractor.savePlaylist(playlist)
+            playlistInteractor.savePlaylist(
+                Playlist(
+                    title = title,
+                    description = description
+                )
+            )
                 .subscribeOn(ioScheduler)
                 .observeOn(mainScheduler)
                 .doOnSubscribe {

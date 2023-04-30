@@ -9,10 +9,16 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
 
-sealed class PlaylistState {
-    object Loading : PlaylistState()
-    object Error : PlaylistState()
-    object Success : PlaylistState()
+sealed class PlaylistListState {
+    object Loading : PlaylistListState()
+    object Error : PlaylistListState()
+    data class Success(val playlistList: List<Playlist>) : PlaylistListState()
+}
+
+sealed class PlaylistDeleteState {
+    object Loading : PlaylistDeleteState()
+    object Error : PlaylistDeleteState()
+    object Success : PlaylistDeleteState()
 }
 
 class PlaylistViewModel @Inject constructor(
@@ -21,11 +27,11 @@ class PlaylistViewModel @Inject constructor(
     private val interactor: PlaylistInteractor,
 ) : BaseViewModel() {
 
-    private val _playlistState = MutableLiveData<PlaylistState>()
-    val playlistState: LiveData<PlaylistState> get() = _playlistState
+    private val _playlistListState = MutableLiveData<PlaylistListState>()
+    val playlistListState: LiveData<PlaylistListState> get() = _playlistListState
 
-    private val _playlistList = MutableLiveData<List<Playlist>>()
-    val playlistList: LiveData<List<Playlist>> get() = _playlistList
+    private val _playlistDeleteState = MutableLiveData<PlaylistDeleteState>()
+    val playlistDeleteState: LiveData<PlaylistDeleteState> get() = _playlistDeleteState
 
     override fun onCreate() {
         super.onCreate()
@@ -42,14 +48,14 @@ class PlaylistViewModel @Inject constructor(
                 .subscribeOn(ioScheduler)
                 .observeOn(mainScheduler)
                 .doOnSubscribe {
-                    _playlistState.value = PlaylistState.Loading
+                    _playlistDeleteState.value = PlaylistDeleteState.Loading
                 }
                 .delay(500, TimeUnit.MILLISECONDS)
                 .subscribe({
-                    _playlistState.value = PlaylistState.Success
+                    _playlistDeleteState.value = PlaylistDeleteState.Success
                     refresh()
                 }, {
-                    _playlistState.value = PlaylistState.Error
+                    _playlistDeleteState.value = PlaylistDeleteState.Error
                 })
         )
     }
@@ -60,14 +66,13 @@ class PlaylistViewModel @Inject constructor(
                 .subscribeOn(mainScheduler)
                 .observeOn(ioScheduler)
                 .doOnSubscribe {
-                    _playlistState.postValue(PlaylistState.Loading)
+                    _playlistListState.postValue(PlaylistListState.Loading)
                 }
                 .delay(500, TimeUnit.MILLISECONDS)
                 .subscribe({ playlistList ->
-                    _playlistList.postValue(playlistList)
-                    _playlistState.postValue(PlaylistState.Success)
+                    _playlistListState.postValue(PlaylistListState.Success(playlistList))
                 }, {
-                    _playlistState.postValue(PlaylistState.Error)
+                    _playlistListState.postValue(PlaylistListState.Error)
                 })
         )
     }

@@ -4,4 +4,14 @@
     <string name="action_save">Salvar</string>
     <string name="action_edit">Editar</string>
     <string name="action_delete">Apagar</string>
+
+    <string name="playlist_list_empty">Crie já sua primeira playlist!</string>
+    <string name="description_hint">Qual é o tema da sua playlist? Conta aí</string>
+    <string name="title_hint">Título</string>
+    <string name="playlist_list_error">Erro ao consultar suas playlists!</string>
+    <string name="playlist_list_loading">Carregandos suas playlists</string>
+    <string name="playlist_delete_error">Erro ao deletar sua playlist</string>
+    <string name="playlist_delete_loading">Deletando playlist</string>
+    <string name="playlist_delete_success">Playlist deletada!</string>
+    <string name="action_new">Novo</string>
 </resources>

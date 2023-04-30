@@ -58,7 +58,6 @@ dependencies {
     implementation(project(Depends.Module.Data.search))
 
     // → Playlist
-    implementation(project(Depends.Module.playlist))
     implementation(project(Depends.Module.UI.playlist))
     implementation(project(Depends.Module.Domain.playlist))
     implementation(project(Depends.Module.Data.playlist))
