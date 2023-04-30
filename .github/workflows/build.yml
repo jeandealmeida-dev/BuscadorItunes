@@ -15,8 +15,19 @@ jobs:
       ## Checkout our repository ###
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '11'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      # ref: https://github.com/marketplace/actions/setup-android-sdk-tools
+      #- name: Setup Android SDK
+      #  uses: android-actions/setup-android@v2
+
+      - name: Execute Gradle build
+        run: ./gradlew build
