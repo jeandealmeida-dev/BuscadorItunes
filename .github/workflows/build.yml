@@ -12,10 +12,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      ## Checkout our repository ###
+      ## Checkout ###
       - name: Checkout
         uses: actions/checkout@v3
 
+      ## Setup ###
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
@@ -24,10 +25,21 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+        with:
+          arguments: assembleRelease
 
       # ref: https://github.com/marketplace/actions/setup-android-sdk-tools
       #- name: Setup Android SDK
       #  uses: android-actions/setup-android@v2
 
+      ## Execute ###
       - name: Execute Gradle build
-        run: ./gradlew build
+        run: ./gradlew assemble
+
+      ## Tests ###
+      - name: Run Unit Tests
+        run: ./gradlew test --stacktrace
+
+      ## Formatter ###
+      - name: Run Kotlin Linter
+        run: ./gradlew ktlint
