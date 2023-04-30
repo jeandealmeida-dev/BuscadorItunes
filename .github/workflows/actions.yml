@@ -1,12 +1,24 @@
 name: Actions Workflow
 
 on:
-  repository_dispatch:
-    types: [run]
+  push:
+    #branches:
+      #- master
+      #- 'feature/*' # matches feature/featA or feature/featB
+      #- 'feature/**'
+    #tags:
+      #- v1.*
+    #paths:
+      #- '**.js'
+    #paths-ignore:
+      #- "docs/**"
+      #- '!filename.js'
+  #repository_dispatch:
+    #types: [run]
   #schedule:
     #- cron: "0/5 * * * *" #https://crontab.guru/
     #- cron: "0/6 * * * *"
-  push:
+  #push:
   pull_request:
     types: [assigned, opened, reopened]
 
@@ -14,6 +26,7 @@ jobs:
   run-github-actions:
     runs-on: ubuntu-latest
     steps:
+      - name: echo ${{ github.event.client_payload.env }}
       - name: List Files
         run: |
           pwd
