@@ -2,6 +2,7 @@ package com.jeanpaulo.musiclibrary.playlist.ui.fragments
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -44,8 +45,11 @@ class PlaylistCreateFragment : BaseMvvmFragment() {
         viewModel.playlistCreateState.observe(viewLifecycleOwner) {
             when (it) {
                 PlaylistCreateState.Error -> showSnackBar("Error")
-                PlaylistCreateState.Loading -> TODO()
-                is PlaylistCreateState.Success -> TODO()
+                PlaylistCreateState.Loading -> showSnackBar("Loading")
+                is PlaylistCreateState.Success -> {
+                    navigateBack()
+                    showSnackBar("Success")
+                }
                 else -> {}
             }
         }
@@ -55,27 +59,13 @@ class PlaylistCreateFragment : BaseMvvmFragment() {
         setupRefreshLayout(binding.refreshLayout)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_save -> viewModel.createPlaylist(
-                title = binding.inputPlaylistTitle.text.toString(),
-                description = binding.inputPlaylistDescription.text.toString()
-            )
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_playlist_create, menu)
-        val menuSave: MenuItem? = menu.findItem(R.id.action_save)
-        return super.onCreateOptionsMenu(menu, inflater)
-    }
-
     private fun setupMenu() {
-        //TODO Jean fix menu
-        //hasOptionsMenu()
-        //requireActivity()
-        //    .addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        requireActivity()
+            .addMenuProvider(
+                PlaylistCreateFragmentMenuProvider(),
+                viewLifecycleOwner,
+                Lifecycle.State.RESUMED
+            )
     }
 
     private fun showSnackBar(string: String) {
@@ -86,5 +76,34 @@ class PlaylistCreateFragment : BaseMvvmFragment() {
         findNavController().navigate(
             PlaylistFragmentDirections.actionPlaylistFragmentToPlaylistCreateFragment()
         )
+    }
+
+    private fun navigateBack() {
+        findNavController().navigateUp()
+    }
+
+    inner class PlaylistCreateFragmentMenuProvider : MenuProvider {
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            menuInflater.inflate(R.menu.menu_playlist_create, menu)
+        }
+
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            return when (menuItem.itemId) {
+                android.R.id.home -> {
+                    navigateBack()
+                    true
+                }
+                R.id.action_save -> {
+                    viewModel.createPlaylist(
+                        title = binding.inputPlaylistTitle.text.toString(),
+                        description = binding.inputPlaylistDescription.text.toString()
+                    )
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
     }
 }

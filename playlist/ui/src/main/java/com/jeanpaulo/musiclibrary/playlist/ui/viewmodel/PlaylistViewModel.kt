@@ -46,11 +46,11 @@ class PlaylistViewModel @Inject constructor(
         compositeDisposable.add(
             interactor.deletePlaylist(playlistId)
                 .subscribeOn(ioScheduler)
+                .delay(500, TimeUnit.MILLISECONDS)
                 .observeOn(mainScheduler)
                 .doOnSubscribe {
                     _playlistDeleteState.value = PlaylistDeleteState.Loading
                 }
-                .delay(500, TimeUnit.MILLISECONDS)
                 .subscribe({
                     _playlistDeleteState.value = PlaylistDeleteState.Success
                     refresh()
@@ -64,11 +64,11 @@ class PlaylistViewModel @Inject constructor(
         compositeDisposable.add(
             interactor.getPlaylist()
                 .subscribeOn(mainScheduler)
+                .delay(500, TimeUnit.MILLISECONDS)
                 .observeOn(ioScheduler)
                 .doOnSubscribe {
                     _playlistListState.postValue(PlaylistListState.Loading)
                 }
-                .delay(500, TimeUnit.MILLISECONDS)
                 .subscribe({ playlistList ->
                     _playlistListState.postValue(PlaylistListState.Success(playlistList))
                 }, {

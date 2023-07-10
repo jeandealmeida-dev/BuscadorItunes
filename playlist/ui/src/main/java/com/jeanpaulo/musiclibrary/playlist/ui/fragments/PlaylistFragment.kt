@@ -3,6 +3,7 @@ package com.jeanpaulo.musiclibrary.playlist.ui.fragments
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
@@ -31,33 +32,14 @@ class PlaylistFragment : BaseMvvmFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = PlaylistFragmentBinding.inflate(inflater, container, false)
-        setupListeners()
-        setupWidgets()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_playlist, menu)
-                menu.findItem(R.id.action_new)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.action_new -> {
-                        navigateToPlaylistCreate()
-                        return true
-                    }
-
-                    else -> {
-                        false
-                    }
-                }
-            }
-
-        })
+        setupListeners()
+        setupWidgets()
+        setupMenu()
     }
 
     override fun onDestroyView() {
@@ -132,6 +114,15 @@ class PlaylistFragment : BaseMvvmFragment() {
 
     //MENU FUNCTIONS
 
+    fun setupMenu() {
+        requireActivity()
+            .addMenuProvider(
+                PlaylistFragmentMenuProvider(),
+                viewLifecycleOwner,
+                Lifecycle.State.RESUMED
+            )
+    }
+
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val playlist = listAdapter.getItemSelected()
 
@@ -140,10 +131,6 @@ class PlaylistFragment : BaseMvvmFragment() {
             R.id.context_action_delete -> deletePlaylist(playlist.playlistId)
         }
         return super.onContextItemSelected(item)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        else -> super.onOptionsItemSelected(item)
     }
 
     private fun showSnackBar(string: String) {
@@ -168,5 +155,27 @@ class PlaylistFragment : BaseMvvmFragment() {
 
     private fun deletePlaylist(playlistId: Long) {
         viewModel.deletePlaylist(playlistId)
+    }
+
+    inner class PlaylistFragmentMenuProvider : MenuProvider {
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            menuInflater.inflate(R.menu.menu_playlist, menu)
+        }
+
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            return when (menuItem.itemId) {
+                android.R.id.home -> {
+                    requireActivity().onBackPressed()
+                    true
+                }
+                R.id.action_new -> {
+                    navigateToPlaylistCreate()
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
     }
 }

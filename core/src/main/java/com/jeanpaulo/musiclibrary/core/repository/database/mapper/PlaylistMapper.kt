@@ -9,10 +9,3 @@ fun Playlist.toEntity(): PlaylistEntity =
         title = title,
         description = description
     )
-
-fun PlaylistEntity.toModel(): Playlist =
-    Playlist(
-        playlistId = playlistId,
-        title = title,
-        description = description
-    )

@@ -50,11 +50,11 @@ class PlaylistCreateViewModel @Inject constructor(
                 )
             )
                 .subscribeOn(ioScheduler)
+                .delay(500, TimeUnit.MILLISECONDS)
                 .observeOn(mainScheduler)
                 .doOnSubscribe {
                     _playlistCreateState.value = PlaylistCreateState.Loading
                 }
-                .delay(500, TimeUnit.MILLISECONDS)
                 .subscribe({ playlistId ->
                     _playlistCreateState.value = PlaylistCreateState.Success(playlistId)
                 }, {

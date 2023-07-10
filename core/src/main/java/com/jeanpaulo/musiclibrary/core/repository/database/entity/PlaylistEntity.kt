@@ -9,6 +9,14 @@ class PlaylistEntity(
     @ColumnInfo(name = TITTLE) val title: String,
     @ColumnInfo(name = DESCRIPTION) val description: String?
 ) {
+
+    fun toModel(): Playlist =
+        Playlist(
+            playlistId = playlistId,
+            title = title,
+            description = description
+        )
+
     companion object {
         const val TABLE = "playlist"
 
