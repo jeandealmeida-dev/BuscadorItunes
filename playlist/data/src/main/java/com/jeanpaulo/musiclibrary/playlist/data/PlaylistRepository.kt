@@ -5,7 +5,6 @@ import com.jeanpaulo.musiclibrary.core.repository.database.dao.PlaylistDao
 import com.jeanpaulo.musiclibrary.core.repository.database.dao.JoinPlaylistMusicDao
 import com.jeanpaulo.musiclibrary.core.repository.database.entity.JoinPlaylistMusicEntity
 import com.jeanpaulo.musiclibrary.core.domain.model.Playlist
-import com.jeanpaulo.musiclibrary.core.repository.database.mapper.toModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
@@ -29,10 +28,15 @@ class PlaylistRepositoryImpl @Inject constructor(
 ) : PlaylistRepository {
 
     override fun getPlaylist(playlistId: Long): Single<Playlist> =
-        playlistDao.getPlaylistById(playlistId).map { it?.toModel() }
+        playlistDao.getPlaylistById(playlistId).map { it.toModel() }
 
     override fun saveMusicInPlaylist(music: Music, playlistId: Long): Completable =
-        joinPlaylistMusicDao.insert(JoinPlaylistMusicEntity(playlistId = playlistId, musicId = music.id));
+        joinPlaylistMusicDao.insert(
+            JoinPlaylistMusicEntity(
+                playlistId = playlistId,
+                musicId = music.id
+            )
+        );
 
 
     override fun removeMusicFromPlaylist(
@@ -40,7 +44,7 @@ class PlaylistRepositoryImpl @Inject constructor(
         playlistId: Long
     ): Completable = joinPlaylistMusicDao.removeMusicFromPlaylist(musicId, playlistId)
 
-    override fun deletePlaylist(playlistId: Long) : Completable =
+    override fun deletePlaylist(playlistId: Long): Completable =
         playlistDao.deletePlaylistById(playlistId = playlistId)
 
     override fun getPlaylists(): Flowable<List<Playlist>> =

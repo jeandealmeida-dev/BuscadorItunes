@@ -3,21 +3,17 @@ package com.jeanpaulo.musiclibrary.playlist.ui.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.jeanpaulo.musiclibrary.commons.CustomSafeObserver
-import com.jeanpaulo.musiclibrary.commons.exceptions.EmptyResultException
-import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.playlist.domain.PlaylistCreateInteractor
-import com.jeanpaulo.musiclibrary.playlist.ui.viewmodel.PlaylistCreateState
-import com.jeanpaulo.musiclibrary.playlist.ui.viewmodel.PlaylistCreateViewModel
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.spyk
-import io.reactivex.rxjava3.core.Flowable
+import io.mockk.verify
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.util.Date
 
 class PlaylistCreateViewModelTest {
 
@@ -31,7 +27,7 @@ class PlaylistCreateViewModelTest {
     @MockK
     private lateinit var interactor: PlaylistCreateInteractor
 
-    private lateinit var favoriteStateObserver: Observer<PlaylistCreateState>
+    private lateinit var stateObserver: Observer<PlaylistCreateState>
 
     @Before
     fun setup() {
@@ -42,31 +38,49 @@ class PlaylistCreateViewModelTest {
             ioScheduler = scheduler,
             playlistInteractor = interactor
         )
-        favoriteStateObserver = spyk<Observer<PlaylistCreateState>>(CustomSafeObserver { })
-        viewModel.playlistCreateState.observeForever(favoriteStateObserver)
+        stateObserver = spyk<Observer<PlaylistCreateState>>(CustomSafeObserver { })
+        viewModel.playlistCreateState.observeForever(stateObserver)
     }
 
     @Test
-    fun `GIVEN user open favorite tab WHEN it has favorites THEN update state to Success with favorite list`() {
-        /*val music = Music(1, 0L, "", "", Date(), true, 0L, "")
-        val favorites = listOf(PlaylistCreate(1).apply { this.music = music })
+    fun `GIVEN user insert valid playlist name and description WHEN create playlist THEN update state to Success`() {
+        val longId = 1L
+        val title = "title"
+        val description = "description"
+        every { interactor.savePlaylist(any()) } returns Single.just(longId)
+        viewModel.createPlaylist(title, description)
 
-        every { interactor.getPlaylistCreateMusics() } returns Flowable.just(favorites)
-        viewModel.getPlaylistCreateList()
-        favoriteStateObserver.onChanged(PlaylistCreateState.Success(listOf(music)))*/
+        verify(timeout = 600) {
+            stateObserver.onChanged(PlaylistCreateState.Loading)
+            stateObserver.onChanged(PlaylistCreateState.Success(longId))
+        }
     }
 
     @Test
-    fun `GIVEN user open favorite tab WHEN it has NOT favorites THEN update state to Success but empty`() {
-/*every { interactor.getPlaylistCreateMusics() } returns Flowable.error(EmptyResultException())
-viewModel.getPlaylistCreateList()
-favoriteStateObserver.onChanged(PlaylistCreateState.Success(emptyList()))*/
+    fun `GIVEN user insert valid playlist name but no description WHEN create playlist THEN update state to Success`() {
+        val longId = 1L
+        val title = "title"
+        val description = null
+        every { interactor.savePlaylist(any()) } returns Single.just(longId)
+
+        viewModel.createPlaylist(title, description)
+
+        verify(timeout = 600) {
+            stateObserver.onChanged(PlaylistCreateState.Loading)
+            stateObserver.onChanged(PlaylistCreateState.Success(longId))
+        }
     }
 
     @Test
-    fun `GIVEN user open favorite tab WHEN get error THEN update state to Error`() {
-/*every { interactor.getPlaylistCreateMusics() } returns Flowable.error(NotImplementedError())
-viewModel.getPlaylistCreateList()
-favoriteStateObserver.onChanged(PlaylistCreateState.Error)*/
+    fun `GIVEN user insert valid playlist name and description WHEN create playlist BUT get an error THEN update state to Error`() {
+        val title = "title"
+        val description = null
+        every { interactor.savePlaylist(any()) } returns Single.error(Throwable())
+        viewModel.createPlaylist(title, description)
+
+        verify {
+            stateObserver.onChanged(PlaylistCreateState.Loading)
+            stateObserver.onChanged(PlaylistCreateState.Error)
+        }
     }
 }

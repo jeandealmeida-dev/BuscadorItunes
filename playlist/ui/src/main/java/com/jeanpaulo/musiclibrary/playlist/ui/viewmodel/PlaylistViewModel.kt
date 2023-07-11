@@ -12,6 +12,7 @@ import javax.inject.Named
 sealed class PlaylistListState {
     object Loading : PlaylistListState()
     object Error : PlaylistListState()
+    object Empty : PlaylistListState()
     data class Success(val playlistList: List<Playlist>) : PlaylistListState()
 }
 
@@ -53,7 +54,6 @@ class PlaylistViewModel @Inject constructor(
                 }
                 .subscribe({
                     _playlistDeleteState.value = PlaylistDeleteState.Success
-                    refresh()
                 }, {
                     _playlistDeleteState.value = PlaylistDeleteState.Error
                 })
@@ -70,9 +70,13 @@ class PlaylistViewModel @Inject constructor(
                     _playlistListState.postValue(PlaylistListState.Loading)
                 }
                 .subscribe({ playlistList ->
-                    _playlistListState.postValue(PlaylistListState.Success(playlistList))
+                    _playlistListState.value = if (playlistList.isEmpty()) {
+                        PlaylistListState.Empty
+                    } else {
+                        PlaylistListState.Success(playlistList)
+                    }
                 }, {
-                    _playlistListState.postValue(PlaylistListState.Error)
+                    _playlistListState.value = PlaylistListState.Error
                 })
         )
     }
