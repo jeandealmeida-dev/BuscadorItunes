@@ -12,12 +12,12 @@
         tools:layout="@layout/playlist_fragment">
 
         <action
-            android:id="@+id/action_playlistFragment_to_addEditPlaylistFragment"
-            app:destination="@id/playlist_create_fragment_dest" />
+            android:id="@+id/action_playlistFragment_to_PlaylistCreateFragment"
+            app:destination="@id/nav_playlist_create" />
 
         <action
-            android:id="@+id/action_playlistFragment_to_detailPlaylistFragment"
-            app:destination="@id/playlist_detail_fragment_dest" />
+            android:id="@+id/action_playlistFragment_to_PlaylistDetailFragment"
+            app:destination="@id/nav_playlist_detail" />
 
         <argument
             android:name="userMessage"

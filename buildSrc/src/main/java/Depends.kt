@@ -4,8 +4,6 @@ object Depends {
         const val app = ":app"
         const val core = ":core"
         const val commons = ":commons"
-        const val favorite = ":favorite"
-        const val playlist = ":playlist"
         const val music = ":music"
         const val music_detail = ":music:detail"
 

@@ -33,7 +33,7 @@ interface PlaylistDao {
                 "FROM ${PlaylistEntity.TABLE} " +
                 "WHERE ${PlaylistEntity.ID} = :playlistId"
     )
-    fun getPlaylistById(playlistId: Long): Single<PlaylistEntity?>
+    fun getPlaylistById(playlistId: Long): Single<PlaylistEntity>
 
     @Transaction
     @Query(

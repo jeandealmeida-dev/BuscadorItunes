@@ -73,6 +73,10 @@ dependencies {
     // → Navigation
     implementation(Depends.AndroidX.Navigation.Fragment())
     implementation(Depends.AndroidX.Navigation.UI())
+
+    // Testing
+    testImplementation(Depends.Mockk())
+    testImplementation(Depends.AndroidX.ArchCoreTesting())
 }
 repositories {
     mavenCentral()

@@ -32,7 +32,6 @@ class MusicDetailFragment : BaseMvvmFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setHasOptionsMenu(true) // use fragment menu
     }
 
     override fun onCreateView(
@@ -48,30 +47,11 @@ class MusicDetailFragment : BaseMvvmFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val menuHost = requireActivity()
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_music_detail, menu)
-                menu.findItem(R.id.action_favorite).menuChecked(viewModel.isFavorite)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    android.R.id.home -> {
-                        requireActivity().onBackPressed()
-                        true
-                    }
-                    R.id.action_favorite -> {
-                        viewModel.clickFavoriteMenu()
-                        true
-                    }
-                    else -> {
-                        false
-                    }
-                }
-            }
-
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        requireActivity().addMenuProvider(
+            MusicDetailFragmentMenu(),
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
+        )
     }
 
     override fun onDestroyView() {
@@ -137,7 +117,7 @@ class MusicDetailFragment : BaseMvvmFragment() {
             })
     }
 
-    fun setBackgroundColor(bitmap: Bitmap){
+    fun setBackgroundColor(bitmap: Bitmap) {
         Palette.from(bitmap).generate { palette ->
             val mutedColor = palette!!.getLightVibrantColor(R.attr.colorPrimary)
             binding.layout.setBackgroundColor(mutedColor)
@@ -164,6 +144,29 @@ class MusicDetailFragment : BaseMvvmFragment() {
             binding.trackName,
             MusicDetailActivity.VIEW_NAME_HEADER_TITLE
         );
+    }
+
+    inner class MusicDetailFragmentMenu : MenuProvider {
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            menuInflater.inflate(R.menu.menu_music_detail, menu)
+            menu.findItem(R.id.action_favorite).menuChecked(viewModel.isFavorite)
+        }
+
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            return when (menuItem.itemId) {
+                android.R.id.home -> {
+                    requireActivity().onBackPressed()
+                    true
+                }
+                R.id.action_favorite -> {
+                    viewModel.clickFavoriteMenu()
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
     }
 
     companion object {

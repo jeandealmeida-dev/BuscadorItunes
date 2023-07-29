@@ -7,6 +7,7 @@ import com.jeanpaulo.musiclibrary.playlist.domain.di.PlaylistDomainModule
 import com.jeanpaulo.musiclibrary.playlist.ui.fragments.PlaylistCreateFragment
 import com.jeanpaulo.musiclibrary.playlist.ui.fragments.PlaylistDetailFragment
 import com.jeanpaulo.musiclibrary.playlist.ui.fragments.PlaylistFragment
+import com.jeanpaulo.musiclibrary.playlist.ui.viewmodel.PlaylistCreateViewModel
 import com.jeanpaulo.musiclibrary.playlist.ui.viewmodel.PlaylistDetailViewModel
 import com.jeanpaulo.musiclibrary.playlist.ui.viewmodel.PlaylistViewModel
 import dagger.Binds
@@ -46,11 +47,11 @@ abstract class PlaylistUIModule {
     @IntoMap
     @ViewModelKey(PlaylistDetailViewModel::class)
     abstract fun providePlaylistDetailViewModel(viewModel: PlaylistDetailViewModel): ViewModel
-//
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(PlaylistCreateViewModel::class)
-//    abstract fun providePlaylistCreateViewModel(viewModel: PlaylistCreateViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PlaylistCreateViewModel::class)
+    abstract fun providePlaylistCreateViewModel(viewModel: PlaylistCreateViewModel): ViewModel
 
     @Binds
     abstract fun providePlaylistCreateInteractor(interactor: PlaylistCreateInteractorImpl): PlaylistCreateInteractor
@@ -60,6 +61,4 @@ abstract class PlaylistUIModule {
 
     @Binds
     abstract fun providePlaylistInteractor(interactor: PlaylistInteractorImpl): PlaylistInteractor
-
-
 }

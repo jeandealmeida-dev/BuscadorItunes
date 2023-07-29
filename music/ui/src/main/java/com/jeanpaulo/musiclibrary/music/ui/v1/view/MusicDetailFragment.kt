@@ -36,36 +36,13 @@ class MusicDetailFragment : BaseMvvmFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragMusicDetailBinding.inflate(inflater, container, false)
-        setupListeners()
-        setupWidgets()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val menuHost = requireActivity()
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_music_detail, menu)
-                menu.findItem(R.id.action_favorite).menuChecked(viewModel.isFavorite)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    android.R.id.home -> {
-                        requireActivity().onBackPressed()
-                        true
-                    }
-                    R.id.action_favorite -> {
-                        viewModel.clickFavoriteMenu()
-                        true
-                    }
-                    else -> {
-                        false
-                    }
-                }
-            }
-
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        setupListeners()
+        setupWidgets()
+        setupMenu()
     }
 
     override fun onDestroyView() {
@@ -121,6 +98,10 @@ class MusicDetailFragment : BaseMvvmFragment() {
         binding.txtError.setOnClickListener {
             //viewModel.refresh()
         }
+    }
+
+    fun setupMenu() {
+
     }
 
     companion object {

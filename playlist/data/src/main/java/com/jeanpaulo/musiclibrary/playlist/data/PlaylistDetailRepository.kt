@@ -29,7 +29,7 @@ class PlaylistDetailRepositoryImpl @Inject constructor(
 ) : PlaylistDetailRepository {
 
     override fun getPlaylist(playlistId: Long): Single<Playlist> =
-        playlistDao.getPlaylistById(playlistId).map { it?.toModel() }
+        playlistDao.getPlaylistById(playlistId).map { it.toModel() }
 
 
     override fun savePlaylist(playlist: Playlist): Single<Long> =

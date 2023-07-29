@@ -15,10 +15,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
+            android:focusable="true"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/tasks_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -33,36 +33,45 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/no_tasks_layout"
+                android:id="@+id/layout_no_playlist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <ImageView
-                    android:id="@+id/no_tasks_icon"
                     android:layout_width="96dp"
                     android:layout_height="96dp"
                     android:layout_gravity="center"
-                    android:contentDescription="@string/no_tasks_image_content_description" />
+                    android:contentDescription="@null" />
 
                 <TextView
-                    android:id="@+id/no_tasks_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/list_item_padding"
-                    android:text="@string/no_playlist_found" />
+                    android:layout_marginBottom="12dp"
+                    android:text="@string/playlist_list_empty" />
             </LinearLayout>
 
             <TextView
-                android:id="@+id/txt_error"
+                android:id="@+id/txt_playlist_error"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/background_light"
                 android:gravity="center"
-                android:text="ERROR !! Tap to retry."
+                android:text="@string/playlist_list_error"
                 android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/txt_playlist_loading"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/background_light"
+                android:gravity="center"
+                android:text="@string/playlist_list_loading"
+                android:visibility="gone" />
+
         </RelativeLayout>
 
     </com.jeanpaulo.musiclibrary.commons.view.ScrollChildSwipeRefreshLayout>

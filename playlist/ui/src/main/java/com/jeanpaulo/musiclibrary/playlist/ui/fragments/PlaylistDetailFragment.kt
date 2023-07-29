@@ -2,18 +2,22 @@ package com.jeanpaulo.musiclibrary.playlist.ui.fragments
 
 import android.os.Bundle
 import android.view.*
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
+import com.jeanpaulo.musiclibrary.commons.extensions.setupRefreshLayout
 import com.jeanpaulo.musiclibrary.commons.extensions.showSnackbar
+import com.jeanpaulo.musiclibrary.playlist.ui.R
+import com.jeanpaulo.musiclibrary.playlist.ui.databinding.PlaylistDetailFragmentBinding
 import com.jeanpaulo.musiclibrary.playlist.ui.viewmodel.PlaylistDetailState
 import com.jeanpaulo.musiclibrary.playlist.ui.viewmodel.PlaylistDetailViewModel
 
 class PlaylistDetailFragment : BaseMvvmFragment() {
 
-    private val viewModel by appActivityViewModel<PlaylistDetailViewModel>()
+    private val viewModel by appViewModel<PlaylistDetailViewModel>()
 
-    //private var _binding: PlaylistDetailFragmentBinding? = null
-    //private val binding: PlaylistDetailFragmentBinding get() = _binding!!
+    private var _binding: PlaylistDetailFragmentBinding? = null
+    private val binding: PlaylistDetailFragmentBinding get() = _binding!!
 
     //private val args: DetailPlaylistFragmentArgs by navArgs()
 
@@ -22,51 +26,47 @@ class PlaylistDetailFragment : BaseMvvmFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //_binding = PlaylistDetailFragmentBinding.inflate(inflater, container, false)
+        _binding = PlaylistDetailFragmentBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         setupListeners()
         setupWidgets()
-        return null //_binding.root
+        return _binding?.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-
-        //_binding = null
+        _binding = null
     }
 
     private fun setupListeners() {
-        viewModel.playlistDetailState.observe(viewLifecycleOwner){
-            when(it){
+        viewModel.playlistDetailState.observe(viewLifecycleOwner) {
+            when (it) {
                 PlaylistDetailState.Error -> showSnackBar("Error")
                 PlaylistDetailState.Loading -> TODO()
-                PlaylistDetailState.Success -> TODO()
+                is PlaylistDetailState.Success -> TODO()
+                else -> {}
             }
         }
     }
 
-    fun setupWidgets(){
-//        setupRefreshLayout(binding.refreshLayout)
-//        binding.setFabVisibility(false)
-        setupNavigation()
-
-//        val playlistId = args.playlistId?.toLong()
-//        viewModel.start(playlistId)
+    fun setupWidgets() {
+        setupRefreshLayout(binding.refreshLayout)
+        //binding.setFabVisibility(false)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            //R.id.action_save -> viewModel ()
+            R.id.action_save -> {}
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-
+        //TODO Jean fix menu
         // Inflate the menu; this adds items to the action bar if it is present.
-//        inflater.inflate(R.menu.menu_playlist_create, menu)
-//
-//        val menuSave: MenuItem? = menu.findItem(R.id.action_save)
+        inflater.inflate(R.menu.menu_playlist_create, menu)
+
+        val menuSave: MenuItem? = menu.findItem(R.id.action_save)
 
         return super.onCreateOptionsMenu(menu, inflater)
     }
@@ -75,13 +75,9 @@ class PlaylistDetailFragment : BaseMvvmFragment() {
         view?.showSnackbar(string, Snackbar.LENGTH_SHORT)
     }
 
-    private fun setupNavigation() {
-        /*viewModel.playlistUpdatedEvent.observe(viewLifecycleOwner, EventObserver {
-            val action =
-                AddEditPlaylistFragmentDirections.actionAddEditPlaylistFragmentToPlaylistFragment(
-                    ADD_EDIT_RESULT_OK
-                )
-            findNavController().navigate(action)
-        })*/
+    private fun navigateToDetailFragment() {
+        val action =
+            PlaylistFragmentDirections.actionPlaylistFragmentToPlaylistDetailFragment()
+        findNavController().navigate(action)
     }
 }
