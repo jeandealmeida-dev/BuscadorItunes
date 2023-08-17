@@ -2,7 +2,8 @@
 name: Pull Request Pipe
 on:
   pull_request:
-  #push:
+  types:
+    - opened
   branches:
     - main
 # Where will they run
