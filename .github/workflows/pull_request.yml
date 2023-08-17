@@ -2,10 +2,10 @@
 name: Pull Request Pipe
 on:
   pull_request:
-  types:
-    - opened
-  branches:
-    - main
+    types:
+      - opened
+    branches:
+      - main
 # Where will they run
 jobs:
   build:
