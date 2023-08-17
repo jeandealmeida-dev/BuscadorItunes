@@ -1,0 +1,48 @@
+# Workflow name
+name: Pull Request Pipe
+on:
+  pull_request:
+  #push:
+  branches:
+    - main
+# Where will they run
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      ## Build all our Build Types at once ##
+      - name: Build artifacts
+        id: buildAllApks
+        uses: eskatos/gradle-command-action@v1.3.2
+        with:
+          gradle-version: current
+          wrapper-cache-enabled: true
+          dependencies-cache-enabled: true
+          configuration-cache-enabled: true
+          arguments: assembleRelease
+
+      ## Lint ##
+      - name: Run Kotlin Linter
+        run: ./gradlew ktlintStagingDebugCheck
+
+      ## Unit tests ##
+      - name: Run Unit Tests
+        run: ./gradlew testStagingDebugUnitTest
+
+      ## PR Agent ##
+      - name: Run PR Agent
+        id: pragent
+        uses: Codium-ai/pr-agent@main
+        env:
+          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
