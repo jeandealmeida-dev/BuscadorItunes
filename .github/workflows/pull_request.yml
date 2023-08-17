@@ -1,6 +1,7 @@
 # Workflow name
 name: Pull Request Pipe
 on:
+  push:
   pull_request:
     types:
       - opened
