@@ -4,9 +4,8 @@ on:
   push:
   pull_request:
     types:
-      - opened
-    branches:
-      - main
+      - synchronize
+
 # Where will they run
 jobs:
   build:
