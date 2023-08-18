@@ -45,7 +45,7 @@ object Depends {
     object Kotlin {
         val version = "1.7.10"
         fun GradlePlugin() = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
-        fun Stdlib() = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.22"
+        fun Stdlib() = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
     }
 
     // updated 10/12/2022
