@@ -122,7 +122,7 @@ class MusicDetailActivity : BaseMvvmActivity() {
 
     private fun setToolbarColor(bitmap: Bitmap) {
         Palette.from(bitmap).generate { palette ->
-            val mutedColor = palette!!.getMutedColor(R.attr.colorPrimary)
+            val mutedColor = palette!!.getMutedColor(androidx.appcompat.R.attr.colorPrimary)
             binding.collapseToolbar.setContentScrimColor(mutedColor)
         }
     }

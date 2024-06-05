@@ -119,7 +119,7 @@ class MusicDetailFragment : BaseMvvmFragment() {
 
     fun setBackgroundColor(bitmap: Bitmap) {
         Palette.from(bitmap).generate { palette ->
-            val mutedColor = palette!!.getLightVibrantColor(R.attr.colorPrimary)
+            val mutedColor = palette!!.getLightVibrantColor(androidx.appcompat.R.attr.colorPrimary)
             binding.layout.setBackgroundColor(mutedColor)
         }
     }
