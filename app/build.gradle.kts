@@ -1,131 +1,83 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-    id("kotlin-kapt")
-    id("androidx.navigation.safeargs.kotlin")
+    id(ProjectPlugins.Application)
+    id(ProjectPlugins.MyPlugin)
+    id(ProjectPlugins.NavigationSafeArgs)
 }
 
-android {
-    compileSdk = Config.compileSdkVersion
-
-    buildFeatures {
-        dataBinding = false
-        viewBinding = true
-    }
-
-    buildToolsVersion = Config.buildToolsVersion
-    defaultConfig {
-        applicationId = Config.groupId
-        minSdk = Config.minSdkVersion
-        targetSdk = Config.targetSdkVersion
-
-        versionCode = Config.versionCode
-        versionName = Config.versionName
-
-        vectorDrawables.useSupportLibrary = true
-        multiDexEnabled = true
-    }
-
-    buildTypes {
-        getByName("debug") {
-            isTestCoverageEnabled = true
-            isDebuggable = true
-            isMinifyEnabled = false
-            multiDexEnabled = true
-        }
-        getByName("release") {
-            //signingConfig = signingConfigs.getByName("release")
-            isDebuggable = false
-            isMinifyEnabled = false
-            multiDexEnabled = true
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-}
+addDaggerDependencies()
+addRxJavaDependencies()
+addRetrofitDependencies()
 
 dependencies {
-    implementation(Depends.Kotlin.Stdlib())
+    implementation(ProjectDependencies.Kotlin.Stdlib())
 
     // Project
     // → Search
-    implementation(project(Depends.Module.UI.search))
-    implementation(project(Depends.Module.Domain.search))
-    implementation(project(Depends.Module.Data.search))
+    implementation(project(ProjectDependencies.Module.UI.search))
+    implementation(project(ProjectDependencies.Module.Domain.search))
+    implementation(project(ProjectDependencies.Module.Data.search))
 
     // → Playlist
-    implementation(project(Depends.Module.UI.playlist))
-    implementation(project(Depends.Module.Domain.playlist))
-    implementation(project(Depends.Module.Data.playlist))
+    implementation(project(ProjectDependencies.Module.UI.playlist))
+    implementation(project(ProjectDependencies.Module.Domain.playlist))
+    implementation(project(ProjectDependencies.Module.Data.playlist))
 
     // → Favorite
-    implementation(project(Depends.Module.UI.favorite))
-    implementation(project(Depends.Module.Domain.favorite))
-    implementation(project(Depends.Module.Data.favorite))
+    implementation(project(ProjectDependencies.Module.UI.favorite))
+    implementation(project(ProjectDependencies.Module.Domain.favorite))
+    implementation(project(ProjectDependencies.Module.Data.favorite))
 
     // → Music
-    implementation(project(Depends.Module.UI.music))
-    implementation(project(Depends.Module.Domain.music))
-    implementation(project(Depends.Module.Data.music))
+    implementation(project(ProjectDependencies.Module.UI.music))
+    implementation(project(ProjectDependencies.Module.Domain.music))
+    implementation(project(ProjectDependencies.Module.Data.music))
 
-    implementation(project(Depends.Module.commons))
-    implementation(project(Depends.Module.core))
+    implementation(project(ProjectDependencies.Module.commons))
+    implementation(project(ProjectDependencies.Module.core))
 
     // Base
-    implementation(Depends.AndroidX.core())
-    implementation(Depends.AndroidX.AppCompat())
-    implementation(Depends.Android.MaterialComponents())
-    testImplementation(Depends.JUnit())
-    androidTestImplementation(Depends.AndroidX.JUnit())
-    androidTestImplementation(Depends.AndroidX.Espresso())
+    implementation(ProjectDependencies.AndroidX.core())
+    implementation(ProjectDependencies.AndroidX.AppCompat())
+    implementation(ProjectDependencies.Android.MaterialComponents())
+    testImplementation(ProjectDependencies.JUnit())
+    androidTestImplementation(ProjectDependencies.AndroidX.JUnit())
+    androidTestImplementation(ProjectDependencies.AndroidX.Espresso())
 
     // Android
-    implementation(Depends.Android.Multidex())
+    implementation(ProjectDependencies.Android.Multidex())
 
     // Android X
-    implementation(Depends.AndroidX.Paging())
-    implementation(Depends.AndroidX.ConstraintLayout())
-    implementation(Depends.AndroidX.Fragment())
-    implementation(Depends.AndroidX.SwipeRefreshLayout())
-    implementation(Depends.AndroidX.CardView())
-    implementation(Depends.AndroidX.RecyclerView())
+    implementation(ProjectDependencies.AndroidX.Paging())
+    implementation(ProjectDependencies.AndroidX.ConstraintLayout())
+    implementation(ProjectDependencies.AndroidX.Fragment())
+    implementation(ProjectDependencies.AndroidX.SwipeRefreshLayout())
+    implementation(ProjectDependencies.AndroidX.CardView())
+    implementation(ProjectDependencies.AndroidX.RecyclerView())
     // → Lyfecycle
-    implementation(Depends.AndroidX.Lyfecycle.LiveData())
-    implementation(Depends.AndroidX.Lyfecycle.ViewModel())
-    implementation(Depends.AndroidX.Lyfecycle.Extensions())
+    implementation(ProjectDependencies.AndroidX.Lyfecycle.LiveData())
+    implementation(ProjectDependencies.AndroidX.Lyfecycle.ViewModel())
+    implementation(ProjectDependencies.AndroidX.Lyfecycle.Extensions())
     // → Navigation
-    implementation(Depends.AndroidX.Navigation.Fragment())
-    implementation(Depends.AndroidX.Navigation.UI())
+    implementation(ProjectDependencies.AndroidX.Navigation.Fragment())
+    implementation(ProjectDependencies.AndroidX.Navigation.UI())
 
-    // RxJava
-    implementation(Depends.RxJava3.RxAndroid())
-    implementation(Depends.RxJava3.RxJava())
-    implementation(Depends.RxJava3.RxKotlin())
+    // Compose
+    implementation(ProjectDependencies.Compose.UI.core())
+    implementation(ProjectDependencies.Compose.UI.ToolingPreviewAndroid())
+    implementation(ProjectDependencies.Compose.Material.core())
+    implementation(ProjectDependencies.Compose.NavigationCompose())
+    implementation(ProjectDependencies.Compose.Material3())
 
-    // Dagger
-    implementation(Depends.Dagger.core())
-    kapt(Depends.Dagger.Compiler())
-    implementation(Depends.Dagger.Android.core())
-    implementation(Depends.Dagger.Android.Support())
-    kapt(Depends.Dagger.Android.Support())
-    kapt(Depends.Dagger.Android.Processor())
+    // Compose -> Compiler
+    implementation(ProjectDependencies.Compose.Compiler())
 
-    // Retrofit
-    implementation(Depends.Retrofit.core())
-    implementation(Depends.Retrofit.Converter.Moshi())
-    implementation(Depends.Retrofit.Adapter.RxJava3())
-    implementation(Depends.Retrofit.Converter.Gson())
+    // Compose -> Runtime
+    implementation(ProjectDependencies.Compose.Runtime.core())
+    implementation(ProjectDependencies.Compose.Runtime.RxJava3())
 
     // Others
-    implementation(Depends.SLF4J())
-    implementation(Depends.Logback())
-    implementation(Depends.Timber())
-    implementation(Depends.Stetho())
-}
-repositories {
-    mavenCentral()
+    implementation(ProjectDependencies.SLF4J())
+    implementation(ProjectDependencies.Logback())
+    implementation(ProjectDependencies.Timber())
+    implementation(ProjectDependencies.Stetho())
 }
