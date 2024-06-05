@@ -209,20 +209,20 @@ class SearchFragment : BaseMvvmFragment(), MenuProvider {
         )
 
         //Animations
-        val titleElement = Pair<View, String>(
-            view.findViewById(R.id.musicName),
-            VIEW_NAME_HEADER_TITLE
-        )
-        val imageElement =
-            Pair<View, String>(view.findViewById(R.id.artwork), VIEW_NAME_HEADER_IMAGE)
-
-        //val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(requireBaseActivity(), *arrayOf(titleElement, imageElement))
-        val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
-            requireBaseActivity(),
-            titleElement,
-            imageElement
-        )
-        ActivityCompat.startActivity(requireContext(), intent, activityOptions.toBundle())
+//        val titleElement = Pair<View, String>(
+//            view.findViewById(R.id.musicName),
+//            VIEW_NAME_HEADER_TITLE
+//        )
+//        val imageElement =
+//            Pair<View, String>(view.findViewById(R.id.artwork), VIEW_NAME_HEADER_IMAGE)
+//
+//        //val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(requireBaseActivity(), *arrayOf(titleElement, imageElement))
+//        val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
+//            requireBaseActivity(),
+//            titleElement,
+//            imageElement
+//        )
+        ActivityCompat.startActivity(requireContext(), intent, null)
     }
 
     private fun createSearchObservable(searchView: SearchView): Disposable {
