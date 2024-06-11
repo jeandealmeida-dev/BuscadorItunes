@@ -1,46 +1,22 @@
 # Workflow name
 name: Pull Request Pipe
 on:
-  push:
   pull_request:
-    types:
-      - synchronize
+    types: [opened, reopened, ready_for_review]
+  issue_comment:
 
 # Where will they run
 jobs:
-  build:
+  pr_agent_job:
+    if: ${{ github.event.sender.type != 'Bot' }}
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: write
+
+    name: Run pr agent on every pull request, respond to user comments
     steps:
-
-      - name: Checkout the repository
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      ## Build all our Build Types at once ##
-        ## - name: Build artifacts
-        ## id: buildAllApks
-        ## uses: eskatos/gradle-command-action@v1.3.2
-          ## with:
-          ## gradle-version: current
-          ## wrapper-cache-enabled: true
-          ## dependencies-cache-enabled: true
-          ## configuration-cache-enabled: true
-          ## arguments: assembleRelease
-
-      ## Lint ##
-        ## - name: Run Kotlin Linter
-        ## run: ./gradlew ktlintStagingDebugCheck
-
-      ## Unit tests ##
-        ## - name: Run Unit Tests
-        ## run: ./gradlew testStagingDebugUnitTest
-
-      ## PR Agent ##
       - name: Run PR Agent
         id: pragent
         uses: Codium-ai/pr-agent@main
