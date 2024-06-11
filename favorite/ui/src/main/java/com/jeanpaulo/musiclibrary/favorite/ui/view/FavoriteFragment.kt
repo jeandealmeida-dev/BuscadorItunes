@@ -145,18 +145,18 @@ class FavoriteFragment : BaseMvvmFragment() {
         )
 
         //Animations
-        val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
-            requireBaseActivity(),
-            Pair<View, String>(
-                view.findViewById(R.id.musicName),
-                MusicDetailActivity.VIEW_NAME_HEADER_TITLE
-            ),
-            Pair<View, String>(
-                view.findViewById(R.id.artwork),
-                MusicDetailActivity.VIEW_NAME_HEADER_IMAGE
-            )
-        )
-        ActivityCompat.startActivity(requireContext(), intent, activityOptions.toBundle())
+//        val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
+//            requireBaseActivity(),
+//            Pair<View, String>(
+//                view.findViewById(R.id.musicName),
+//                MusicDetailActivity.VIEW_NAME_HEADER_TITLE
+//            ),
+//            Pair<View, String>(
+//                view.findViewById(R.id.artwork),
+//                MusicDetailActivity.VIEW_NAME_HEADER_IMAGE
+//            )
+//        )
+        ActivityCompat.startActivity(requireContext(), intent, null)
     }
 }
 
