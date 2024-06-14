@@ -17,7 +17,7 @@ import com.jeanpaulo.musiclibrary.app.ui.AppTheme
 @Composable
 fun TopBar() {
     TopAppBar(
-        title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) },
+        title = { Text(text = stringResource(R.string.app_name), fontSize = MaterialTheme.typography.titleLarge.fontSize) },
         colors = TopAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,
             scrolledContainerColor = MaterialTheme.colorScheme.background,
