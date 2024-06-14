@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Biblioteca Musical</string>
-
+    <string name="app_name">30 vibes</string>
 
     <string name="action_preview">Previa</string>
     <string name="search_hint">Música, Album ou Artista..</string>
