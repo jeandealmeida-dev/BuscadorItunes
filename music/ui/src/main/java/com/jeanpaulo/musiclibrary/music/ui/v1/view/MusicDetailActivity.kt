@@ -47,28 +47,19 @@ class MusicDetailActivity : BaseMvvmActivity() {
     fun setupListeners() {
         vm.musicPlayerState.observe(this) { playerState ->
             when (playerState) {
-                is MusicPlayerState.Setup -> {
-                    myMediaPlayer = MyMediaPlayer(this, playerState.uri)
+                MusicPlayerState.Init -> {
+                    myMediaPlayer = MyMediaPlayer(this)
                     binding.fabPreview.visible()
                 }
+
                 MusicPlayerState.Stop -> {
                     myMediaPlayer?.stop()
-                    binding.fabPreview.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            this,
-                            android.R.drawable.ic_media_play
-                        )
-                    )
+                    updatePlayIcon(false)
                 }
 
-                MusicPlayerState.Play -> {
-                    myMediaPlayer?.play()
-                    binding.fabPreview.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            this,
-                            android.R.drawable.ic_media_pause
-                        )
-                    )
+                is MusicPlayerState.Play -> {
+                    myMediaPlayer?.play(playerState.uri)
+                    updatePlayIcon(true)
                 }
             }
         }
@@ -148,7 +139,7 @@ class MusicDetailActivity : BaseMvvmActivity() {
     override fun onStop() {
         super.onStop()
         binding.fabPreview.gone()
-        myMediaPlayer?.stop()
+        myMediaPlayer?.release()
         _binding = null
     }
 
@@ -160,23 +151,23 @@ class MusicDetailActivity : BaseMvvmActivity() {
         )
     }
 
-//    override fun setFabDrawableRes(imageResource: Int) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            binding.fabPreview.setImageDrawable(resources.getDrawable(imageResource, theme))
-//        } else {
-//            binding.fabPreview.setImageDrawable(resources.getDrawable(imageResource))
-//        }
-//    }
-//
-//    override fun setFabVisibility(visible: Boolean) {
-//        binding.fabPreview.visibility = if (visible) VISIBLE else GONE
-//    }
-//
-
     fun setupFAB() {
         binding.fabPreview.setOnClickListener {
             vm.changePlayerState()
         }
+    }
+
+    fun updatePlayIcon(isPlaying: Boolean) {
+        binding.fabPreview.setImageDrawable(
+            ContextCompat.getDrawable(
+                this,
+                if (isPlaying) {
+                    android.R.drawable.ic_media_pause
+                } else {
+                    android.R.drawable.ic_media_play
+                }
+            )
+        )
     }
 
     companion object {
@@ -187,7 +178,11 @@ class MusicDetailActivity : BaseMvvmActivity() {
         const val MUSIC_PARAM = "music_param"
         const val FROM_REMOTE_PARAM = "from_remote_param"
 
-        fun newInstance(context: Context, music: SimpleMusicDetailUIModel, fromRemote: Boolean): Intent {
+        fun newInstance(
+            context: Context,
+            music: SimpleMusicDetailUIModel,
+            fromRemote: Boolean
+        ): Intent {
             return Intent(context, MusicDetailActivity::class.java).apply {
                 putExtra(MUSIC_PARAM, music)
                 putExtra(FROM_REMOTE_PARAM, fromRemote)

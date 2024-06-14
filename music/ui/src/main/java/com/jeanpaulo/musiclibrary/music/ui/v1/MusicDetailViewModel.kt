@@ -10,9 +10,6 @@ import com.jeanpaulo.musiclibrary.music.ui.v1.di.FromRemote
 import com.jeanpaulo.musiclibrary.music.ui.v1.di.SimpleMusicUI
 import com.jeanpaulo.musiclibrary.music.ui.model.MusicDetailUIModel
 import com.jeanpaulo.musiclibrary.music.ui.model.mapper.convertToMusicUI
-import com.jeanpaulo.musiclibrary.music.ui.v1.FavoriteState
-import com.jeanpaulo.musiclibrary.music.ui.v1.MusicDetailState
-import com.jeanpaulo.musiclibrary.music.ui.v1.MusicPlayerState
 import io.reactivex.rxjava3.core.Scheduler
 import javax.inject.Inject
 import javax.inject.Named
@@ -24,8 +21,8 @@ sealed class FavoriteState {
 }
 
 sealed class MusicPlayerState {
-    class Setup(val uri: String) : MusicPlayerState()
-    object Play : MusicPlayerState()
+    object Init : MusicPlayerState()
+    class Play(val uri: String) : MusicPlayerState()
     object Stop : MusicPlayerState()
 }
 
@@ -105,9 +102,7 @@ class MusicDetailViewModel @Inject constructor(
 
         isFavorited(music.ds_trackId ?: 0L)
 
-        _music.previewUrl?.let {
-            _musicPlayerState.value = MusicPlayerState.Setup(it)
-        }
+        _musicPlayerState.value = MusicPlayerState.Init
     }
 
     private fun isFavorited(remoteId: Long) {
@@ -196,12 +191,12 @@ class MusicDetailViewModel @Inject constructor(
 
     fun changePlayerState() {
         when (musicPlayerState.value) {
-            MusicPlayerState.Play -> {
+            is MusicPlayerState.Play -> {
                 _musicPlayerState.value = MusicPlayerState.Stop
             }
-            is MusicPlayerState.Setup,
+            MusicPlayerState.Init,
             MusicPlayerState.Stop -> {
-                _musicPlayerState.value = MusicPlayerState.Play
+                _musicPlayerState.value = MusicPlayerState.Play(_music.previewUrl ?: "")
             }
             else -> {}
         }

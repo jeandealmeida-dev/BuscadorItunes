@@ -63,9 +63,15 @@ class PlaylistFragment : BaseMvvmFragment() {
                         }
                     }
                 }
+
                 PlaylistListState.Loading -> {
                     binding.txtPlaylistLoading.visible()
                 }
+
+                PlaylistListState.Empty -> {
+                    binding.layoutNoPlaylist.visible()
+                }
+
                 is PlaylistListState.Success -> {
                     if (state.playlistList.isEmpty()) {
                         binding.layoutNoPlaylist.visible()
@@ -73,6 +79,7 @@ class PlaylistFragment : BaseMvvmFragment() {
                         listAdapter.submitList(state.playlistList)
                     }
                 }
+
                 else -> {}
             }
         }
@@ -168,10 +175,12 @@ class PlaylistFragment : BaseMvvmFragment() {
                     requireActivity().onBackPressed()
                     true
                 }
+
                 R.id.action_new -> {
                     navigateToPlaylistCreate()
                     true
                 }
+
                 else -> {
                     false
                 }
