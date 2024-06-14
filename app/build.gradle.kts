@@ -60,12 +60,12 @@ dependencies {
     // → Navigation
     implementation(ProjectDependencies.AndroidX.Navigation.Fragment())
     implementation(ProjectDependencies.AndroidX.Navigation.UI())
+    // → Navigation + Compose
+    implementation(ProjectDependencies.AndroidX.Navigation.Compose())
 
     // Compose
     implementation(ProjectDependencies.Compose.UI.core())
     implementation(ProjectDependencies.Compose.UI.ToolingPreviewAndroid())
-    implementation(ProjectDependencies.Compose.Material.core())
-    implementation(ProjectDependencies.Compose.NavigationCompose())
     implementation(ProjectDependencies.Compose.Material3())
 
     // Compose -> Compiler
