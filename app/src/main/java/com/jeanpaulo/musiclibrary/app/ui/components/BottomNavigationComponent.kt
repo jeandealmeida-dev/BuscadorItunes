@@ -1,11 +1,6 @@
 package com.jeanpaulo.musiclibrary.app.ui.components
 
 import android.content.res.Configuration
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -14,7 +9,6 @@ import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -114,12 +108,8 @@ fun Navigation(navController: NavHostController) {
         composable(NavigationItem.Config.route) {
             ConfigScreen()
         }
+        composable(NavigationItem.Playlist.route) {
+            ConfigScreen()
+        }
     }
-}
-
-sealed class NavigationItem(val route: String, val icon: ImageVector, val label: String) {
-    object Home : NavigationItem("home", Icons.Default.Home, "Home")
-    object Search : NavigationItem("search", Icons.Default.Search, "Search")
-    object Playlist : NavigationItem("playlists", Icons.Default.Favorite, "Playlists")
-    object Config : NavigationItem("config", Icons.Default.Build, "Config")
 }

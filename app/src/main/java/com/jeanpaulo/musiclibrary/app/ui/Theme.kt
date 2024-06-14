@@ -14,21 +14,30 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.jeanpaulo.musiclibrary.commons.isAtLeastVersionS
 
 private val DarkColorScheme = darkColorScheme(
     primary = White,
-    onPrimary = White,
+    onPrimary = Black,
+
     secondary = LightGray,
+
     tertiary = DarkGray,
-    background = Black
+
+    background = Black,
+    onBackground = White
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Black,
-    onPrimary = Black,
+    onPrimary = White,
+
     secondary = DarkGray,
+
     tertiary = LightGray,
-    background = White
+
+    background = White,
+    onBackground = Black
 )
 
 @Composable
@@ -50,7 +59,7 @@ fun BottomNavigationTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        dynamicColor && isAtLeastVersionS() -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
