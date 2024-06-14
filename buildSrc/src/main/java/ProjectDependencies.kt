@@ -125,6 +125,8 @@ object ProjectDependencies {
             fun SafeArgs() = "androidx.navigation:navigation-safe-args-gradle-plugin:$version"
             fun UI() = "androidx.navigation:navigation-ui-ktx:$version"
             fun Fragment() = "androidx.navigation:navigation-fragment-ktx:$version"
+
+            fun Compose() = "androidx.navigation:navigation-compose:$version"
         }
 
         object Lyfecycle {
@@ -173,8 +175,6 @@ object ProjectDependencies {
         }
 
         fun Material3() = "androidx.compose.material3:material3:1.2.1"
-
-        fun NavigationCompose() = "androidx.navigation:navigation-compose:2.4.0-alpha01"
 
         fun Compiler() = "androidx.compose.compiler:compiler:$version"
     }
