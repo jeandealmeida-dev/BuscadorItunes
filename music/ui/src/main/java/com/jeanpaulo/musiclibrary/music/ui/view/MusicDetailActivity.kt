@@ -18,6 +18,7 @@ import com.jeanpaulo.musiclibrary.commons.extras.MyMediaPlayer
 import com.jeanpaulo.musiclibrary.commons.extensions.replace
 import com.jeanpaulo.musiclibrary.commons.extensions.visible
 import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
+import com.jeanpaulo.musiclibrary.music.ui.R
 import com.jeanpaulo.musiclibrary.music.ui.databinding.ActivityMusicDetailBinding
 import com.squareup.picasso.Picasso
 
@@ -119,10 +120,15 @@ class MusicDetailActivity : BaseMvvmActivity() {
         binding.collapseToolbar.title = vm.simpleMusicDetail.name
     }
 
-    private fun setToolbarColor(bitmap: Bitmap) {
-        Palette.from(bitmap).generate { palette ->
-            val mutedColor = palette!!.getMutedColor(androidx.appcompat.R.attr.colorPrimary)
-            binding.collapseToolbar.setContentScrimColor(mutedColor)
+    private fun setToolbarColor(bitmap: Bitmap?) {
+        bitmap?.let {
+            Palette.from(bitmap).generate { palette ->
+                val mutedColor = palette?.getMutedColor(androidx.appcompat.R.attr.colorPrimary) ?: getColor(
+                    com.jeanpaulo.musiclibrary.commons.R.color.colorPrimary)
+                binding.collapseToolbar.setContentScrimColor(mutedColor)
+            }
+        } ?: run {
+            // TODO Handle null or invalid bitmap scenario
         }
     }
 

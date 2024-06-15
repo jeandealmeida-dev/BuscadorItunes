@@ -2,6 +2,8 @@ package com.jeanpaulo.musiclibrary.music.ui
 
 import androidx.lifecycle.*
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
+import com.jeanpaulo.musiclibrary.commons.di.qualifiers.IOScheduler
+import com.jeanpaulo.musiclibrary.commons.di.qualifiers.MainScheduler
 import com.jeanpaulo.musiclibrary.commons.exceptions.EmptyResultException
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
@@ -33,8 +35,8 @@ sealed class MusicDetailState {
 }
 
 class MusicDetailViewModel @Inject constructor(
-    @Named("MainScheduler") private val mainScheduler: Scheduler,
-    @Named("IOScheduler") private val ioScheduler: Scheduler,
+    @MainScheduler private val mainScheduler: Scheduler,
+    @IOScheduler private val ioScheduler: Scheduler,
     private val interactor: MusicInteractor,
     @SimpleMusicUI val simpleMusicDetail: SimpleMusicDetailUIModel,
     @FromRemote val fromRemote: Boolean,

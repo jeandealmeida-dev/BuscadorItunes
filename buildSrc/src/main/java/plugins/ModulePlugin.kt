@@ -15,6 +15,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.register
+import org.gradle.language.nativeplatform.internal.BuildType
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import org.gradle.testing.jacoco.tasks.JacocoReport
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -28,8 +29,8 @@ class ModulePlugin : Plugin<Project> {
         project.plugins.apply( "kotlin-kapt")
 
         // Configure common android build parameters.
-        val androidExtension = project.extensions.getByName("android")
-        if (androidExtension is BaseExtension) {
+        val androidExtension = project.extensions.findByName("android") as? BaseExtension
+        if (androidExtension != null) {
             androidExtension.apply {
 
                 compileSdkVersion(Config.compileSdkVersion)
@@ -57,24 +58,24 @@ class ModulePlugin : Plugin<Project> {
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
                     // Configure proguard file settings
-                    val proguardFile = "proguard-rules.pro"
+                    val defaultProguardFilePath = "proguard-rules.pro"
                     when (this) {
                         is LibraryExtension -> defaultConfig {
-                            consumerProguardFiles(proguardFile)
+                            consumerProguardFiles(defaultProguardFilePath)
                         }
                         is AppExtension -> buildTypes {
-                            getByName("debug") {
+                            getByName(BuildType.DEBUG.name) {
                                 isDebuggable = true
                                 isMinifyEnabled = false
                             }
 
-                            getByName("release") {
+                            getByName(BuildType.RELEASE.name) {
                                 isDebuggable = false
                                 isMinifyEnabled = true
                                 isShrinkResources = true
                                 proguardFiles(
                                     getDefaultProguardFile("proguard-android-optimize.txt"),
-                                    proguardFile
+                                    defaultProguardFilePath
                                 )
                             }
                         }
@@ -85,6 +86,7 @@ class ModulePlugin : Plugin<Project> {
                         sourceCompatibility = Config.Java.version
                         targetCompatibility = Config.Java.version
                     }
+
                     project.tasks.withType(KotlinCompile::class.java).configureEach {
                         kotlinOptions {
                             jvmTarget = Config.Java.version.majorVersion

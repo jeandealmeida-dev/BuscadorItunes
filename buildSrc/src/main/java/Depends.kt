@@ -128,7 +128,7 @@ object ProjectDependencies {
             fun Fragment() = "androidx.navigation:navigation-fragment-ktx:$version"
         }
 
-        object Lyfecycle {
+        object Lifecycle {
             fun Compiler() = "androidx.lifecycle:lifecycle-compiler:2.2.0"
             fun Extensions() = "androidx.lifecycle:lifecycle-extensions:2.2.0"
             fun ViewModel() = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"

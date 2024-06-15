@@ -54,9 +54,9 @@ dependencies {
     implementation(ProjectDependencies.AndroidX.CardView())
     implementation(ProjectDependencies.AndroidX.RecyclerView())
     // → Lyfecycle
-    implementation(ProjectDependencies.AndroidX.Lyfecycle.LiveData())
-    implementation(ProjectDependencies.AndroidX.Lyfecycle.ViewModel())
-    implementation(ProjectDependencies.AndroidX.Lyfecycle.Extensions())
+    implementation(ProjectDependencies.AndroidX.Lifecycle.LiveData())
+    implementation(ProjectDependencies.AndroidX.Lifecycle.ViewModel())
+    implementation(ProjectDependencies.AndroidX.Lifecycle.Extensions())
     // → Navigation
     implementation(ProjectDependencies.AndroidX.Navigation.Fragment())
     implementation(ProjectDependencies.AndroidX.Navigation.UI())
