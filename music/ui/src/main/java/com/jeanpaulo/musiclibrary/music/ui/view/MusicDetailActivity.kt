@@ -1,4 +1,4 @@
-package com.jeanpaulo.musiclibrary.music.ui.v1.view
+package com.jeanpaulo.musiclibrary.music.ui.view
 
 import android.content.Context
 import android.content.Intent
@@ -12,13 +12,12 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.BaseOnOffsetChangedListener
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmActivity
 import com.jeanpaulo.musiclibrary.commons.extensions.gone
-import com.jeanpaulo.musiclibrary.music.ui.v1.MusicDetailViewModel
-import com.jeanpaulo.musiclibrary.music.ui.v1.MusicPlayerState
+import com.jeanpaulo.musiclibrary.music.ui.MusicDetailViewModel
+import com.jeanpaulo.musiclibrary.music.ui.MusicPlayerState
 import com.jeanpaulo.musiclibrary.commons.extras.MyMediaPlayer
 import com.jeanpaulo.musiclibrary.commons.extensions.replace
 import com.jeanpaulo.musiclibrary.commons.extensions.visible
 import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
-import com.jeanpaulo.musiclibrary.music.ui.R
 import com.jeanpaulo.musiclibrary.music.ui.databinding.ActivityMusicDetailBinding
 import com.squareup.picasso.Picasso
 
@@ -122,7 +121,7 @@ class MusicDetailActivity : BaseMvvmActivity() {
 
     private fun setToolbarColor(bitmap: Bitmap) {
         Palette.from(bitmap).generate { palette ->
-            val mutedColor = palette!!.getMutedColor(R.attr.colorPrimary)
+            val mutedColor = palette!!.getMutedColor(androidx.appcompat.R.attr.colorPrimary)
             binding.collapseToolbar.setContentScrimColor(mutedColor)
         }
     }
