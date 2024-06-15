@@ -1,4 +1,4 @@
-package com.jeanpaulo.musiclibrary.music.ui.v2.di
+package com.jeanpaulo.musiclibrary.music.ui.di
 
 import androidx.lifecycle.ViewModel
 import com.jeanpaulo.musiclibrary.commons.di.ViewModelKey
@@ -8,11 +8,9 @@ import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
 import com.jeanpaulo.musiclibrary.music.domain.MusicInteractor
 import com.jeanpaulo.musiclibrary.music.domain.MusicInteractorImpl
 import com.jeanpaulo.musiclibrary.music.domain.di.MusicDomainModule
-import com.jeanpaulo.musiclibrary.music.ui.v2.di.FromRemote
-import com.jeanpaulo.musiclibrary.music.ui.v2.di.SimpleMusicUI
-import com.jeanpaulo.musiclibrary.music.ui.v2.MusicDetailViewModel
-import com.jeanpaulo.musiclibrary.music.ui.v2.view.MusicDetailActivity
-import com.jeanpaulo.musiclibrary.music.ui.v2.view.MusicDetailFragment
+import com.jeanpaulo.musiclibrary.music.ui.view.MusicDetailActivity
+import com.jeanpaulo.musiclibrary.music.ui.MusicDetailViewModel
+import com.jeanpaulo.musiclibrary.music.ui.view.MusicDetailFragment
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

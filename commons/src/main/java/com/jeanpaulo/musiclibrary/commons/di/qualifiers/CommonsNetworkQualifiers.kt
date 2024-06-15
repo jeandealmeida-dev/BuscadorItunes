@@ -1,11 +1,11 @@
-package com.jeanpaulo.musiclibrary.music.ui.v1.di
+package com.jeanpaulo.musiclibrary.commons.di.qualifiers
 
 import javax.inject.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class SimpleMusicUI
+annotation class IOScheduler
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class FromRemote
+annotation class MainScheduler

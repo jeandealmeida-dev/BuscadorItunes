@@ -18,14 +18,7 @@ import com.jeanpaulo.musiclibrary.search.ui.viewmodel.SearchViewModel
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
 import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
-//--> v1
-import com.jeanpaulo.musiclibrary.music.ui.v1.view.MusicDetailActivity
-import com.jeanpaulo.musiclibrary.music.ui.v1.view.MusicDetailActivity.Companion.VIEW_NAME_HEADER_IMAGE
-import com.jeanpaulo.musiclibrary.music.ui.v1.view.MusicDetailActivity.Companion.VIEW_NAME_HEADER_TITLE
-//--> v2
-//import com.jeanpaulo.musiclibrary.music.ui.v2.view.MusicDetailActivity
-//import com.jeanpaulo.musiclibrary.music.ui.v2.view.MusicDetailActivity.Companion.VIEW_NAME_HEADER_IMAGE
-//import com.jeanpaulo.musiclibrary.music.ui.v2.view.MusicDetailActivity.Companion.VIEW_NAME_HEADER_TITLE
+import com.jeanpaulo.musiclibrary.music.ui.view.MusicDetailActivity
 import com.jeanpaulo.musiclibrary.search.ui.databinding.FragMusicSearchBinding
 import com.jeanpaulo.musiclibrary.search.ui.adapter.SearchAdapter
 import com.jeanpaulo.musiclibrary.search.ui.adapter.SearchLoadStateAdapter
@@ -209,20 +202,20 @@ class SearchFragment : BaseMvvmFragment(), MenuProvider {
         )
 
         //Animations
-        val titleElement = Pair<View, String>(
-            view.findViewById(R.id.musicName),
-            VIEW_NAME_HEADER_TITLE
-        )
-        val imageElement =
-            Pair<View, String>(view.findViewById(R.id.artwork), VIEW_NAME_HEADER_IMAGE)
-
-        //val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(requireBaseActivity(), *arrayOf(titleElement, imageElement))
-        val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
-            requireBaseActivity(),
-            titleElement,
-            imageElement
-        )
-        ActivityCompat.startActivity(requireContext(), intent, activityOptions.toBundle())
+//        val titleElement = Pair<View, String>(
+//            view.findViewById(R.id.musicName),
+//            VIEW_NAME_HEADER_TITLE
+//        )
+//        val imageElement =
+//            Pair<View, String>(view.findViewById(R.id.artwork), VIEW_NAME_HEADER_IMAGE)
+//
+//        //val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(requireBaseActivity(), *arrayOf(titleElement, imageElement))
+//        val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
+//            requireBaseActivity(),
+//            titleElement,
+//            imageElement
+//        )
+        ActivityCompat.startActivity(requireContext(), intent, null)
     }
 
     private fun createSearchObservable(searchView: SearchView): Disposable {

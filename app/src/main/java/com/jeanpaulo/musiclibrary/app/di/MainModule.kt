@@ -6,10 +6,8 @@ import com.jeanpaulo.musiclibrary.app.MainActivity
 import com.jeanpaulo.musiclibrary.app.MainViewModel
 import com.jeanpaulo.musiclibrary.commons.di.ViewModelKey
 import com.jeanpaulo.musiclibrary.favorite.ui.di.FavoriteModuleBuilder
-import com.jeanpaulo.musiclibrary.music.ui.v1.di.MusicModuleBuilder as MusicModuleBuilderV1
-import com.jeanpaulo.musiclibrary.music.ui.v2.di.MusicModuleBuilder as MusicModuleBuilderV2
-import com.jeanpaulo.musiclibrary.music.ui.v1.view.MusicDetailActivity as MusicDetailActivityV1
-import com.jeanpaulo.musiclibrary.music.ui.v2.view.MusicDetailActivity as MusicDetailActivityV2
+import com.jeanpaulo.musiclibrary.music.ui.di.MusicModuleBuilder
+import com.jeanpaulo.musiclibrary.music.ui.view.MusicDetailActivity
 import com.jeanpaulo.musiclibrary.playlist.ui.di.PlaylistModuleBuilder
 import com.jeanpaulo.musiclibrary.search.ui.di.SearchModuleBuilder
 import dagger.Binds
@@ -32,20 +30,11 @@ abstract class MainModule {
 
     @ContributesAndroidInjector(
         modules = [
-            MusicModuleBuilderV1::class,
+            MusicModuleBuilder::class,
             FavoriteModuleBuilder::class,
         ]
     )
-    internal abstract fun bindMusicDetailActivity(): MusicDetailActivityV1
-
-
-    @ContributesAndroidInjector(
-        modules = [
-            MusicModuleBuilderV2::class,
-            FavoriteModuleBuilder::class,
-        ]
-    )
-    internal abstract fun bindMusicDetailActivityV2(): MusicDetailActivityV2
+    internal abstract fun bindMusicDetailActivity(): MusicDetailActivity
 
     @Binds
     @IntoMap

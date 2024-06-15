@@ -1,19 +1,15 @@
-package com.jeanpaulo.musiclibrary.music.ui.v1.view
+package com.jeanpaulo.musiclibrary.music.ui.view
 
 import android.os.Bundle
 import android.view.*
-import androidx.core.view.MenuProvider
-import androidx.lifecycle.Lifecycle
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
 import com.jeanpaulo.musiclibrary.commons.extensions.gone
-import com.jeanpaulo.musiclibrary.commons.extensions.menuChecked
 import com.jeanpaulo.musiclibrary.commons.extensions.visible
-import com.jeanpaulo.musiclibrary.music.ui.R
 import com.jeanpaulo.musiclibrary.music.ui.databinding.FragMusicDetailBinding
 import com.jeanpaulo.musiclibrary.music.ui.model.MusicDetailUIModel
-import com.jeanpaulo.musiclibrary.music.ui.v1.FavoriteState
-import com.jeanpaulo.musiclibrary.music.ui.v1.MusicDetailState
-import com.jeanpaulo.musiclibrary.music.ui.v1.MusicDetailViewModel
+import com.jeanpaulo.musiclibrary.music.ui.FavoriteState
+import com.jeanpaulo.musiclibrary.music.ui.MusicDetailState
+import com.jeanpaulo.musiclibrary.music.ui.MusicDetailViewModel
 
 
 /**

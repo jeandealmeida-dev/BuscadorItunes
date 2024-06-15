@@ -3,8 +3,6 @@ package com.jeanpaulo.musiclibrary.favorite.ui.view
 import android.os.Bundle
 import android.view.*
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.util.Pair
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -14,16 +12,11 @@ import com.jeanpaulo.musiclibrary.commons.extensions.setupRefreshLayout
 import com.jeanpaulo.musiclibrary.commons.extensions.showSnackbar
 import com.jeanpaulo.musiclibrary.commons.extensions.visible
 import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
-import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
 import com.jeanpaulo.musiclibrary.favorite.ui.FavoriteState
 import com.jeanpaulo.musiclibrary.favorite.ui.FavoriteViewModel
-import com.jeanpaulo.musiclibrary.favorite.ui.R
 import com.jeanpaulo.musiclibrary.favorite.ui.databinding.FavoriteFragmentBinding
-//--> v2
-//import com.jeanpaulo.musiclibrary.music.ui.v2.view.MusicDetailActivity
-//--> v1
-import com.jeanpaulo.musiclibrary.music.ui.v1.view.MusicDetailActivity
+import com.jeanpaulo.musiclibrary.music.ui.view.MusicDetailActivity
 
 
 /**
@@ -145,18 +138,18 @@ class FavoriteFragment : BaseMvvmFragment() {
         )
 
         //Animations
-        val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
-            requireBaseActivity(),
-            Pair<View, String>(
-                view.findViewById(R.id.musicName),
-                MusicDetailActivity.VIEW_NAME_HEADER_TITLE
-            ),
-            Pair<View, String>(
-                view.findViewById(R.id.artwork),
-                MusicDetailActivity.VIEW_NAME_HEADER_IMAGE
-            )
-        )
-        ActivityCompat.startActivity(requireContext(), intent, activityOptions.toBundle())
+//        val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
+//            requireBaseActivity(),
+//            Pair<View, String>(
+//                view.findViewById(R.id.musicName),
+//                MusicDetailActivity.VIEW_NAME_HEADER_TITLE
+//            ),
+//            Pair<View, String>(
+//                view.findViewById(R.id.artwork),
+//                MusicDetailActivity.VIEW_NAME_HEADER_IMAGE
+//            )
+//        )
+        ActivityCompat.startActivity(requireContext(), intent, null)
     }
 }
 

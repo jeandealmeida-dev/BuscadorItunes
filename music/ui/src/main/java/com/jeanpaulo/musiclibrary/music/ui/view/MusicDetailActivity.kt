@@ -1,4 +1,4 @@
-package com.jeanpaulo.musiclibrary.music.ui.v1.view
+package com.jeanpaulo.musiclibrary.music.ui.view
 
 import android.content.Context
 import android.content.Intent
@@ -12,8 +12,8 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.BaseOnOffsetChangedListener
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmActivity
 import com.jeanpaulo.musiclibrary.commons.extensions.gone
-import com.jeanpaulo.musiclibrary.music.ui.v1.MusicDetailViewModel
-import com.jeanpaulo.musiclibrary.music.ui.v1.MusicPlayerState
+import com.jeanpaulo.musiclibrary.music.ui.MusicDetailViewModel
+import com.jeanpaulo.musiclibrary.music.ui.MusicPlayerState
 import com.jeanpaulo.musiclibrary.commons.extras.MyMediaPlayer
 import com.jeanpaulo.musiclibrary.commons.extensions.replace
 import com.jeanpaulo.musiclibrary.commons.extensions.visible
@@ -120,10 +120,15 @@ class MusicDetailActivity : BaseMvvmActivity() {
         binding.collapseToolbar.title = vm.simpleMusicDetail.name
     }
 
-    private fun setToolbarColor(bitmap: Bitmap) {
-        Palette.from(bitmap).generate { palette ->
-            val mutedColor = palette!!.getMutedColor(R.attr.colorPrimary)
-            binding.collapseToolbar.setContentScrimColor(mutedColor)
+    private fun setToolbarColor(bitmap: Bitmap?) {
+        bitmap?.let {
+            Palette.from(bitmap).generate { palette ->
+                val mutedColor = palette?.getMutedColor(androidx.appcompat.R.attr.colorPrimary) ?: getColor(
+                    com.jeanpaulo.musiclibrary.commons.R.color.colorPrimary)
+                binding.collapseToolbar.setContentScrimColor(mutedColor)
+            }
+        } ?: run {
+            // TODO Handle null or invalid bitmap scenario
         }
     }
 

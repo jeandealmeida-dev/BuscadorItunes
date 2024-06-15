@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jeanpaulo.musiclibrary.music.ui">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <activity
             android:exported="true"
-            android:name=".v1.view.MusicDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            android:label="@string/title_activity_music_detail" />
-
-        <activity
-            android:exported="true"
-            android:name=".v2.view.MusicDetailActivity"
+            android:name="com.jeanpaulo.musiclibrary.music.ui.view.MusicDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
