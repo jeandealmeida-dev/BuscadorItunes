@@ -4,6 +4,12 @@ This is an Android Project that implements an Music library. It can look up for 
 
 https://github.com/jeandealmeida-dev/BuscadorItunes/assets/3248076/a0925b4f-4b9a-4c01-a8d4-d93840eec282
 
+## Inspiration
+
+<img width="756" alt="image" src="https://github.com/jeandealmeida-dev/BuscadorItunes/assets/3248076/efabdae9-6e11-4af3-bfdb-cd913becf9af">
+
+[Figma Link](https://www.figma.com/design/WtDm4N04po4gl6RcSVVL2l/30-Vibes?node-id=0-1&t=S2eWnn1qsiTOtQp0-1)
+
 ## Features 
 
 - Search a song by name, artist or album
