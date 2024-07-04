@@ -1,0 +1,55 @@
+<resources>
+
+    <style name="AppTextStyle.Toolbar" parent="AppTheme.Dark">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="backgroundColor">@null</item>
+    </style>
+
+    <!-- HEAD -->
+
+    <style name="AppTextStyle.Head" parent="AppTheme.Dark">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="backgroundColor">@null</item>
+    </style>
+
+    <style name="AppTextStyle.Head.Big">
+        <item name="android:textSize">26sp</item>
+    </style>
+
+    <!-- HEAD INVERSE -->
+
+    <style name="AppTextStyle.Head.Inverse">
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+    </style>
+
+    <style name="AppTextStyle.Head.Big.Inverse">
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+    </style>
+
+    <!-- CAPTION -->
+
+    <style name="AppTextStyle.Caption" parent="AppTheme.Dark">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="backgroundColor">@null</item>
+    </style>
+
+    <style name="AppTextStyle.Caption.Big">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!-- CAPTION INVERSE -->
+
+    <style name="AppTextStyle.Caption.Inverse">
+        <item name="android:textColor">?android:attr/textColorSecondaryInverse</item>
+    </style>
+
+    <style name="AppTextStyle.Caption.Big.Inverse">
+        <item name="android:textColor">?android:attr/textColorSecondaryInverse</item>
+    </style>
+
+</resources>

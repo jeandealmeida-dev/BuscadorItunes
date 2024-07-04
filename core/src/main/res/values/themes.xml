@@ -1,0 +1,109 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme.Light" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Status Bar -->
+        <item name="windowActionBar">true</item>
+        <item name="android:statusBarColor">@color/light_status_color</item>
+
+        <!-- General theme colors -->
+        <item name="colorPrimary">@color/light_color_primary</item>
+        <item name="colorPrimaryDark">@color/light_color_primary_dark</item>
+        <item name="colorAccent">@color/light_color_accent</item>
+        <item name="android:colorBackground">@color/light_background</item>
+        <item name="android:colorForeground">@color/light_foreground</item>
+
+        <!-- Text Appearance styles -->
+        <!--        <item name="android:textViewStyle">@style/TextViewStyle.Condensed</item>-->
+        <item name="android:textColorPrimary">@color/light_text_color_primary</item>
+        <item name="android:textColorSecondary">@color/light_text_color_secondary</item>
+        <item name="android:textColorTertiary">@color/light_text_color_tertiary</item>
+        <item name="android:textColorLink">@color/light_text_color_link</item>
+        <item name="android:textColorHint">@color/light_text_color_hint</item>
+        <item name="android:textColorPrimaryInverse">@color/light_text_color_primary_inverse</item>
+        <item name="android:textColorSecondaryInverse">@color/light_text_color_secondary_inverse
+        </item>
+        <item name="android:textColorTertiaryInverse">@color/light_text_color_tertiary_inverse
+        </item>
+        <item name="android:textColorLinkInverse">@color/light_text_color_link_inverse</item>
+        <item name="android:textColorHintInverse">@color/light_text_color_hint_inverse</item>
+        <!-- Custom Attr -->
+        <item name="bottomSheetTheme">@style/AppTheme.Dark.BottomSheet</item>
+    </style>
+
+    <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="android:statusBarColor">@color/dark_status_color</item>
+
+        <!-- General theme colors -->
+        <item name="colorPrimary">@color/dark_color_primary</item>
+        <item name="colorPrimaryDark">@color/dark_color_primary_dark</item>
+        <item name="colorAccent">@color/dark_color_accent</item>
+        <item name="android:colorBackground">@color/dark_background</item>
+        <item name="android:colorForeground">@color/dark_foreground</item>
+
+        <!-- Text Appearance styles -->
+        <!--        <item name="android:textViewStyle">@style/TextViewStyle.Condensed</item>-->
+        <item name="android:textColorPrimary">@color/dark_text_color_primary</item>
+        <item name="android:textColorSecondary">@color/dark_text_color_secondary</item>
+        <item name="android:textColorTertiary">@color/dark_text_color_tertiary</item>
+        <item name="android:textColorLink">@color/dark_text_color_link</item>
+        <item name="android:textColorHint">@color/dark_text_color_hint</item>
+        <item name="android:textColorPrimaryInverse">@color/dark_text_color_primary_inverse</item>
+        <item name="android:textColorSecondaryInverse">@color/dark_text_color_secondary_inverse
+        </item>
+        <item name="android:textColorTertiaryInverse">@color/dark_text_color_tertiary_inverse</item>
+        <item name="android:textColorLinkInverse">@color/dark_text_color_link_inverse</item>
+        <item name="android:textColorHintInverse">@color/dark_text_color_hint_inverse</item>
+        <!-- Custom Attr -->
+        <item name="bottomSheetTheme">@style/AppTheme.Light.BottomSheet</item>
+    </style>
+
+    <style name="AppTheme.Light.BottomSheet" parent="@style/Theme.Design.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/TransparentBottomSheetStyle</item>
+
+        <!-- General theme colors -->
+        <item name="colorPrimary">@color/light_color_primary</item>
+        <item name="colorPrimaryDark">@color/light_color_primary_dark</item>
+        <item name="colorAccent">@color/light_color_accent</item>
+        <item name="backgroundColor">@color/light_background</item>
+
+        <!-- Text Appearance styles -->
+        <item name="android:textColorPrimary">@color/light_text_color_primary</item>
+        <item name="android:textColorSecondary">@color/light_text_color_secondary</item>
+        <item name="android:textColorTertiary">@color/light_text_color_tertiary</item>
+        <item name="android:textColorLink">@color/light_text_color_link</item>
+        <item name="android:textColorHint">@color/light_text_color_hint</item>
+        <item name="android:textColorPrimaryInverse">@color/light_text_color_primary_inverse</item>
+        <item name="android:textColorSecondaryInverse">@color/light_text_color_secondary_inverse
+        </item>
+        <item name="android:textColorTertiaryInverse">@color/light_text_color_tertiary_inverse
+        </item>
+        <item name="android:textColorLinkInverse">@color/light_text_color_link_inverse</item>
+        <item name="android:textColorHintInverse">@color/light_text_color_hint_inverse</item>
+    </style>
+
+    <style name="AppTheme.Dark.BottomSheet" parent="@style/Theme.Design.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/TransparentBottomSheetStyle</item>
+
+        <!-- General theme colors -->
+        <item name="colorPrimary">@color/dark_color_primary</item>
+        <item name="colorPrimaryDark">@color/dark_color_primary_dark</item>
+        <item name="colorAccent">@color/dark_color_accent</item>
+        <item name="backgroundColor">@color/dark_background</item>
+
+        <!-- Text Appearance styles -->
+        <item name="android:textColorPrimary">@color/dark_text_color_primary</item>
+        <item name="android:textColorSecondary">@color/dark_text_color_secondary</item>
+        <item name="android:textColorTertiary">@color/dark_text_color_tertiary</item>
+        <item name="android:textColorLink">@color/dark_text_color_link</item>
+        <item name="android:textColorHint">@color/dark_text_color_hint</item>
+        <item name="android:textColorPrimaryInverse">@color/dark_text_color_primary_inverse</item>
+        <item name="android:textColorSecondaryInverse">@color/dark_text_color_secondary_inverse
+        </item>
+        <item name="android:textColorTertiaryInverse">@color/dark_text_color_tertiary_inverse</item>
+        <item name="android:textColorLinkInverse">@color/dark_text_color_link_inverse</item>
+        <item name="android:textColorHintInverse">@color/dark_text_color_hint_inverse</item>
+    </style>
+</resources>

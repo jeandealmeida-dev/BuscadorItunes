@@ -7,8 +7,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
-import com.jeanpaulo.musiclibrary.commons.extensions.setupRefreshLayout
-import com.jeanpaulo.musiclibrary.commons.extensions.showSnackbar
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.setupRefreshLayout
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.showSnackbar
 import com.jeanpaulo.musiclibrary.playlist.ui.R
 import com.jeanpaulo.musiclibrary.playlist.ui.databinding.PlaylistCreateFragmentBinding
 import com.jeanpaulo.musiclibrary.playlist.ui.viewmodel.PlaylistCreateState

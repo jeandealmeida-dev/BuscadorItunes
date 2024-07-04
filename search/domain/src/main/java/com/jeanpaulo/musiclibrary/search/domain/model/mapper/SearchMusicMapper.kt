@@ -10,5 +10,6 @@ fun MusicResponse.toSearchMusic() =
         artworkUrl = this.artworkUrl ?: "",
         artistName = this.artistName ?: "",
         collectionName = this.collectionName ?: "",
-        collectionYear = this.releaseDate?.year.toString()
+        collectionYear = this.releaseDate?.year.toString(),
+        previewUrl = this.previewUrl
     )

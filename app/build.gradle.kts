@@ -36,6 +36,7 @@ dependencies {
     implementation(project(ProjectDependencies.Module.core))
 
     // Base
+    implementation(ProjectDependencies.AndroidX.Design())
     implementation(ProjectDependencies.AndroidX.core())
     implementation(ProjectDependencies.AndroidX.AppCompat())
     implementation(ProjectDependencies.Android.MaterialComponents())
@@ -66,4 +67,7 @@ dependencies {
     implementation(ProjectDependencies.Logback())
     implementation(ProjectDependencies.Timber())
     implementation(ProjectDependencies.Stetho())
+
+    // Picaso
+    implementation(ProjectDependencies.Picasso())
 }

@@ -10,6 +10,8 @@ addRetrofitDependencies()
 addMoshiDependencies()
 
 dependencies {
+    implementation(project(ProjectDependencies.Module.commons))
+
     // Base
     implementation(ProjectDependencies.AndroidX.core())
     implementation(ProjectDependencies.AndroidX.AppCompat())
@@ -17,4 +19,7 @@ dependencies {
     testImplementation(ProjectDependencies.JUnit())
     androidTestImplementation(ProjectDependencies.AndroidX.JUnit())
     androidTestImplementation(ProjectDependencies.AndroidX.Espresso())
+
+    // Picaso
+    implementation(ProjectDependencies.Picasso())
 }

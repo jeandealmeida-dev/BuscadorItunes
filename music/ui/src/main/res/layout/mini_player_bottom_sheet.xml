@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/AppMiniPlayer"
+    android:backgroundTint="?attr/backgroundColor"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="?actionBarSize">
+
+        <ImageView
+            android:id="@+id/artwork"
+            android:layout_width="@dimen/artwork_size_xl"
+            android:layout_height="@dimen/artwork_size_xl"
+            android:layout_alignParentStart="true"
+            android:scaleType="fitXY"
+            tools:src="@android:drawable/ic_menu_camera" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_md"
+            android:layout_toRightOf="@+id/artwork">
+
+            <LinearLayout
+                android:id="@+id/item_music"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/margin_md">
+
+                <TextView
+                    android:id="@+id/musicName"
+                    style="@style/AppTextStyle.Head"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    tools:text="Nome da musica" />
+
+                <TextView
+                    android:id="@+id/artistName"
+                    style="@style/AppTextStyle.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    tools:text="Nome da banda" />
+
+            </LinearLayout>
+
+            <ImageButton
+                style="@style/AppPlayButton"
+                android:id="@+id/play_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_md"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

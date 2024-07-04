@@ -6,5 +6,6 @@ data class SearchMusic(
     val artistName: String,
     val collectionName: String,
     val collectionYear: String,
-    val artworkUrl: String
+    val artworkUrl: String,
+    val previewUrl: String?
 )

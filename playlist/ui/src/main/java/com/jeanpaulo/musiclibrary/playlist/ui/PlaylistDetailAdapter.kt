@@ -3,7 +3,7 @@ package com.jeanpaulo.musiclibrary.playlist.ui
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.jeanpaulo.musiclibrary.commons.databinding.ItemMusicBinding
+import com.jeanpaulo.musiclibrary.core.databinding.ItemMusicBinding
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 
 class PlaylistDetailAdapter(

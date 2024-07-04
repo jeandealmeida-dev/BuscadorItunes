@@ -1,0 +1,40 @@
+<resources>
+
+    <style name="AppBottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet_background</item>
+    </style>
+
+    <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/AppBottomSheet</item>
+    </style>
+
+    <style name="AppMiniPlayer">
+        <item name="android:theme">?attr/bottomSheetTheme</item>
+<!--        <item name="backgroundTint">?attr/backgroundColor</item>-->
+        <item name="layout_behavior">@string/bottom_sheet_behavior</item>
+        <item name="cardCornerRadius">@dimen/radius_xl</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+    </style>
+
+    <style name="AppFullPlayer">
+        <item name="backgroundTint">?android:colorBackground</item>
+        <item name="layout_behavior">@string/bottom_sheet_behavior</item>
+        <item name="cardCornerRadius">@dimen/radius_xl</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+    </style>
+
+    <style name="OptionsBottomSheet">
+        <!--        <item name="behavior_hideable">true</item>-->
+        <item name="layout_behavior">@string/bottom_sheet_behavior</item>
+    </style>
+
+    <!-- DRAG HANDLER -->
+    <style name="AppBottomSheetDragHandle">
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:layout_marginBottom">-5dp</item>
+        <item name="tint">?colorAccent</item>
+        <item name="srcCompat">@drawable/m3_bottom_sheet_drag_handle</item>
+    </style>
+
+</resources>

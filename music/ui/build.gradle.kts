@@ -20,12 +20,12 @@ dependencies {
     androidTestImplementation(ProjectDependencies.AndroidX.JUnit())
     androidTestImplementation(ProjectDependencies.AndroidX.Espresso())
 
+    //AndroidX
+    implementation(ProjectDependencies.AndroidX.CardView())
+
     // Palette
     implementation(ProjectDependencies.Android.Palette())
 
     // Picasso
     implementation(ProjectDependencies.Picasso())
-}
-repositories {
-    mavenCentral()
 }

@@ -1,0 +1,102 @@
+package com.jeanpaulo.musiclibrary.search.ui.bottom_sheet
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.getThemeStyle
+import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
+import com.jeanpaulo.musiclibrary.core.domain.model.MusicPlayerSong
+import com.jeanpaulo.musiclibrary.commons.R
+import com.jeanpaulo.musiclibrary.search.ui.databinding.SearchOptionsBottomSheetBinding
+import com.squareup.picasso.Picasso
+
+class SearchOptionsBottomSheet(
+    val song: MusicPlayerSong,
+    val options: List<SearchOption>,
+    val listener: MusicOptionListener
+) : BottomSheetDialogFragment() {
+
+    private lateinit var binding: SearchOptionsBottomSheetBinding
+    private var bottomSheetPeekHeight = 0
+
+    override fun getTheme(): Int =
+        requireContext().getThemeStyle(R.attr.bottomSheetTheme)
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = SearchOptionsBottomSheetBinding.inflate(layoutInflater, container, false)
+        binding.bottomSheet.setBackgroundResource(R.drawable.bottom_sheet_background)
+        // 86dp
+        bottomSheetPeekHeight = resources
+            .getDimensionPixelSize(com.jeanpaulo.musiclibrary.core.R.dimen.bottom_sheet_default_peek_height);
+
+        setupWidgets()
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupBehavior()
+    }
+
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
+    fun setupBehavior() {
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
+        //bottomSheetBehavior.skipCollapsed = true //Avoid collapsed state
+//        bottomSheetBehavior.peekHeight = bottomSheetPeekHeight
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
+    fun setupWidgets() {
+        binding.content.itemMusic.apply {
+            musicName.text = song.name
+            artistName.text = song.artist
+            Picasso.with(requireContext()).load(song.artworkUrl).into(artwork)
+        }
+
+        val listAdapter = SearchOptionAdapter(options) {
+            listener.onOptionSelected(it)
+            dismiss()
+        }
+
+        binding.content.options.layoutManager =
+            CustomLinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        binding.content.options.adapter = listAdapter
+
+        val itemDecorator = DividerItemDecoration(
+            requireContext(),
+            DividerItemDecoration.VERTICAL
+        )
+
+        binding.content.options.addItemDecoration(itemDecorator)
+    }
+
+    interface MusicOptionListener {
+
+        fun onOptionSelected(searchOption: SearchOption)
+    }
+
+    companion object {
+
+        const val TAG = "MusicOptionsBottomSheet"
+
+        fun newInstance(
+            song: MusicPlayerSong,
+            options: List<SearchOption>,
+            listener: MusicOptionListener
+        ): SearchOptionsBottomSheet {
+            return SearchOptionsBottomSheet(
+                song, options, listener
+            )
+        }
+
+    }
+}

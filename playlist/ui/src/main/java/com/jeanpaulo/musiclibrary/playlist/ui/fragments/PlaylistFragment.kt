@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
-import com.jeanpaulo.musiclibrary.commons.extensions.*
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.gone
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.setupRefreshLayout
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.showSnackbar
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.visible
 import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
 import com.jeanpaulo.musiclibrary.playlist.ui.PlaylistListAdapter
 import com.jeanpaulo.musiclibrary.playlist.ui.R

@@ -45,7 +45,7 @@
                     android:layout_width="96dp"
                     android:layout_height="96dp"
                     android:layout_gravity="center"
-                    android:contentDescription="@string/no_tasks_image_content_description"
+                    android:contentDescription="@null"
                     android:src="@mipmap/ic_launcher" />
 
                 <TextView
@@ -53,8 +53,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/list_item_padding"
-                    android:text="@string/no_music_found" />
+                    android:layout_marginBottom="@dimen/margin_md"
+                    android:text="TODO alterar essa mensagem" />
             </LinearLayout>
 
             <TextView

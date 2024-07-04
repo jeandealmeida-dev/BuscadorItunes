@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="artwork_size_md">55dp</dimen>
+    <dimen name="artwork_size_xl">90dp</dimen>
+
+    <dimen name="margin_xs">3dp</dimen>
+    <dimen name="margin_sm">7dp</dimen>
+    <dimen name="margin_sm_mid">11dp</dimen>
+    <dimen name="margin_md">15dp</dimen>
+    <dimen name="margin_xl">30dp</dimen>
+    <dimen name="margin_xxl">40dp</dimen>
+
+    <dimen name="radius_md">15dp</dimen>
+    <dimen name="radius_xl">30dp</dimen>
+</resources>

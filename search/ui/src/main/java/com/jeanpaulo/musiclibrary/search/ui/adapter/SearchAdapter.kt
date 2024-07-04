@@ -1,30 +1,28 @@
 package com.jeanpaulo.musiclibrary.search.ui.adapter
 
 import android.view.LayoutInflater
-import android.view.View
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.jeanpaulo.musiclibrary.search.ui.viewmodel.SearchViewModel
-import com.jeanpaulo.musiclibrary.commons.databinding.ItemMusicBinding
 import com.jeanpaulo.musiclibrary.search.ui.databinding.ItemListFooterBinding
+import com.jeanpaulo.musiclibrary.search.ui.databinding.SearchMusicItemBinding
 import com.jeanpaulo.musiclibrary.search.ui.model.SearchMusicUIModel
 import com.squareup.picasso.Picasso
 
 class SearchAdapter(
     private val viewModel: SearchViewModel,
-    private val listener: (View, SearchMusicUIModel) -> Unit
+    private val listener: SearchListener
 ) : PagingDataAdapter<SearchMusicUIModel, RecyclerView.ViewHolder>(MUSIC_COMPARATOR) {
 
-    private var isLoading : Boolean = true
+    private var isLoading: Boolean = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == MUSIC_VIEW_TYPE) {
             val binding =
-                ItemMusicBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                SearchMusicItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             MusicViewHolder(binding)
         } else {
             val binding =
@@ -39,9 +37,14 @@ class SearchAdapter(
                 val music = getItem(position)
                 if (music != null) {
                     holder.bind(music, listener)
-                    holder.itemView.setOnClickListener { listener(holder.itemView, music) }
+                    holder.itemView.setOnClickListener { listener.onItemPressed(music) }
+                    holder.itemView.setOnLongClickListener {
+                        listener.onOptionsPressed(music)
+                        false
+                    }
                 }
             }
+
             holder is FooterViewHolder -> {
                 holder.bind(isLoading, viewModel::refresh)
             }
@@ -62,21 +65,22 @@ class SearchAdapter(
     }
 
 
-    class MusicViewHolder(private val binding: ItemMusicBinding) :
+    class MusicViewHolder(private val binding: SearchMusicItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(music: SearchMusicUIModel, listener: (View, SearchMusicUIModel) -> Unit) {
-            binding.apply {
+        fun bind(music: SearchMusicUIModel, listener: SearchListener) {
+            binding.itemMusic.apply {
                 musicName.text = music.musicName
-                collectionName.text = music.collectionName
                 artistName.text = music.artistName
                 Picasso
                     .with(binding.root.context)
                     .load(music.artworkUrl)
                     .into(artwork)
-
-                itemView.setOnClickListener { listener(root, music) }
             }
+
+//            binding.moreButton.apply {
+//                listener.onOptionsPressed(music)
+//            }
         }
     }
 
@@ -92,6 +96,11 @@ class SearchAdapter(
         }
     }
 
+    interface SearchListener {
+        fun onItemPressed(music: SearchMusicUIModel)
+        fun onOptionsPressed(music: SearchMusicUIModel)
+    }
+
     companion object {
         internal const val MUSIC_VIEW_TYPE = 1
         internal const val FOOTER_VIEW_TYPE = 2
@@ -101,7 +110,10 @@ class SearchAdapter(
             override fun areItemsTheSame(oldItem: SearchMusicUIModel, newItem: SearchMusicUIModel) =
                 oldItem.musicId == newItem.musicId
 
-            override fun areContentsTheSame(oldItem: SearchMusicUIModel, newItem: SearchMusicUIModel) =
+            override fun areContentsTheSame(
+                oldItem: SearchMusicUIModel,
+                newItem: SearchMusicUIModel
+            ) =
                 oldItem == newItem
         }
     }

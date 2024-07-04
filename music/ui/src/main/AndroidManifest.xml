@@ -4,7 +4,7 @@
         <activity
             android:exported="true"
             android:name="com.jeanpaulo.musiclibrary.music.ui.view.MusicDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.Dark"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
             android:label="@string/title_activity_music_detail" />

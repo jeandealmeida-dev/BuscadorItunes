@@ -11,4 +11,6 @@
     <dimen name="header_image_width">100dp</dimen>
     <dimen name="artwork_music_detail_size">280dp</dimen>
     <dimen name="height_appbar">256dp</dimen>
+    <dimen name="card_elevation">10dp</dimen>
+
 </resources>
