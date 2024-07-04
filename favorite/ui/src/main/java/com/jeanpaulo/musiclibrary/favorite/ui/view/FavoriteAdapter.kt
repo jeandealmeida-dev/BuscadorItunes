@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
-import com.jeanpaulo.musiclibrary.commons.databinding.ItemMusicBinding
+import com.jeanpaulo.musiclibrary.core.databinding.ItemMusicBinding
 import com.squareup.picasso.Picasso
 
 class FavoriteAdapter(
@@ -50,7 +50,7 @@ class FavoriteAdapter(
         fun bind(music: Music, listener: (View, Music) -> Unit) = with(itemView) {
             binding.musicName.text = music.trackName
             binding.artistName.text = music.musicArtist?.name ?: "-"
-            binding.collectionName.text = music.musicCollection?.name  ?: "-"
+//            binding.collectionName.text = music.musicCollection?.name  ?: "-"
             Picasso.with(binding.root.context).load(music.artworkUrl).into(binding.artwork)
             setOnClickListener { listener(itemView, music) }
         }

@@ -37,8 +37,7 @@ object ProjectDependencies {
         fun BuildGradle() = "com.android.tools.build:gradle:8.4.1"
 
         // updated 02/05/2024
-        fun MaterialComponents() =
-            "com.google.android.material:material:1.12.0" // Stable (https://stackoverflow.com/questions/74191324/cant-determine-type-for-tag-macro-name-m3-comp-bottom-app-bar-container-colo)
+        fun MaterialComponents() = "com.google.android.material:material:1.12.0" // Stable (https://stackoverflow.com/questions/74191324/cant-determine-type-for-tag-macro-name-m3-comp-bottom-app-bar-container-colo)
 
         fun Multidex() = "com.android.support:multidex:2.0.1"
 
@@ -110,6 +109,7 @@ object ProjectDependencies {
     object AndroidX {
         fun core() = "androidx.core:core-ktx:1.9.0"
         fun AppCompat() = "androidx.appcompat:appcompat:1.5.1"
+        fun Design() = "com.android.support:design:28.0.0"
         fun JUnit() = "androidx.test.ext:junit:1.1.4"
         fun Espresso() = "androidx.test.espresso:espresso-core:3.5.0"
         fun Paging() = "androidx.paging:paging-runtime:3.1.1"

@@ -11,5 +11,6 @@ fun SearchMusic.toUIModel() =
         artworkUrl = this.artworkUrl,
         artistName = this.artistName,
         collectionName = this.collectionName,
-        collectionYear = this.collectionYear
+        collectionYear = this.collectionYear,
+        previewUrl = this.previewUrl
     )

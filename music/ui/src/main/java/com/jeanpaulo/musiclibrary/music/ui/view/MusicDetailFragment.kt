@@ -3,13 +3,14 @@ package com.jeanpaulo.musiclibrary.music.ui.view
 import android.os.Bundle
 import android.view.*
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
-import com.jeanpaulo.musiclibrary.commons.extensions.gone
-import com.jeanpaulo.musiclibrary.commons.extensions.visible
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.gone
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.visible
 import com.jeanpaulo.musiclibrary.music.ui.databinding.FragMusicDetailBinding
 import com.jeanpaulo.musiclibrary.music.ui.model.MusicDetailUIModel
 import com.jeanpaulo.musiclibrary.music.ui.FavoriteState
 import com.jeanpaulo.musiclibrary.music.ui.MusicDetailState
 import com.jeanpaulo.musiclibrary.music.ui.MusicDetailViewModel
+import com.squareup.picasso.Picasso
 
 
 /**
@@ -82,8 +83,10 @@ class MusicDetailFragment : BaseMvvmFragment() {
     }
 
     fun setupMusicDetail(musicDetailUIModel: MusicDetailUIModel) {
-        binding.artist.text = musicDetailUIModel.artist
-        binding.album.text = musicDetailUIModel.album
+        Picasso.with(context).load(musicDetailUIModel.artwork).into(binding.artcoverImg)
+        binding.musicNameTxt.text = musicDetailUIModel.name
+        binding.artistNameTxt.text = musicDetailUIModel.artist
+        //binding.album.text = musicDetailUIModel.album
     }
 
     fun setupWidgets() {

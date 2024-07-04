@@ -36,6 +36,7 @@ dependencies {
     implementation(project(ProjectDependencies.Module.core))
 
     // Base
+    implementation(ProjectDependencies.AndroidX.Design())
     implementation(ProjectDependencies.AndroidX.core())
     implementation(ProjectDependencies.AndroidX.AppCompat())
     implementation(ProjectDependencies.Android.MaterialComponents())
@@ -53,7 +54,7 @@ dependencies {
     implementation(ProjectDependencies.AndroidX.SwipeRefreshLayout())
     implementation(ProjectDependencies.AndroidX.CardView())
     implementation(ProjectDependencies.AndroidX.RecyclerView())
-    // → Lyfecycle
+    // → Lifecycle
     implementation(ProjectDependencies.AndroidX.Lifecycle.LiveData())
     implementation(ProjectDependencies.AndroidX.Lifecycle.ViewModel())
     implementation(ProjectDependencies.AndroidX.Lifecycle.Extensions())
@@ -66,4 +67,7 @@ dependencies {
     implementation(ProjectDependencies.Logback())
     implementation(ProjectDependencies.Timber())
     implementation(ProjectDependencies.Stetho())
+
+    // Picasso
+    implementation(ProjectDependencies.Picasso())
 }

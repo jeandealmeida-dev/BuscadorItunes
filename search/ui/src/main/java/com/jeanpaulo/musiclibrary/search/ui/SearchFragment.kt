@@ -3,10 +3,9 @@ package com.jeanpaulo.musiclibrary.search.ui
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.util.Pair
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
@@ -14,16 +13,22 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
-import com.jeanpaulo.musiclibrary.search.ui.viewmodel.SearchViewModel
-import com.jeanpaulo.musiclibrary.core.domain.model.Music
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.showTopSnackbar
 import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
+import com.jeanpaulo.musiclibrary.core.domain.model.Music
+import com.jeanpaulo.musiclibrary.core.domain.model.MusicPlayerSong
 import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
+import com.jeanpaulo.musiclibrary.core.service.MusicPlayerService
+import com.jeanpaulo.musiclibrary.search.ui.bottom_sheet.SearchOption
+import com.jeanpaulo.musiclibrary.search.ui.bottom_sheet.SearchOptionsBottomSheet
 import com.jeanpaulo.musiclibrary.music.ui.view.MusicDetailActivity
-import com.jeanpaulo.musiclibrary.search.ui.databinding.FragMusicSearchBinding
 import com.jeanpaulo.musiclibrary.search.ui.adapter.SearchAdapter
 import com.jeanpaulo.musiclibrary.search.ui.adapter.SearchLoadStateAdapter
-import com.jeanpaulo.musiclibrary.search.ui.model.mapper.convertToSimpleMusicDetailUIModel
+import com.jeanpaulo.musiclibrary.search.ui.databinding.FragMusicSearchBinding
+import com.jeanpaulo.musiclibrary.search.ui.model.SearchMusicUIModel
+import com.jeanpaulo.musiclibrary.search.ui.model.mapper.convertToSong
 import com.jeanpaulo.musiclibrary.search.ui.viewmodel.SearchState
+import com.jeanpaulo.musiclibrary.search.ui.viewmodel.SearchViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -58,16 +63,21 @@ class SearchFragment : BaseMvvmFragment(), MenuProvider {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragMusicSearchBinding.inflate(inflater, container, false)
+        (requireActivity() as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         return binding.root
     }
 
     private fun setupListAdapter() {
-        searchAdapter = SearchAdapter(viewModel) { view, it ->
-            viewModel.openMusicDetail(
-                view = view,
-                music = it.convertToSimpleMusicDetailUIModel()
-            )
-        }
+        searchAdapter = SearchAdapter(viewModel, object : SearchAdapter.SearchListener {
+            override fun onItemPressed(music: SearchMusicUIModel) {
+                viewModel.playMusic(music.convertToSong())
+            }
+
+            override fun onOptionsPressed(music: SearchMusicUIModel) {
+                viewModel.options(music.convertToSong())
+            }
+
+        })
 
         searchAdapter.addLoadStateListener { loadState ->
             binding.txtError.isVisible = loadState.source.refresh is LoadState.Error
@@ -96,9 +106,41 @@ class SearchFragment : BaseMvvmFragment(), MenuProvider {
                 SearchState.Success -> {
 
                 }
+
                 is SearchState.OpenDetail -> {
                     startMusicDetailActivity(state.view, state.music)
                 }
+
+                is SearchState.PlaySong -> {
+                    MusicPlayerService.playASong(requireActivity(), state.music)
+                }
+
+                is SearchState.Options -> {
+                    val dialog = SearchOptionsBottomSheet.newInstance(
+                        state.music,
+                        listOf(
+                            SearchOption.ADD_FAVORITE,
+                            SearchOption.ADD_PLAYLIST,
+                            SearchOption.GO_TO_ALBUM,
+                            SearchOption.GO_TO_ARTIST
+                        ),
+                        object : SearchOptionsBottomSheet.MusicOptionListener {
+                            override fun onOptionSelected(searchOption: SearchOption) {
+                                requireContext().showTopSnackbar(
+                                    view = binding.root,
+                                    text = getString(searchOption.desciption)
+                                )
+                            }
+                        }
+                    )
+                    dialog.show(parentFragmentManager, SearchOptionsBottomSheet.TAG)
+//                    val view = layoutInflater.inflate(com.jeanpaulo.musiclibrary.core.R.layout.item_music, null)
+//                    val dialog = BottomSheetDialog(requireContext(), com.jeanpaulo.musiclibrary.commons.R.style.AppBaseBottomSheetStyle) // Style here
+//
+//                    dialog.setContentView(view)
+//                    dialog.show()
+                }
+
                 else -> {
 
                 }

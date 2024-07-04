@@ -22,6 +22,10 @@ dependencies {
     androidTestImplementation(ProjectDependencies.AndroidX.JUnit())
     androidTestImplementation(ProjectDependencies.AndroidX.Espresso())
 
+    // AndroidX
+    implementation(ProjectDependencies.AndroidX.CardView())
+    implementation(ProjectDependencies.AndroidX.RecyclerView())
+
     // Picasso
     implementation(ProjectDependencies.Picasso())
 

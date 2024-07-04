@@ -1,0 +1,20 @@
+<resources>
+
+    <style name="AppBottomNavigationMenu">
+        <item name="android:background">@drawable/bottom_menu_background</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="itemIconTint">@drawable/menu_item_selector</item>
+        <item name="itemTextColor">@drawable/menu_item_selector</item>
+        <item name="itemRippleColor">@color/gray_500</item>
+        <item name="cornerRadius">15dp</item>
+        <item name="android:paddingBottom">@dimen/margin_sm</item>
+        <item name="android:paddingTop">@dimen/margin_sm</item>
+        <item name="elevation">5dp</item>
+    </style>
+
+    <style name="AppToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">?colorPrimaryDark</item>
+        <item name="elevation">4dp</item>
+    </style>
+
+</resources>

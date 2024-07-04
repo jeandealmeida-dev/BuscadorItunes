@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
-import com.jeanpaulo.musiclibrary.commons.extensions.gone
-import com.jeanpaulo.musiclibrary.commons.extensions.setupRefreshLayout
-import com.jeanpaulo.musiclibrary.commons.extensions.showSnackbar
-import com.jeanpaulo.musiclibrary.commons.extensions.visible
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.gone
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.setupRefreshLayout
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.showSnackbar
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.visible
 import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
 import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
 import com.jeanpaulo.musiclibrary.favorite.ui.FavoriteState

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ** Light Theme ** -->
+    <color name="light_status_color">@color/black</color>
+    <color name="light_color_primary">@color/gray_100</color>
+    <color name="light_color_primary_dark">@color/white</color>
+    <color name="light_color_accent">@color/black_900</color>
+    <color name="light_background">@color/gray_50</color>
+    <color name="light_foreground">@color/black_900</color>
+    <!-- Text Color -->
+    <color name="light_text_color_primary">@color/black_900</color>
+    <color name="light_text_color_secondary">@color/black_700</color>
+    <color name="light_text_color_tertiary">@color/black_500</color>
+    <color name="light_text_color_link"></color>
+    <color name="light_text_color_hint"></color>
+    <!-- Text Color Inverse -->
+    <color name="light_text_color_primary_inverse">@color/gray_50</color>
+    <color name="light_text_color_secondary_inverse">@color/gray_100</color>
+    <color name="light_text_color_tertiary_inverse">@color/gray_500</color>
+    <color name="light_text_color_link_inverse"></color>
+    <color name="light_text_color_hint_inverse"></color>
+
+    <!-- ** Dark Theme ** -->
+    <color name="dark_status_color">@color/black</color>
+    <color name="dark_color_primary">@color/black_700</color>
+    <color name="dark_color_primary_dark">@color/black_900</color>
+    <color name="dark_color_accent">@color/white</color>
+    <color name="dark_background">@color/black_950</color>
+    <color name="dark_foreground">@color/white</color>
+    <!-- Text Color -->
+    <color name="dark_text_color_primary">@color/gray_50</color>
+    <color name="dark_text_color_secondary">@color/gray_100</color>
+    <color name="dark_text_color_tertiary">@color/gray_500</color>
+    <color name="dark_text_color_link"></color>
+    <color name="dark_text_color_hint"></color>
+    <!-- Text Color Inverse -->
+    <color name="dark_text_color_primary_inverse">@color/black_900</color>
+    <color name="dark_text_color_secondary_inverse">@color/black_700</color>
+    <color name="dark_text_color_tertiary_inverse">@color/black_500</color>
+    <color name="dark_text_color_link_inverse"></color>
+    <color name="dark_text_color_hint_inverse"></color>
+</resources>

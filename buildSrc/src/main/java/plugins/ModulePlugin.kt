@@ -55,6 +55,8 @@ class ModulePlugin : Plugin<Project> {
 
                     multiDexEnabled = true
 
+                    vectorDrawables.useSupportLibrary = true
+
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
                     // Configure proguard file settings

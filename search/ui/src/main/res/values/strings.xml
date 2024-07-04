@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_title">Pesquisar</string>
+    <string name="search_hint">Música, album ou artista..</string>
+
+    <string name="no_music_found">Nenhuma música encontrada com esse termo!</string>
+</resources>

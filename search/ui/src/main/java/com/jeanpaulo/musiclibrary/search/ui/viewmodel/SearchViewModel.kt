@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
+import com.jeanpaulo.musiclibrary.core.domain.model.MusicPlayerSong
 import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
 import com.jeanpaulo.musiclibrary.search.domain.SearchInteractor
 import com.jeanpaulo.musiclibrary.search.ui.model.mapper.toUIModel
@@ -17,6 +18,8 @@ sealed class SearchState {
     object Error : SearchState()
     object Success : SearchState()
     class OpenDetail(val view: View, val music: SimpleMusicDetailUIModel) : SearchState()
+    class PlaySong(val music: MusicPlayerSong) : SearchState()
+    class Options(val music: MusicPlayerSong) : SearchState()
 }
 
 class SearchViewModel @Inject constructor(
@@ -53,6 +56,14 @@ class SearchViewModel @Inject constructor(
 
     fun openMusicDetail(view: View, music: SimpleMusicDetailUIModel) {
         _state.value = SearchState.OpenDetail(view, music)
+    }
+
+    fun playMusic(music: MusicPlayerSong) {
+        _state.value = SearchState.PlaySong(music)
+    }
+
+    fun options(music: MusicPlayerSong) {
+        _state.value = SearchState.Options(music)
     }
 
 

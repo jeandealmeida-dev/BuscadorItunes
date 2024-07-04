@@ -70,13 +70,13 @@ class PlaylistViewModel @Inject constructor(
                     _playlistListState.postValue(PlaylistListState.Loading)
                 }
                 .subscribe({ playlistList ->
-                    _playlistListState.value = if (playlistList.isEmpty()) {
+                    _playlistListState.postValue(if (playlistList.isEmpty()) {
                         PlaylistListState.Empty
                     } else {
                         PlaylistListState.Success(playlistList)
-                    }
+                    })
                 }, {
-                    _playlistListState.value = PlaylistListState.Error
+                    _playlistListState.postValue(PlaylistListState.Error)
                 })
         )
     }

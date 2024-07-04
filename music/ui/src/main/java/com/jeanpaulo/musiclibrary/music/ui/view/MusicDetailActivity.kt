@@ -5,20 +5,15 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.palette.graphics.Palette
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.BaseOnOffsetChangedListener
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmActivity
-import com.jeanpaulo.musiclibrary.commons.extensions.gone
 import com.jeanpaulo.musiclibrary.music.ui.MusicDetailViewModel
 import com.jeanpaulo.musiclibrary.music.ui.MusicPlayerState
 import com.jeanpaulo.musiclibrary.commons.extras.MyMediaPlayer
 import com.jeanpaulo.musiclibrary.commons.extensions.replace
-import com.jeanpaulo.musiclibrary.commons.extensions.visible
 import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
-import com.jeanpaulo.musiclibrary.music.ui.R
 import com.jeanpaulo.musiclibrary.music.ui.databinding.ActivityMusicDetailBinding
 import com.squareup.picasso.Picasso
 
@@ -48,27 +43,28 @@ class MusicDetailActivity : BaseMvvmActivity() {
         vm.musicPlayerState.observe(this) { playerState ->
             when (playerState) {
                 is MusicPlayerState.Setup -> {
-                    myMediaPlayer = MyMediaPlayer(this, playerState.uri)
-                    binding.fabPreview.visible()
+                    myMediaPlayer = MyMediaPlayer(this)
+                    myMediaPlayer?.playSong(playerState.uri)
+//                    binding.fabPreview.visible()
                 }
                 MusicPlayerState.Stop -> {
                     myMediaPlayer?.stop()
-                    binding.fabPreview.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            this,
-                            android.R.drawable.ic_media_play
-                        )
-                    )
+//                    binding.fabPreview.setImageDrawable(
+//                        ContextCompat.getDrawable(
+//                            this,
+//                            android.R.drawable.ic_media_play
+//                        )
+//                    )
                 }
 
                 MusicPlayerState.Play -> {
                     myMediaPlayer?.play()
-                    binding.fabPreview.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            this,
-                            android.R.drawable.ic_media_pause
-                        )
-                    )
+//                    binding.fabPreview.setImageDrawable(
+//                        ContextCompat.getDrawable(
+//                            this,
+//                            android.R.drawable.ic_media_pause
+//                        )
+//                    )
                 }
             }
         }
@@ -104,7 +100,7 @@ class MusicDetailActivity : BaseMvvmActivity() {
         Picasso.with(binding.root.context).load(vm.simpleMusicDetail.artworkUrl)
             .into(object : com.squareup.picasso.Target {
                 override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                    binding.imgCollection.setImageBitmap(bitmap)
+                    //binding.imgCollection.setImageBitmap(bitmap)
                     if (bitmap != null)
                         setToolbarColor(bitmap)
                 }
@@ -117,15 +113,15 @@ class MusicDetailActivity : BaseMvvmActivity() {
 
             })
 
-        binding.collapseToolbar.title = vm.simpleMusicDetail.name
+        //binding.collapseToolbar.title = vm.simpleMusicDetail.name
     }
 
     private fun setToolbarColor(bitmap: Bitmap?) {
         bitmap?.let {
             Palette.from(bitmap).generate { palette ->
                 val mutedColor = palette?.getMutedColor(androidx.appcompat.R.attr.colorPrimary) ?: getColor(
-                    com.jeanpaulo.musiclibrary.commons.R.color.colorPrimary)
-                binding.collapseToolbar.setContentScrimColor(mutedColor)
+                    com.jeanpaulo.musiclibrary.core.R.color.colorPrimary)
+               // binding.collapseToolbar.setContentScrimColor(mutedColor)
             }
         } ?: run {
             // TODO Handle null or invalid bitmap scenario
@@ -134,25 +130,25 @@ class MusicDetailActivity : BaseMvvmActivity() {
 
     //ANIMATIONS
     fun setupAnimations() {
-        ViewCompat.setTransitionName(
-            binding.imgCollection,
-            VIEW_NAME_HEADER_IMAGE
-        );
-        ViewCompat.setTransitionName(
-            binding.collapseToolbar,
-            VIEW_NAME_HEADER_TITLE
-        );
+//        ViewCompat.setTransitionName(
+//            binding.imgCollection,
+//            VIEW_NAME_HEADER_IMAGE
+//        );
+//        ViewCompat.setTransitionName(
+//            binding.collapseToolbar,
+//            VIEW_NAME_HEADER_TITLE
+//        );
     }
 
     override fun onBackPressed() {
-        binding.fabPreview.gone()
-        binding.content.gone()
+        //binding.fabPreview.gone()
+        //binding.content.gone()
         super.onBackPressed()
     }
 
     override fun onStop() {
         super.onStop()
-        binding.fabPreview.gone()
+        //binding.fabPreview.gone()
         myMediaPlayer?.stop()
         _binding = null
     }
@@ -179,9 +175,9 @@ class MusicDetailActivity : BaseMvvmActivity() {
 //
 
     fun setupFAB() {
-        binding.fabPreview.setOnClickListener {
-            vm.changePlayerState()
-        }
+//        binding.fabPreview.setOnClickListener {
+//            vm.changePlayerState()
+//        }
     }
 
     companion object {
