@@ -2,7 +2,7 @@
 
 This is an Android Project that implements an Music library. It can look up for a song by the name than if you press an item list it shows the music detail. Also you can reproduce the music`s preview. 
 
-![Screenplay](/docs/example.mp4)
+https://github.com/jeandealmeida-dev/BuscadorItunes/assets/3248076/a0925b4f-4b9a-4c01-a8d4-d93840eec282
 
 ## Features 
 
