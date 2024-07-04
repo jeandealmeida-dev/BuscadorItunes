@@ -63,7 +63,7 @@ class SearchFragment : BaseMvvmFragment(), MenuProvider {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragMusicSearchBinding.inflate(inflater, container, false)
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
+        (requireActivity() as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         return binding.root
     }
 
@@ -112,28 +112,12 @@ class SearchFragment : BaseMvvmFragment(), MenuProvider {
                 }
 
                 is SearchState.PlaySong -> {
-                    val song = MusicPlayerSong(
-                        id = state.music.id,
-                        name = state.music.name,
-                        artist = state.music.artist,
-                        artworkUrl = state.music.artworkUrl,
-                        previewUrl = state.music.previewUrl,
-                    )
-
-                    MusicPlayerService.playASong(requireActivity(), song)
+                    MusicPlayerService.playASong(requireActivity(), state.music)
                 }
 
                 is SearchState.Options -> {
-                    val song = MusicPlayerSong(
-                        id = state.music.id,
-                        name = state.music.name,
-                        artist = state.music.artist,
-                        artworkUrl = state.music.artworkUrl,
-                        previewUrl = state.music.previewUrl,
-                    )
-
                     val dialog = SearchOptionsBottomSheet.newInstance(
-                        song,
+                        state.music,
                         listOf(
                             SearchOption.ADD_FAVORITE,
                             SearchOption.ADD_PLAYLIST,

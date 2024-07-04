@@ -20,6 +20,6 @@ dependencies {
     androidTestImplementation(ProjectDependencies.AndroidX.JUnit())
     androidTestImplementation(ProjectDependencies.AndroidX.Espresso())
 
-    // Picaso
+    // Picasso
     implementation(ProjectDependencies.Picasso())
 }

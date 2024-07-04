@@ -54,7 +54,7 @@ dependencies {
     implementation(ProjectDependencies.AndroidX.SwipeRefreshLayout())
     implementation(ProjectDependencies.AndroidX.CardView())
     implementation(ProjectDependencies.AndroidX.RecyclerView())
-    // → Lyfecycle
+    // → Lifecycle
     implementation(ProjectDependencies.AndroidX.Lifecycle.LiveData())
     implementation(ProjectDependencies.AndroidX.Lifecycle.ViewModel())
     implementation(ProjectDependencies.AndroidX.Lifecycle.Extensions())
@@ -68,6 +68,6 @@ dependencies {
     implementation(ProjectDependencies.Timber())
     implementation(ProjectDependencies.Stetho())
 
-    // Picaso
+    // Picasso
     implementation(ProjectDependencies.Picasso())
 }
