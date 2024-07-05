@@ -29,6 +29,9 @@ class MainActivity : BaseMvvmActivity() {
     private lateinit var binding: ActivityMusicBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    private lateinit var fullPlayerDialog: FullPlayerBottomSheet
+    private lateinit var miniPlayerBottomSheet: MiniPlayerBottomSheet
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMusicBinding.inflate(layoutInflater)
@@ -44,16 +47,9 @@ class MainActivity : BaseMvvmActivity() {
     fun setupListeners() {
         vm.actMusicFragment.observe(this) { fragmentEnum ->
             when (fragmentEnum) {
-                MainFragmentEnum.FavoritesFragment -> {
-                }
-
-                MainFragmentEnum.PlaylistFragment -> {
-
-                }
-
-                MainFragmentEnum.SearchFragment -> {
-
-                }
+                MainFragmentEnum.FavoritesFragment -> { }
+                MainFragmentEnum.PlaylistFragment -> { }
+                MainFragmentEnum.SearchFragment -> { }
             }
         }
         vm.state.observe(this) { state ->
@@ -80,28 +76,22 @@ class MainActivity : BaseMvvmActivity() {
             when (item.itemId) {
                 R.id.nav_settings -> {
                     startActivity(Intent(this, SettingsActivity::class.java))
-                    false
+                    return@setOnItemSelectedListener true
                 }
 
                 else -> {
                     //fullPlayerBottomSheet.state = BottomSheetBehavior.STATE_HIDDEN
                     onNavDestinationSelected(item, navController)
-                    true
+                    return@setOnItemSelectedListener true
                 }
             }
         }
     }
 
-    //private lateinit var fullPlayerBottomSheet: BottomSheetBehavior<CardView>
-
-
-    private lateinit var fullPlayerDialog: FullPlayerBottomSheet
-    private lateinit var miniPlayerBottomSheet: MiniPlayerBottomSheet
     fun setupBottomsheets() {
         setupMiniPlayer()
         setupFullPlayer()
     }
-
 
     fun setupFullPlayer() {
         fullPlayerDialog = FullPlayerBottomSheet.newInstance(

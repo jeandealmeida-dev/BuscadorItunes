@@ -8,9 +8,9 @@
     <string name="settings_feedback_summary">Encontrou um algum bug ou que tem alguma sugestao?</string>
     <string name="settings_feedback_title">Envie seu feedback</string>
     <string name="settings_feedback_mail_to">jeandealmeida.dev@gmail.com</string>
-    <string name="settings_feedback_mail_subject">About 30 Vibes, I would like to..</string>
+    <string name="settings_feedback_mail_subject">Feedback for 30 Vibes App</string>
 
-    <string name="settings_clean_data_summary">Apaguar suas playlists e musicas favoritas</string>
+    <string name="settings_clean_data_summary">Apagar suas playlists e musicas favoritas</string>
     <string name="settings_clean_data_title">Limpar dados</string>
 
     <string name="preference_feedback_key" translatable="false">feedback</string>
