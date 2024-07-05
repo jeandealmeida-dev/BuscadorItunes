@@ -12,14 +12,11 @@ import javax.inject.Inject
 
 interface PlaylistRepository {
     fun getPlaylist(playlistId: Long): Single<Playlist>
-
-    fun saveMusicInPlaylist(music: Music, playlistId: Long): Completable
-
-    fun removeMusicFromPlaylist(musicId: Long, playlistId: Long): Completable
-
-    fun deletePlaylist(playlistId: Long): Completable
-
     fun getPlaylists(): Flowable<List<Playlist>>
+    fun saveMusicInPlaylist(music: Music, playlistId: Long): Completable
+    fun removeMusicFromPlaylist(musicId: Long, playlistId: Long): Completable
+    fun deletePlaylist(playlistId: Long): Completable
+    fun deleteAllPlaylists(): Completable
 }
 
 class PlaylistRepositoryImpl @Inject constructor(
@@ -46,6 +43,8 @@ class PlaylistRepositoryImpl @Inject constructor(
 
     override fun deletePlaylist(playlistId: Long): Completable =
         playlistDao.deletePlaylistById(playlistId = playlistId)
+
+    override fun deleteAllPlaylists(): Completable = playlistDao.deletePlaylists()
 
     override fun getPlaylists(): Flowable<List<Playlist>> =
         playlistDao.getPlaylists().map { list -> list.map { it.toModel() } }

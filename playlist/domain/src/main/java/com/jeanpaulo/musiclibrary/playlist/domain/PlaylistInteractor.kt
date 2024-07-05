@@ -11,6 +11,7 @@ interface PlaylistInteractor{
     fun getPlaylist(): Flowable<List<Playlist>>
     fun getPlaylist(playlistId: Long): Single<Playlist>
     fun deletePlaylist(playlistId: Long): Completable
+    fun deleteAllPlaylists() : Completable
 }
 
 class PlaylistInteractorImpl @Inject constructor(
@@ -27,5 +28,9 @@ class PlaylistInteractorImpl @Inject constructor(
 
     override fun deletePlaylist(playlistId: Long): Completable {
         return repository.deletePlaylist(playlistId = playlistId)
+    }
+
+    override fun deleteAllPlaylists(): Completable {
+        return repository.deleteAllPlaylists()
     }
 }

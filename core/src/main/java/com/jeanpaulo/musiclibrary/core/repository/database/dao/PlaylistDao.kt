@@ -57,6 +57,6 @@ interface PlaylistDao {
         "DELETE " +
                 "FROM ${PlaylistEntity.TABLE} "
     )
-    fun deletePlaylists()
+    fun deletePlaylists(): Completable
 
 }
