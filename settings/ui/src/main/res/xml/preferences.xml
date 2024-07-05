@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+        android:defaultValue="@string/preference_theme_value_default"
+        android:entries="@array/preference_theme_entries"
+        android:entryValues="@array/preference_theme_values"
+        app:dialogTitle='@string/settings_theme_title'
+        app:icon="@drawable/ic_theme"
+        app:key="@string/preference_theme_key"
+        app:title='@string/settings_theme_title'
+        app:useSimpleSummaryProvider="true" />
+
+    <Preference
+        app:icon="@drawable/ic_clean"
+        app:key="@string/preference_clear_data_key"
+        app:summary='@string/settings_clean_data_summary'
+        app:title='@string/settings_clean_data_title' />
+
+    <Preference
+        app:icon="@drawable/ic_feedback"
+        app:key="@string/preference_feedback_key"
+        app:summary='@string/settings_feedback_summary'
+        app:title='@string/settings_feedback_title' />
+
+</PreferenceScreen>

@@ -1,5 +1,6 @@
 package com.jeanpaulo.musiclibrary.app
 
+import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.ContextMenu
@@ -12,6 +13,7 @@ import androidx.navigation.ui.NavigationUI.onNavDestinationSelected
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import com.jeanpaulo.musiclibrary.app.databinding.ActivityMusicBinding
+import com.jeanpaulo.musiclibrary.settings.ui.SettingsActivity
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmActivity
 import com.jeanpaulo.musiclibrary.core.domain.model.MusicPlayerSong
 import com.jeanpaulo.musiclibrary.core.service.MusicPlayerEvents
@@ -26,6 +28,9 @@ class MainActivity : BaseMvvmActivity() {
 
     private lateinit var binding: ActivityMusicBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+    private lateinit var fullPlayerDialog: FullPlayerBottomSheet
+    private lateinit var miniPlayerBottomSheet: MiniPlayerBottomSheet
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,16 +47,9 @@ class MainActivity : BaseMvvmActivity() {
     fun setupListeners() {
         vm.actMusicFragment.observe(this) { fragmentEnum ->
             when (fragmentEnum) {
-                MainFragmentEnum.FavoritesFragment -> {
-                }
-
-                MainFragmentEnum.PlaylistFragment -> {
-
-                }
-
-                MainFragmentEnum.SearchFragment -> {
-
-                }
+                MainFragmentEnum.FavoritesFragment -> { }
+                MainFragmentEnum.PlaylistFragment -> { }
+                MainFragmentEnum.SearchFragment -> { }
             }
         }
         vm.state.observe(this) { state ->
@@ -74,22 +72,26 @@ class MainActivity : BaseMvvmActivity() {
         binding.navView.setupWithNavController(navController)
         binding.navView.setOnItemSelectedListener { item ->
             fullPlayerDialog.hide()
-            //fullPlayerBottomSheet.state = BottomSheetBehavior.STATE_HIDDEN
-            onNavDestinationSelected(item, navController)
-            true
+
+            when (item.itemId) {
+                R.id.nav_settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    return@setOnItemSelectedListener true
+                }
+
+                else -> {
+                    //fullPlayerBottomSheet.state = BottomSheetBehavior.STATE_HIDDEN
+                    onNavDestinationSelected(item, navController)
+                    return@setOnItemSelectedListener true
+                }
+            }
         }
     }
 
-    //private lateinit var fullPlayerBottomSheet: BottomSheetBehavior<CardView>
-
-
-    private lateinit var fullPlayerDialog: FullPlayerBottomSheet
-    private lateinit var miniPlayerBottomSheet: MiniPlayerBottomSheet
     fun setupBottomsheets() {
         setupMiniPlayer()
         setupFullPlayer()
     }
-
 
     fun setupFullPlayer() {
         fullPlayerDialog = FullPlayerBottomSheet.newInstance(
@@ -180,32 +182,4 @@ class MainActivity : BaseMvvmActivity() {
         return findNavController(R.id.nav_host_fragment).navigateUp(appBarConfiguration) ||
                 super.onSupportNavigateUp()
     }
-
-
-//    override fun hideKeyboard() {
-//        this.currentFocus?.let { view ->
-//            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-//            imm?.hideSoftInputFromWindow(view.windowToken, 0)
-//        }
-//    }
-
-//    override fun setFabListener(listener: () -> Unit) {
-//        binding.fab.setOnClickListener { listener() }
-//    }
-//
-//    override fun setFabDrawableRes(imageResource: Int) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            binding.fab.setImageDrawable(resources.getDrawable(imageResource, theme))
-//        } else {
-//            binding.fab.setImageDrawable(resources.getDrawable(imageResource))
-//        }
-//    }
-//
-//    override fun setFabVisibility(visible: Boolean) {
-//        binding.fab.visibility = if (visible) View.VISIBLE else View.GONE
-//    }
-//
-//    override fun setTitle(title: String?) {
-//        supportActionBar?.title = title
-//    }
 }

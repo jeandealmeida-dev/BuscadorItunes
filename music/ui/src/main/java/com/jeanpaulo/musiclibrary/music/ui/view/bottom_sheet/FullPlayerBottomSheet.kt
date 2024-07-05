@@ -27,8 +27,7 @@ class FullPlayerBottomSheet(
     }
 
     private fun setupBehavior() {
-        fullPlayerBottomSheet = BottomSheetBehavior.from(binding.root)
-        fullPlayerBottomSheet?.apply {
+        fullPlayerBottomSheet = BottomSheetBehavior.from(binding.root).apply {
             // Expanded by default
             state = BottomSheetBehavior.STATE_HIDDEN
             skipCollapsed = false //Avoid collapsed state
@@ -75,11 +74,11 @@ class FullPlayerBottomSheet(
     }
 
     fun expand() {
-        fullPlayerBottomSheet?.state = BottomSheetBehavior.STATE_EXPANDED
+        fullPlayerBottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     fun hide() {
-        fullPlayerBottomSheet?.state = BottomSheetBehavior.STATE_HIDDEN
+        fullPlayerBottomSheet.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
     fun isPlaying(playing: Boolean = true) {

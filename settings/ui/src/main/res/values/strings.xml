@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_settings">Configurações</string>
+
+    <!-- Settings -->
+    <string name="settings_theme_title">Tema</string>
+
+    <string name="settings_feedback_summary">Encontrou um algum bug ou que tem alguma sugestao?</string>
+    <string name="settings_feedback_title">Envie seu feedback</string>
+    <string name="settings_feedback_mail_to">jeandealmeida.dev@gmail.com</string>
+    <string name="settings_feedback_mail_subject">Feedback for 30 Vibes App</string>
+
+    <string name="settings_clean_data_summary">Apagar suas playlists e musicas favoritas</string>
+    <string name="settings_clean_data_title">Limpar dados</string>
+
+    <string name="preference_feedback_key" translatable="false">feedback</string>
+    <string name="preference_clear_data_key" translatable="false">clear_data</string>
+    <string name="preference_theme_key" translatable="false">change_theme</string>
+</resources>

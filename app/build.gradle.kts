@@ -32,6 +32,11 @@ dependencies {
     implementation(project(ProjectDependencies.Module.Domain.music))
     implementation(project(ProjectDependencies.Module.Data.music))
 
+    // → Settings
+    implementation(project(ProjectDependencies.Module.UI.settings))
+    implementation(project(ProjectDependencies.Module.Domain.settings))
+    implementation(project(ProjectDependencies.Module.Data.settings))
+
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))
 
@@ -54,6 +59,8 @@ dependencies {
     implementation(ProjectDependencies.AndroidX.SwipeRefreshLayout())
     implementation(ProjectDependencies.AndroidX.CardView())
     implementation(ProjectDependencies.AndroidX.RecyclerView())
+    implementation(ProjectDependencies.AndroidX.Preference())
+
     // → Lifecycle
     implementation(ProjectDependencies.AndroidX.Lifecycle.LiveData())
     implementation(ProjectDependencies.AndroidX.Lifecycle.ViewModel())
