@@ -15,6 +15,7 @@ object ProjectDependencies {
             const val playlist = ":playlist:ui"
             const val music = ":music:ui"
             const val favorite = ":favorite:ui"
+            const val settings = ":settings:ui"
         }
 
         object Domain {
@@ -22,6 +23,7 @@ object ProjectDependencies {
             const val playlist = ":playlist:domain"
             const val music = ":music:domain"
             const val favorite = ":favorite:domain"
+            const val settings = ":settings:domain"
         }
 
         object Data {
@@ -29,6 +31,7 @@ object ProjectDependencies {
             const val playlist = ":playlist:data"
             const val music = ":music:data"
             const val favorite = ":favorite:data"
+            const val settings = ":settings:data"
         }
     }
 
@@ -120,6 +123,7 @@ object ProjectDependencies {
         fun ConstraintLayout() = "androidx.constraintlayout:constraintlayout:2.1.4"
         fun Compose() = "androidx.activity:activity-compose:1.6.1"
         fun ArchCoreTesting() = "androidx.arch.core:core-testing:2.1.0"
+        fun Preference() = "androidx.preference:preference-ktx:1.2.0"
 
         object Navigation {
             val version = "2.5.3"

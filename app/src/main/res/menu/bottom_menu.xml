@@ -18,7 +18,7 @@
 
     <item
         android:id="@+id/nav_search"
-        android:icon="@drawable/ic_search_white_24dp"
+        android:icon="@drawable/ic_search"
         android:title="@string/menu_search_music" />
 
 <!--    <item-->
@@ -28,6 +28,11 @@
 
     <item
         android:id="@+id/nav_playlist"
-        android:icon="@drawable/ic_playlist_white_24dp"
+        android:icon="@drawable/ic_playlist"
         android:title="@string/menu_playlist" />
+
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/menu_settings" />
 </menu>

@@ -26,6 +26,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.jeanpaulo.musiclibrary.settings.ui.SettingsActivity"
+            android:exported="false" />
+
         <service android:name="com.jeanpaulo.musiclibrary.core.service.MusicPlayerService" />
 
     </application>

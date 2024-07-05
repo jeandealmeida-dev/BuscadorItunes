@@ -23,4 +23,9 @@ include(
     ":favorite:ui",
     ":favorite:domain",
     ":favorite:data",
+
+    ":settings",
+    ":settings:ui",
+    ":settings:domain",
+    ":settings:data",
 )

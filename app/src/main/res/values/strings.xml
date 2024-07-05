@@ -16,6 +16,7 @@
     <string name="menu_search_music">Pesquisar</string>
     <string name="menu_fav_music">Favoritos</string>
     <string name="menu_playlist">Playlists</string>
+    <string name="menu_settings">Configurações</string>
 
     <string name="loading_search_music_error">Erro ao carregar lista de musica. Por favor tente novamente!</string>
     <string name="no_music_found">Nenhuma música encontrada com esse termo!</string>

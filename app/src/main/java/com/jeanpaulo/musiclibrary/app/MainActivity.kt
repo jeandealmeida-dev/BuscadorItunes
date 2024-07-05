@@ -1,5 +1,6 @@
 package com.jeanpaulo.musiclibrary.app
 
+import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.ContextMenu
@@ -12,6 +13,7 @@ import androidx.navigation.ui.NavigationUI.onNavDestinationSelected
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import com.jeanpaulo.musiclibrary.app.databinding.ActivityMusicBinding
+import com.jeanpaulo.musiclibrary.settings.ui.SettingsActivity
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmActivity
 import com.jeanpaulo.musiclibrary.core.domain.model.MusicPlayerSong
 import com.jeanpaulo.musiclibrary.core.service.MusicPlayerEvents
@@ -74,9 +76,19 @@ class MainActivity : BaseMvvmActivity() {
         binding.navView.setupWithNavController(navController)
         binding.navView.setOnItemSelectedListener { item ->
             fullPlayerDialog.hide()
-            //fullPlayerBottomSheet.state = BottomSheetBehavior.STATE_HIDDEN
-            onNavDestinationSelected(item, navController)
-            true
+
+            when (item.itemId) {
+                R.id.nav_settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    false
+                }
+
+                else -> {
+                    //fullPlayerBottomSheet.state = BottomSheetBehavior.STATE_HIDDEN
+                    onNavDestinationSelected(item, navController)
+                    true
+                }
+            }
         }
     }
 
