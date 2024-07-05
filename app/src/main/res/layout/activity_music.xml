@@ -34,7 +34,7 @@
         android:id="@+id/nav_view"
         style="@style/AppBottomNavigationMenu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/bottom_menu_height"
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_menu" />
 

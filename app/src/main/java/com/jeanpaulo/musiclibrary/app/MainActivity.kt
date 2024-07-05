@@ -180,32 +180,4 @@ class MainActivity : BaseMvvmActivity() {
         return findNavController(R.id.nav_host_fragment).navigateUp(appBarConfiguration) ||
                 super.onSupportNavigateUp()
     }
-
-
-//    override fun hideKeyboard() {
-//        this.currentFocus?.let { view ->
-//            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-//            imm?.hideSoftInputFromWindow(view.windowToken, 0)
-//        }
-//    }
-
-//    override fun setFabListener(listener: () -> Unit) {
-//        binding.fab.setOnClickListener { listener() }
-//    }
-//
-//    override fun setFabDrawableRes(imageResource: Int) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            binding.fab.setImageDrawable(resources.getDrawable(imageResource, theme))
-//        } else {
-//            binding.fab.setImageDrawable(resources.getDrawable(imageResource))
-//        }
-//    }
-//
-//    override fun setFabVisibility(visible: Boolean) {
-//        binding.fab.visibility = if (visible) View.VISIBLE else View.GONE
-//    }
-//
-//    override fun setTitle(title: String?) {
-//        supportActionBar?.title = title
-//    }
 }

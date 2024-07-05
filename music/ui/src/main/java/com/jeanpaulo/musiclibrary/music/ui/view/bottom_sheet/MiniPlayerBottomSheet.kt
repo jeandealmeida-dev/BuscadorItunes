@@ -23,8 +23,7 @@ class MiniPlayerBottomSheet(
     }
 
     private fun setupBehavior() {
-        miniPlayerBottomSheet = BottomSheetBehavior.from(binding.root)
-        miniPlayerBottomSheet.apply {
+        miniPlayerBottomSheet = BottomSheetBehavior.from(binding.root).apply {
             state = BottomSheetBehavior.STATE_COLLAPSED
             skipCollapsed = false
 

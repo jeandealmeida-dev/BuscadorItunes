@@ -13,4 +13,5 @@
     <dimen name="height_appbar">256dp</dimen>
     <dimen name="card_elevation">10dp</dimen>
 
+    <dimen name="bottom_menu_height">75dp</dimen>
 </resources>
