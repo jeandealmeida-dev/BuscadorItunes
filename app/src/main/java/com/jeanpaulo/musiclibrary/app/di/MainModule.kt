@@ -7,8 +7,6 @@ import com.jeanpaulo.musiclibrary.app.MainViewModel
 import com.jeanpaulo.musiclibrary.settings.ui.SettingsActivity
 import com.jeanpaulo.musiclibrary.commons.di.ViewModelKey
 import com.jeanpaulo.musiclibrary.favorite.ui.di.FavoriteModuleBuilder
-import com.jeanpaulo.musiclibrary.music.ui.di.MusicModuleBuilder
-import com.jeanpaulo.musiclibrary.music.ui.view.MusicDetailActivity
 import com.jeanpaulo.musiclibrary.playlist.ui.di.PlaylistModuleBuilder
 import com.jeanpaulo.musiclibrary.search.ui.di.SearchModuleBuilder
 import com.jeanpaulo.musiclibrary.settings.ui.di.SettingsModuleBuilder
@@ -37,14 +35,6 @@ abstract class MainModule {
         ]
     )
     internal abstract fun bindSettingsActivity(): SettingsActivity
-
-    @ContributesAndroidInjector(
-        modules = [
-            MusicModuleBuilder::class,
-            FavoriteModuleBuilder::class,
-        ]
-    )
-    internal abstract fun bindMusicDetailActivity(): MusicDetailActivity
 
     @Binds
     @IntoMap

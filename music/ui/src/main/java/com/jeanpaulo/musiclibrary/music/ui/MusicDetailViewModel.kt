@@ -102,7 +102,7 @@ class MusicDetailViewModel @Inject constructor(
     fun setupMusicDetail(music: Music) {
         _music = music
 
-        isFavorited(music.ds_trackId ?: 0L)
+        isFavorited(music.musicId)
 
         _music.previewUrl?.let {
             _musicPlayerState.value = MusicPlayerState.Setup(it)

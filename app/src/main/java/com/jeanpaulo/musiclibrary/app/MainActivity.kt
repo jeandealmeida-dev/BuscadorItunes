@@ -54,9 +54,6 @@ class MainActivity : BaseMvvmActivity() {
         }
         vm.state.observe(this) { state ->
             when (state) {
-//                is MusicActivityState.OpenMusicDetail -> {
-//                    startMusicDetailActivity(state.view, state.music)
-//                }
                 else -> {}
             }
         }
