@@ -18,7 +18,7 @@ interface MusicDao {
     @Query(
         "SELECT * " +
                 "FROM ${MusicEntity.TABLE} " +
-                "WHERE ${MusicEntity.REMOTE_ID} = :remoteId"
+                "WHERE ${MusicEntity.MUSIC_ID} = :remoteId"
     )
     fun getMusicByRemoteId(remoteId: Long): Single<MusicEntity>
 

@@ -3,7 +3,7 @@ package com.jeanpaulo.musiclibrary.playlist.ui
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.jeanpaulo.musiclibrary.core.databinding.ItemMusicBinding
+import com.jeanpaulo.musiclibrary.core.databinding.SongItemBinding
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 
 class PlaylistDetailAdapter(
@@ -14,8 +14,8 @@ class PlaylistDetailAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MusicInPlaylistViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val itemBinding: ItemMusicBinding =
-            ItemMusicBinding.inflate(layoutInflater, parent, false)
+        val itemBinding: SongItemBinding =
+            SongItemBinding.inflate(layoutInflater, parent, false)
         return MusicInPlaylistViewHolder(itemBinding)
     }
 
@@ -39,7 +39,7 @@ class PlaylistDetailAdapter(
         list = it
     }
 
-    class MusicInPlaylistViewHolder(val binding: ItemMusicBinding) :
+    class MusicInPlaylistViewHolder(val binding: SongItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(music: Music, listener: (Music) -> Unit) = with(itemView) {

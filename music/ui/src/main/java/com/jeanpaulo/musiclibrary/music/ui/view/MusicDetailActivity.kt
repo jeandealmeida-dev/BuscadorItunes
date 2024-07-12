@@ -13,6 +13,8 @@ import com.jeanpaulo.musiclibrary.music.ui.MusicDetailViewModel
 import com.jeanpaulo.musiclibrary.music.ui.MusicPlayerState
 import com.jeanpaulo.musiclibrary.commons.extras.MyMediaPlayer
 import com.jeanpaulo.musiclibrary.commons.extensions.replace
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.gone
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.visible
 import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
 import com.jeanpaulo.musiclibrary.music.ui.databinding.ActivityMusicDetailBinding
 import com.squareup.picasso.Picasso
@@ -86,15 +88,16 @@ class MusicDetailActivity : BaseMvvmActivity() {
             AppBarLayout.OnOffsetChangedListener {
             override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
                 //  Vertical offset == 0 indicates appBar is fully  expanded.
-                if (Math.abs(verticalOffset) > 300) {
+                if (Math.abs(verticalOffset) > 100) {
                     appBarExpanded = false
+                    //binding.fabPreview.gone()
                     //invalidateOptionsMenu()
                 } else {
-                    appBarExpanded = true
+                    binding.fabPreview.visible()
+                    //appBarExpanded = true
                     //invalidateOptionsMenu()
                 }
             }
-
         })
 
         Picasso.with(binding.root.context).load(vm.simpleMusicDetail.artworkUrl)
@@ -113,7 +116,7 @@ class MusicDetailActivity : BaseMvvmActivity() {
 
             })
 
-        //binding.collapseToolbar.title = vm.simpleMusicDetail.name
+        binding.collapseToolbar.title = vm.simpleMusicDetail.name
     }
 
     private fun setToolbarColor(bitmap: Bitmap?) {
@@ -175,9 +178,9 @@ class MusicDetailActivity : BaseMvvmActivity() {
 //
 
     fun setupFAB() {
-//        binding.fabPreview.setOnClickListener {
-//            vm.changePlayerState()
-//        }
+        binding.fabPreview.setOnClickListener {
+            vm.changePlayerState()
+        }
     }
 
     companion object {

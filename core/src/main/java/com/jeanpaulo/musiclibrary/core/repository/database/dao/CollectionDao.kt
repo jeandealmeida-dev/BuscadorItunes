@@ -16,8 +16,6 @@ interface CollectionDao {
     @Query("SELECT * FROM collection")
     fun getCollections(): List<CollectionEntity>
 
-
-
     @Update
     fun updateCollection(music: CollectionEntity): Int
 

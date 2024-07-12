@@ -4,9 +4,9 @@ import android.content.Context
 import android.view.View
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.getDimenAttr
+import com.jeanpaulo.musiclibrary.core.domain.model.Song
 import com.jeanpaulo.musiclibrary.music.ui.databinding.MiniPlayerBottomSheetBinding
-import com.jeanpaulo.musiclibrary.core.domain.model.MusicPlayerSong
-import com.jeanpaulo.musiclibrary.core.service.MusicPlayerService
+import com.jeanpaulo.musiclibrary.core.music_player.MPService
 import com.squareup.picasso.Picasso
 
 class MiniPlayerBottomSheet(
@@ -31,7 +31,7 @@ class MiniPlayerBottomSheet(
                 BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                        MusicPlayerService.stop(context)
+                        MPService.stop(context)
                     }
                 }
 
@@ -49,9 +49,9 @@ class MiniPlayerBottomSheet(
         binding.playButton.let { imageButton ->
             imageButton.setOnClickListener {
                 if (!imageButton.isSelected) {
-                    MusicPlayerService.play(context)
+                    MPService.play(context)
                 } else {
-                    MusicPlayerService.pause(context)
+                    MPService.pause(context)
                 }
             }
         }
@@ -65,7 +65,7 @@ class MiniPlayerBottomSheet(
 
     }
 
-    fun updatePlayer(song: MusicPlayerSong) {
+    fun updatePlayer(song: Song) {
         if (miniPlayerBottomSheet.state == BottomSheetBehavior.STATE_HIDDEN)
             miniPlayerBottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
 

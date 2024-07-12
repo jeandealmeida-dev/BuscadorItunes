@@ -5,12 +5,12 @@ import com.jeanpaulo.musiclibrary.music.ui.model.MusicDetailUIModel
 
 fun Music.convertToMusicUI() = MusicDetailUIModel(
     id = id,
-    remoteId = ds_trackId ?: 0L,
-    name = trackName ?: "",
+    remoteId = musicId,
+    name = trackName,
     artwork = artworkUrl ?: "",
     previewURL = previewUrl ?: "",
     artist = musicArtist?.name ?: "",
-    album = "${musicCollection?.name ?: ""}, ${musicCollection?.id}",
+    album = "${musicCollection?.name ?: ""}, ${musicCollection?.collectionId}",
     releaseDate = releaseDate,
     streamable = streamable,
     trackTimeMillis = trackTimeMillis

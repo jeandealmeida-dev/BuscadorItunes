@@ -5,6 +5,7 @@ plugins {
 }
 
 addDaggerDependencies()
+addRxJavaDependencies()
 
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))

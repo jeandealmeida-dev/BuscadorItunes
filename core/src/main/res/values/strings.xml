@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="music_option_add_favorite">Salvar nos favoritos</string>
+    <string name="music_option_remove_favorite">Remover dos favoritos</string>
     <string name="music_option_add_playlist">Adicionar a playlist</string>
     <string name="music_option_go_to_artist">Ver artista</string>
     <string name="music_option_go_to_album">Ver algum</string>

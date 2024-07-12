@@ -7,8 +7,8 @@ import androidx.core.content.getSystemService
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.getDimenAttr
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.setFullScreen
-import com.jeanpaulo.musiclibrary.core.domain.model.MusicPlayerSong
-import com.jeanpaulo.musiclibrary.core.service.MusicPlayerService
+import com.jeanpaulo.musiclibrary.core.domain.model.Song
+import com.jeanpaulo.musiclibrary.core.music_player.MPService
 import com.jeanpaulo.musiclibrary.music.ui.databinding.FullPlayerBottomSheetBinding
 import com.squareup.picasso.Picasso
 
@@ -52,11 +52,19 @@ class FullPlayerBottomSheet(
         binding.playButton.let { imageButton ->
             imageButton.setOnClickListener {
                 if (!imageButton.isSelected) {
-                    MusicPlayerService.play(context)
+                    MPService.play(context)
                 } else {
-                    MusicPlayerService.pause(context)
+                    MPService.pause(context)
                 }
             }
+        }
+
+        binding.nextButton.setOnClickListener {
+            MPService.next(context)
+        }
+
+        binding.previousButton.setOnClickListener {
+            MPService.previous(context)
         }
 
         // Set peek height
@@ -67,7 +75,6 @@ class FullPlayerBottomSheet(
         )
 
 
-//        binding.root.setBackgroundResource(com.jeanpaulo.musiclibrary.commons.R.drawable.bottom_sheet_background)
         context.getSystemService<WindowManager>()?.let {
             binding.root.setFullScreen(it)
         }
@@ -85,12 +92,23 @@ class FullPlayerBottomSheet(
         binding.playButton.isSelected = playing
     }
 
-    fun updatePlayer(song: MusicPlayerSong) {
+    fun updatePlayer(song: Song, hasNext: Boolean, hasPrevious: Boolean) {
         binding.apply {
             musicNameTxt.text = song.name
             artistNameTxt.text = song.artist
             Picasso.with(root.context).load(song.artworkUrl).into(artcoverImg)
             playButton.isSelected = true
+
+            nextButton.isEnabled = hasNext
+            previousButton.isEnabled = hasPrevious
+        }
+    }
+
+    fun updateCounter(seconds: Int) {
+        binding.apply {
+            durationProgressText.text = String.format("0:%02d", seconds)
+            val progress = seconds / 0.3
+            horizontalProgress.progress = progress.toInt()
         }
     }
 

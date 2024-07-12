@@ -5,8 +5,8 @@ import java.util.*
 
 data class Music(
     val id: Long = 0,
-    val ds_trackId: Long?,
-    val trackName: String?,
+    val musicId: Long,
+    val trackName: String,
     val artworkUrl: String?,
     val releaseDate: Date?,
     val streamable: Boolean?,

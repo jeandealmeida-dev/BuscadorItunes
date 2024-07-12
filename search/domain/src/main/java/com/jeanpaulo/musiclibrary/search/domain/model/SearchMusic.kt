@@ -1,5 +1,7 @@
 package com.jeanpaulo.musiclibrary.search.domain.model
 
+import com.jeanpaulo.musiclibrary.core.repository.remote.response.MusicResponse
+
 data class SearchMusic(
     val musicId: Long,
     val musicName: String,
@@ -8,4 +10,15 @@ data class SearchMusic(
     val collectionYear: String,
     val artworkUrl: String,
     val previewUrl: String?
-)
+) {
+    fun MusicResponse.toSearchMusic() =
+        SearchMusic(
+            musicId = this.remoteId ?: 0L,
+            musicName = this.trackName ?: "",
+            artworkUrl = this.artworkUrl ?: "",
+            artistName = this.artistName ?: "",
+            collectionName = this.collectionName ?: "",
+            collectionYear = this.releaseDate?.year.toString(),
+            previewUrl = this.previewUrl
+        )
+}

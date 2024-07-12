@@ -13,7 +13,7 @@ interface ArtistDao {
     @Query(
         "SELECT * " +
                 "FROM ${ArtistEntity.TABLE} " +
-                "WHERE ${ArtistEntity.ID} = :id"
+                "WHERE ${ArtistEntity.ARTIST_ID} = :id"
     )
     fun getArtistById(id: Long): Single<ArtistEntity>
 
@@ -35,7 +35,7 @@ interface ArtistDao {
     @Query(
         "DELETE " +
                 "FROM ${ArtistEntity.TABLE} " +
-                "WHERE ${ArtistEntity.ID} = :id"
+                "WHERE ${ArtistEntity.ARTIST_ID} = :id"
     )
     fun deleteArtistById(id: kotlin.Long): Int
 

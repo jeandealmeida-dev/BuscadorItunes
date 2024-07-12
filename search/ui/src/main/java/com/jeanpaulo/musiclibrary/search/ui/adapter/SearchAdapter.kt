@@ -6,47 +6,42 @@ import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.jeanpaulo.musiclibrary.search.ui.viewmodel.SearchViewModel
+import com.jeanpaulo.musiclibrary.core.databinding.SongItemBinding
+import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.search.ui.databinding.ItemListFooterBinding
-import com.jeanpaulo.musiclibrary.search.ui.databinding.SearchMusicItemBinding
-import com.jeanpaulo.musiclibrary.search.ui.model.SearchMusicUIModel
 import com.squareup.picasso.Picasso
 
 class SearchAdapter(
-    private val viewModel: SearchViewModel,
     private val listener: SearchListener
-) : PagingDataAdapter<SearchMusicUIModel, RecyclerView.ViewHolder>(MUSIC_COMPARATOR) {
+) : PagingDataAdapter<SongUIModel, RecyclerView.ViewHolder>(diffItemCallback) {
+
+    private val FOOTER_VIEW_TYPE = 1
+    private val MUSIC_VIEW_TYPE = 0
 
     private var isLoading: Boolean = true
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == MUSIC_VIEW_TYPE) {
-            val binding =
-                SearchMusicItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            MusicViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        if (viewType == FOOTER_VIEW_TYPE) {
+            FooterViewHolder(
+                ItemListFooterBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
+            )
         } else {
-            val binding =
-                ItemListFooterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            FooterViewHolder(binding)
+            MusicViewHolder(
+                SongItemBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
+            )
         }
-    }
+
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when {
-            holder is MusicViewHolder -> {
-                val music = getItem(position)
-                if (music != null) {
-                    holder.bind(music, listener)
-                    holder.itemView.setOnClickListener { listener.onItemPressed(music) }
-                    holder.itemView.setOnLongClickListener {
-                        listener.onOptionsPressed(music)
-                        false
-                    }
-                }
-            }
-
-            holder is FooterViewHolder -> {
-                holder.bind(isLoading, viewModel::refresh)
+        if (getItemViewType(position) == FOOTER_VIEW_TYPE) {
+            (holder as FooterViewHolder).bind(isLoading) {}
+        } else if (getItemViewType(position) == MUSIC_VIEW_TYPE) {
+            getItem(position)?.let {
+                (holder as MusicViewHolder).bind(it, listener)
             }
         }
     }
@@ -65,22 +60,29 @@ class SearchAdapter(
     }
 
 
-    class MusicViewHolder(private val binding: SearchMusicItemBinding) :
+    class MusicViewHolder(private val binding: SongItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(music: SearchMusicUIModel, listener: SearchListener) {
-            binding.itemMusic.apply {
+        fun bind(music: SongUIModel, listener: SearchListener) {
+            binding.apply {
                 musicName.text = music.musicName
                 artistName.text = music.artistName
                 Picasso
                     .with(binding.root.context)
                     .load(music.artworkUrl)
                     .into(artwork)
+
+                // Events
+                root.setOnClickListener { listener.onItemPressed(music) }
+                root.setOnLongClickListener {
+                    listener.onOptionsPressed(music)
+                    false
+                }
             }
 
-//            binding.moreButton.apply {
-//                listener.onOptionsPressed(music)
-//            }
+            binding.moreButton.setOnClickListener {
+                listener.onOptionsPressed(music)
+            }
         }
     }
 
@@ -97,22 +99,20 @@ class SearchAdapter(
     }
 
     interface SearchListener {
-        fun onItemPressed(music: SearchMusicUIModel)
-        fun onOptionsPressed(music: SearchMusicUIModel)
+        fun onItemPressed(music: SongUIModel)
+        fun onOptionsPressed(music: SongUIModel)
     }
 
     companion object {
-        internal const val MUSIC_VIEW_TYPE = 1
-        internal const val FOOTER_VIEW_TYPE = 2
 
-        private val MUSIC_COMPARATOR = object : DiffUtil.ItemCallback<SearchMusicUIModel>() {
+        private val diffItemCallback = object : DiffUtil.ItemCallback<SongUIModel>() {
 
-            override fun areItemsTheSame(oldItem: SearchMusicUIModel, newItem: SearchMusicUIModel) =
+            override fun areItemsTheSame(oldItem: SongUIModel, newItem: SongUIModel) =
                 oldItem.musicId == newItem.musicId
 
             override fun areContentsTheSame(
-                oldItem: SearchMusicUIModel,
-                newItem: SearchMusicUIModel
+                oldItem: SongUIModel,
+                newItem: SongUIModel
             ) =
                 oldItem == newItem
         }

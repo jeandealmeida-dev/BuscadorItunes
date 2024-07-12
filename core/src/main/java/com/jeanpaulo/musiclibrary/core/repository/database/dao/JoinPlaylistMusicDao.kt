@@ -25,7 +25,7 @@ interface JoinPlaylistMusicDao {
     @Query(
         "SELECT * " +
                 "FROM ${MusicEntity.TABLE} " +
-                "INNER JOIN ${JoinPlaylistMusicEntity.TABLE_NAME} ON ${MusicEntity.T_ID}=${JoinPlaylistMusicEntity.MUSIC_ID} " +
+                "INNER JOIN ${JoinPlaylistMusicEntity.TABLE_NAME} ON ${MusicEntity.T_ID}=${JoinPlaylistMusicEntity.T_MUSIC_ID} " +
                 "WHERE ${JoinPlaylistMusicEntity.PLAYLIST_ID}=:playlistId"
     )
     fun getMusicsFromPlaylist(playlistId: Long): List<MusicEntity>
@@ -33,8 +33,8 @@ interface JoinPlaylistMusicDao {
     @Query(
         "SELECT * " +
                 "FROM ${MusicEntity.TABLE} " +
-                "INNER JOIN ${JoinPlaylistMusicEntity.TABLE_NAME} ON ${MusicEntity.T_ID}=${JoinPlaylistMusicEntity.MUSIC_ID}=:playlistId " +
-                "WHERE ${MusicEntity.REMOTE_ID}=:musicId "
+                "INNER JOIN ${JoinPlaylistMusicEntity.TABLE_NAME} ON ${MusicEntity.T_ID}=${JoinPlaylistMusicEntity.T_MUSIC_ID}=:musicId " +
+                "WHERE ${JoinPlaylistMusicEntity.T_PLAYLIST_ID}=:playlistId "
     )
     fun getMusicInPlaylist(musicId: Long, playlistId: Long): MusicEntity?
 

@@ -3,23 +3,25 @@ package com.jeanpaulo.musiclibrary.app
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.ContextMenu
 import android.view.View
+import androidx.core.app.ActivityCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.onNavDestinationSelected
-import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import com.jeanpaulo.musiclibrary.app.databinding.ActivityMusicBinding
-import com.jeanpaulo.musiclibrary.settings.ui.SettingsActivity
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmActivity
-import com.jeanpaulo.musiclibrary.core.domain.model.MusicPlayerSong
-import com.jeanpaulo.musiclibrary.core.service.MusicPlayerEvents
-import com.jeanpaulo.musiclibrary.core.service.MusicPlayerReceiver
+import com.jeanpaulo.musiclibrary.core.domain.model.Song
+import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
+import com.jeanpaulo.musiclibrary.core.music_player.MPEvents
+import com.jeanpaulo.musiclibrary.core.music_player.MPReceiver
+import com.jeanpaulo.musiclibrary.music.ui.view.MusicDetailActivity
 import com.jeanpaulo.musiclibrary.music.ui.view.bottom_sheet.FullPlayerBottomSheet
 import com.jeanpaulo.musiclibrary.music.ui.view.bottom_sheet.MiniPlayerBottomSheet
+import com.jeanpaulo.musiclibrary.settings.ui.SettingsActivity
 
 
 class MainActivity : BaseMvvmActivity() {
@@ -27,7 +29,6 @@ class MainActivity : BaseMvvmActivity() {
     private val vm by appViewModel<MainViewModel>()
 
     private lateinit var binding: ActivityMusicBinding
-    private lateinit var appBarConfiguration: AppBarConfiguration
 
     private lateinit var fullPlayerDialog: FullPlayerBottomSheet
     private lateinit var miniPlayerBottomSheet: MiniPlayerBottomSheet
@@ -47,21 +48,31 @@ class MainActivity : BaseMvvmActivity() {
     fun setupListeners() {
         vm.actMusicFragment.observe(this) { fragmentEnum ->
             when (fragmentEnum) {
-                MainFragmentEnum.FavoritesFragment -> { }
-                MainFragmentEnum.PlaylistFragment -> { }
-                MainFragmentEnum.SearchFragment -> { }
+                MainFragmentEnum.FavoritesFragment -> {}
+                MainFragmentEnum.PlaylistFragment -> {}
+                MainFragmentEnum.SearchFragment -> {}
             }
         }
         vm.state.observe(this) { state ->
             when (state) {
+                is MusicActivityState.OpenMusicDetail ->
+                    startMusicDetailActivity(state.music)
+
                 else -> {}
             }
         }
     }
 
+    fun startMusicDetailActivity(music: SimpleMusicDetailUIModel) {
+        ActivityCompat.startActivity(
+            this,
+            MusicDetailActivity.newInstance(this, music, false),
+            Bundle.EMPTY
+        )
+    }
+
     fun setupWidgets() {
 
-        // Nav controller
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
@@ -77,7 +88,6 @@ class MainActivity : BaseMvvmActivity() {
                 }
 
                 else -> {
-                    //fullPlayerBottomSheet.state = BottomSheetBehavior.STATE_HIDDEN
                     onNavDestinationSelected(item, navController)
                     return@setOnItemSelectedListener true
                 }
@@ -112,20 +122,21 @@ class MainActivity : BaseMvvmActivity() {
             })
     }
 
-    private val musicPlayerReceiver: MusicPlayerReceiver =
-        MusicPlayerReceiver(object : MusicPlayerEvents() {
-
-            override fun onPlaySong(song: MusicPlayerSong) {
-                miniPlayerBottomSheet.expand()
-                fullPlayerDialog.hide()
-
-                miniPlayerBottomSheet.updatePlayer(song)
-                fullPlayerDialog.updatePlayer(song)
-            }
+    private val musicPlayerReceiver: MPReceiver<Song> =
+        MPReceiver({
+            Song.fromMPSong(it)
+        }, object : MPEvents<Song>() {
 
             override fun onPlay() {
                 miniPlayerBottomSheet.isPlaying()
                 fullPlayerDialog.isPlaying()
+            }
+
+            override fun onPlaySong(currentSong: Song, hasNext: Boolean, hasPrevious: Boolean) {
+                miniPlayerBottomSheet.expand()
+
+                miniPlayerBottomSheet.updatePlayer(currentSong)
+                fullPlayerDialog.updatePlayer(currentSong, hasNext, hasPrevious)
             }
 
             override fun onPause() {
@@ -138,20 +149,15 @@ class MainActivity : BaseMvvmActivity() {
                 fullPlayerDialog.isPlaying(playing = false)
             }
 
-            override fun onNext() {
-                TODO("Not yet implemented")
+            override fun onUpdateCounter(counter: Long) {
+                fullPlayerDialog.updateCounter(counter.toInt())
             }
-
-            override fun onPrevious() {
-                TODO("Not yet implemented")
-            }
-
         })
 
     private fun setupMusicService() {
         LocalBroadcastManager.getInstance(this).registerReceiver(
             musicPlayerReceiver,
-            IntentFilter(MusicPlayerReceiver.ACTION),
+            IntentFilter(MPReceiver.ACTION),
         )
     }
 
@@ -176,7 +182,7 @@ class MainActivity : BaseMvvmActivity() {
 
 
     override fun onSupportNavigateUp(): Boolean {
-        return findNavController(R.id.nav_host_fragment).navigateUp(appBarConfiguration) ||
+        return findNavController(R.id.nav_host_fragment).navigateUp() ||
                 super.onSupportNavigateUp()
     }
 }

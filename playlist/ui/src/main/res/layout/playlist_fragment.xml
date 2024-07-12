@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_layout"
@@ -16,81 +16,64 @@
             android:id="@+id/toolbar"
             style="@style/AppToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:title="@string/playlists_title" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
     <com.jeanpaulo.musiclibrary.commons.view.ScrollChildSwipeRefreshLayout
         android:id="@+id/refresh_layout"
-        android:layout_below="@id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/app_bar"
+        android:layout_marginTop="?android:actionBarSize">
 
-        <RelativeLayout
-            android:id="@+id/tasks_container_layout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clickable="true"
-            android:focusable="true"
+            android:layout_centerInParent="true"
             android:orientation="vertical">
 
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/favorite_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/playlist_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                tools:listitem="@layout/song_item" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/playlist_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/background_light"
-                    tools:listitem="@layout/item_music" />
+        </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_no_playlist"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_gravity="center"
-                    android:contentDescription="@null" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="12dp"
-                    android:text="@string/playlist_list_empty" />
-            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/error_playlist_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
-                android:id="@+id/txt_playlist_error"
+                android:id="@+id/error_list_playlist_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/background_light"
                 android:gravity="center"
-                android:text="@string/playlist_list_error"
+                android:text="@string/error_list_playlist_message"
                 android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/txt_playlist_loading"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/background_light"
-                android:gravity="center"
-                android:text="@string/playlist_list_loading"
-                android:visibility="gone" />
-
-        </RelativeLayout>
+        </LinearLayout>
 
     </com.jeanpaulo.musiclibrary.commons.view.ScrollChildSwipeRefreshLayout>
 
-</RelativeLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="32dp"
+        android:contentDescription="@string/new_playlist_cd"
+        android:src="@drawable/ic_add" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

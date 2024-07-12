@@ -50,6 +50,7 @@ class PlaylistCreateFragment : BaseMvvmFragment() {
                     navigateBack()
                     showSnackBar("Success")
                 }
+
                 else -> {}
             }
         }
@@ -57,6 +58,13 @@ class PlaylistCreateFragment : BaseMvvmFragment() {
 
     fun setupWidgets() {
         setupRefreshLayout(binding.refreshLayout)
+
+        binding.fab.setOnClickListener {
+            viewModel.createPlaylist(
+                title = binding.inputPlaylistTitle.text.toString(),
+                description = binding.inputPlaylistDescription.text.toString()
+            )
+        }
     }
 
     private fun setupMenu() {
@@ -93,6 +101,7 @@ class PlaylistCreateFragment : BaseMvvmFragment() {
                     navigateBack()
                     true
                 }
+
                 R.id.action_save -> {
                     viewModel.createPlaylist(
                         title = binding.inputPlaylistTitle.text.toString(),
@@ -100,6 +109,7 @@ class PlaylistCreateFragment : BaseMvvmFragment() {
                     )
                     true
                 }
+
                 else -> {
                     false
                 }

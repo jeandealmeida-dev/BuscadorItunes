@@ -7,4 +7,7 @@
     <string name="favorite_list_empty">Nenhuma música adicionada aos favoritos!</string>
     <string name="favorite_list_error">Erro ao consultar os favoritos!</string>
     <string name="favorite_list_loading">Carregando os favoritos!</string>
+    <string name="favorite_title">Favoritas</string>
+
+    <string name="favorite_remove_success">Removido dos favoritos!</string>
 </resources>

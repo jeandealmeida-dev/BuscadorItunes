@@ -17,9 +17,9 @@ sealed class PlaylistListState {
 }
 
 sealed class PlaylistDeleteState {
-    object Loading : PlaylistDeleteState()
-    object Error : PlaylistDeleteState()
-    object Success : PlaylistDeleteState()
+    data object Loading : PlaylistDeleteState()
+    data object Error : PlaylistDeleteState()
+    data object Success : PlaylistDeleteState()
 }
 
 class PlaylistViewModel @Inject constructor(
@@ -70,14 +70,29 @@ class PlaylistViewModel @Inject constructor(
                     _playlistListState.postValue(PlaylistListState.Loading)
                 }
                 .subscribe({ playlistList ->
-                    _playlistListState.postValue(if (playlistList.isEmpty()) {
-                        PlaylistListState.Empty
-                    } else {
+                    _playlistListState.postValue(
                         PlaylistListState.Success(playlistList)
-                    })
+                    )
                 }, {
                     _playlistListState.postValue(PlaylistListState.Error)
                 })
         )
     }
+
+//    fun getFavoriteMusicCount() {
+//        compositeDisposable.add(
+//            favoriteInteractor.getFavoriteMusics()
+//                .subscribeOn(mainScheduler)
+//                .delay(500, TimeUnit.MILLISECONDS)
+//                .observeOn(ioScheduler)
+//                .doOnSubscribe {
+//                    _playlistListState.postValue(PlaylistListState.Loading)
+//                }
+//                .subscribe({ playlistList ->
+//
+//                }, {
+//
+//                })
+//        )
+//    }
 }

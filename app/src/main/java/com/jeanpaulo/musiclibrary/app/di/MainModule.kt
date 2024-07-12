@@ -7,6 +7,8 @@ import com.jeanpaulo.musiclibrary.app.MainViewModel
 import com.jeanpaulo.musiclibrary.settings.ui.SettingsActivity
 import com.jeanpaulo.musiclibrary.commons.di.ViewModelKey
 import com.jeanpaulo.musiclibrary.favorite.ui.di.FavoriteModuleBuilder
+import com.jeanpaulo.musiclibrary.music.ui.di.MusicModuleBuilder
+import com.jeanpaulo.musiclibrary.music.ui.view.MusicDetailActivity
 import com.jeanpaulo.musiclibrary.playlist.ui.di.PlaylistModuleBuilder
 import com.jeanpaulo.musiclibrary.search.ui.di.SearchModuleBuilder
 import com.jeanpaulo.musiclibrary.settings.ui.di.SettingsModuleBuilder
@@ -40,6 +42,14 @@ abstract class MainModule {
     @IntoMap
     @ViewModelKey(MainViewModel::class)
     abstract fun provideViewModel(viewModel: MainViewModel): ViewModel
+
+    @ContributesAndroidInjector(
+        modules = [
+            MusicModuleBuilder::class,
+            FavoriteModuleBuilder::class,
+        ]
+    )
+    internal abstract fun bindMusicDetailActivity(): MusicDetailActivity
 
     companion object {
         @Provides
