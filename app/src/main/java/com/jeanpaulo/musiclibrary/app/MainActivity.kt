@@ -20,8 +20,6 @@ import com.jeanpaulo.musiclibrary.settings.ui.SettingsActivity
 
 class MainActivity : BaseMvvmActivity() {
 
-    private val vm by appViewModel<MainViewModel>()
-
     private lateinit var binding: ActivityMusicBinding
 
     private lateinit var fullPlayerDialog: FullPlayerBottomSheet
@@ -31,8 +29,6 @@ class MainActivity : BaseMvvmActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMusicBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        lifecycle.addObserver(vm)
 
         setupNavigation()
         setupPlayers()
