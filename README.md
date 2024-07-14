@@ -2,23 +2,62 @@
 
 This is an Android Project that implements an Music library. It can look up for a song by the name than if you press an item list it shows the music detail. Also you can reproduce the music`s preview. 
 
-https://github.com/jeandealmeida-dev/BuscadorItunes/assets/3248076/a0925b4f-4b9a-4c01-a8d4-d93840eec282
+## Features
 
-## Inspiration
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td align="center"><img src="https://github.com/user-attachments/assets/2ef46802-cb7a-4126-8280-62081ba0ec16"></td>
+            <td>
+              <ul>
+                <h3>Search and Reproduce</h3>
+                <li>Search music by track name, artist or collection</li>
+                <li>Reproduce the music's preview</li>
+                <li>Save a song as favorite</li>
+                <li><i>Comming soon..</i> Add a song in a playlist</li>
+                <li><i>Comming soon..</i> Open album details</li>
+                <li><i>Comming soon..</i> Open artist details</li>
+              </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><img src="https://github.com/user-attachments/assets/514b22ec-7699-4ed3-9f6f-8defb240a798"></td>
+            <td>
+              <ul>
+                <h3>Playlist and Favorites</h3>
+                <li>Create, edit and delete playlists</li>
+                <li>Reproduce the music's preview</li>
+                <li>Reproduce a favorite list</li>
+                <li>Manage favorite playlist</li>
+                <li><i>Comming soon..</i> Reproduce a playlist music list</li>
+              </ul>
+            </td>
+        </tr>
+       <tr>
+            <td align="center"><img src="https://github.com/user-attachments/assets/12479845-f66d-4dd7-974c-819776bb8a9a"></td>
+            <td>
+              <ul>
+                <h3>Settings</h3>
+                <li>Change Light/Dark theme</li>
+                <li>Drop all database</li>
+                <li>Send us a feedback</li>
+              </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+## Inspiration & Design
 
 <img width="756" alt="image" src="https://github.com/jeandealmeida-dev/BuscadorItunes/assets/3248076/efabdae9-6e11-4af3-bfdb-cd913becf9af">
 
 [Figma Link](https://www.figma.com/design/WtDm4N04po4gl6RcSVVL2l/30-Vibes?node-id=0-1&t=S2eWnn1qsiTOtQp0-1)
-
-## Features 
-
-- Search a song by name, artist or album
-- Play a 30 seconds preview
-- Save in favorites
-- Save in a playlist
-- [_Comming soon_] Dark/Light theme
-- [_Comming soon_] Artist's profile screen
-- [_Comming soon_] Album's detail screen
 
 ## Tech Stats
 
