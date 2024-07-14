@@ -42,7 +42,7 @@ class SongListAdapter(
 
     fun getList(): List<SongUIModel> = asyncListDiffer.currentList
 
-    private val asyncListDiffer =
+    private val asyncListDiffer: AsyncListDiffer<SongUIModel> by lazy {
         AsyncListDiffer(this, object : DiffUtil.ItemCallback<SongUIModel>() {
             override fun areItemsTheSame(oldItem: SongUIModel, newItem: SongUIModel): Boolean {
                 return oldItem.musicId == newItem.musicId
@@ -54,4 +54,5 @@ class SongListAdapter(
                         oldItem.collectionName == newItem.collectionName
             }
         })
+    }
 }

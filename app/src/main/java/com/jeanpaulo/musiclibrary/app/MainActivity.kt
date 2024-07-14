@@ -35,9 +35,8 @@ class MainActivity : BaseMvvmActivity() {
     }
 
     private fun setupNavigation() {
-        val navController = (supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment)
-            .navController
+        val fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+        val navController = if (fragment is NavHostFragment) fragment.navController else return
 
         binding.navView.setupWithNavController(navController)
         binding.navView.setOnItemSelectedListener { item ->

@@ -12,8 +12,10 @@ class SongListHolder(val binding: SongItemBinding) :
         music: SongUIModel, listener: SongListListener
     ) = with(itemView) {
         binding.musicName.text = music.musicName
-        binding.artistName.text = music.artistName ?: "-"
-        Picasso.with(binding.root.context).load(music.artworkUrl).into(binding.artwork)
+        binding.artistName.text = music.artistName
+        music.artworkUrl?.let { url ->
+            Picasso.with(binding.root.context).load(url).into(binding.artwork)
+        }
 
         binding.moreButton.setOnClickListener { listener.onActionPressed(music) }
         setOnClickListener { listener.onPressed(music) }

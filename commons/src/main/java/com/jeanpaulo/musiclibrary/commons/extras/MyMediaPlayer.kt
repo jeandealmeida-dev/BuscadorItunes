@@ -30,22 +30,22 @@ class MyMediaPlayer(val context: Context) {
 
     private fun getMediaPlayer(): MediaPlayer =
         mediaPlayer ?: run {
-            mediaPlayer = MediaPlayer.create(context, Uri.parse(currentUrl)).also {
-                it.setOnPreparedListener { player ->
-                    Log.d("MyMediaPlayer", "[Player] Ready to play")
+            mediaPlayer = MediaPlayer.create(context, Uri.parse(currentUrl)).apply {
+                setOnPreparedListener { player ->
+                    Log.d(TAG, "[Player] Ready to play")
 
                     player.start()
                     updateCounterRunnable.start()
                 }
 
-                it.setOnCompletionListener {
-                    Log.d("MyMediaPlayer", "[Player] Finish")
+                setOnCompletionListener {
+                    Log.d(TAG, "[Player] Finish")
                     onCompletionListener?.invoke()
                     updateCounterRunnable.stop()
                 }
 
-                it.setOnErrorListener { mp, what, extra ->
-                    Log.d("MyMediaPlayer", "[Player] Error: ${what} - ${extra}")
+                setOnErrorListener { mp, what, extra ->
+                    Log.d(TAG, "[Player] Error: ${what} - ${extra}")
                     true
                 }
             }
@@ -116,5 +116,9 @@ class MyMediaPlayer(val context: Context) {
             it.setDataSource(context, Uri.parse(url))
             it.prepareAsync()
         }
+    }
+
+    companion object {
+        const val TAG = "MyMediaPlayer"
     }
 }

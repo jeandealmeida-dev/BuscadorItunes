@@ -25,17 +25,17 @@ class MPService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        Log.d("MusicPlayerService", "[Service] Running..")
+        Log.d(TAG, "[Service] Running..")
     }
 
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer?.stop()
-        Log.d("MusicPlayerService", "[Service] Destroyed!")
+        Log.d(TAG, "[Service] Destroyed!")
     }
 
     override fun onBind(intent: Intent?): IBinder? {
-        Log.d("MusicPlayerService", "OnBind")
+        Log.d(TAG, "OnBind")
         return null
     }
 
@@ -65,27 +65,28 @@ class MPService : Service() {
 
     private fun extractPlaylistArgs(extras: Bundle) =
         if (extras.containsKey(PLAYLIST)) {
-            extras.getParcelable(PLAYLIST)!!
+            extras.getParcelable(PLAYLIST) ?: MPPlaylist()
         } else if (extras.containsKey(SONG)) {
-            val song = extras.getParcelable<MPSong>(SONG)!!
-            MPPlaylist(songs = mutableListOf(song))
+            extras.getParcelable<MPSong?>(SONG)?.let { song ->
+                MPPlaylist(songs = mutableListOf(song))
+            } ?: MPPlaylist()
         } else {
             MPPlaylist()
         }
 
     private fun receivingCommand(command: String, playlist: MPPlaylist) {
-        Log.d("MusicPlayerService", "[Service] Receiving {$command}..")
+        Log.d(TAG, "[Service] Receiving {$command}..")
         when (command) {
-            MPCommands.PLAY -> {
-                currentPlaylist = playlist
-                getMediaPlayer().play()
-                broadcastCommand(command)
-            }
-
+            MPCommands.PLAY,
             MPCommands.PLAY_SONG_LIST,
             MPCommands.PLAY_SONG -> {
                 currentPlaylist = playlist
-                playSong()
+
+                if(command == MPCommands.PLAY){
+                    getMediaPlayer().play()
+                } else {
+                    playSong()
+                }
                 broadcastCommand(command)
             }
 
@@ -119,7 +120,7 @@ class MPService : Service() {
     }
 
     private fun broadcastCommand(command: String) {
-        Log.d("MusicPlayerService", "[Broadcast] Sending {$command}..")
+        Log.d(TAG, "[Broadcast] Sending {$command}..")
 
         LocalBroadcastManager.getInstance(applicationContext)
             .sendBroadcast(Intent(MPReceiver.ACTION).apply {
@@ -135,7 +136,7 @@ class MPService : Service() {
     }
 
     private fun broadcastCounterCommand(counter: Long) {
-        Log.d("MusicPlayerService", "[Broadcast] Sending counter {$counter}..")
+        Log.d(TAG, "[Broadcast] Sending counter {$counter}..")
 
         LocalBroadcastManager.getInstance(applicationContext)
             .sendBroadcast(Intent(MPReceiver.ACTION).apply {
@@ -173,6 +174,7 @@ class MPService : Service() {
 
     companion object {
 
+        const val TAG = "MusicPlayerService"
         private fun createIntent(context: Context): Intent = Intent(context, MPService::class.java)
 
         // PLAY

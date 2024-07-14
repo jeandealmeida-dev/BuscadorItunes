@@ -14,8 +14,9 @@ data class MPPlaylist(
     fun play(): MPSong? {
         return currentSong ?: if (songs.isNotEmpty()) {
             currentSong = songs[0]
-            playedSongs.add(currentSong!!)
-            currentSong
+            currentSong?.also { song ->
+                playedSongs.add(song)
+            }
         } else null
     }
 
