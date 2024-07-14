@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
@@ -15,28 +16,21 @@
             android:id="@+id/toolbar"
             style="@style/AppToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:title="@string/search_title" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
-        android:id="@+id/tasks_linear_layout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_result_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/app_bar"
-        android:orientation="vertical">
+        tools:itemCount="10"
+        tools:listitem="@layout/song_item" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/music_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:itemCount="10"
-            tools:listitem="@layout/item_music" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/no_tasks_layout"
+    <RelativeLayout
+        android:id="@+id/no_result_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/app_bar"
@@ -50,21 +44,28 @@
             android:contentDescription="@null" />
 
         <TextView
-            android:id="@+id/no_tasks_text"
+            android:id="@+id/no_result_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/margin_md"
-            android:text="@string/no_music_found" />
-    </LinearLayout>
+            android:text="@string/search_no_result_message" />
+    </RelativeLayout>
 
-    <TextView
-        android:id="@+id/txt_error"
-        android:layout_below="@id/app_bar"
+    <RelativeLayout
+        android:id="@+id/search_error_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="ERROR !! Tap to retry."
-        android:visibility="gone" />
+        android:layout_below="@id/app_bar"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/error_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/search_error_message"
+            android:visibility="gone" />
+    </RelativeLayout>
 
 </RelativeLayout>

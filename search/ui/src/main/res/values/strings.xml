@@ -3,5 +3,8 @@
     <string name="search_title">Pesquisar</string>
     <string name="search_hint">Música, album ou artista..</string>
 
-    <string name="no_music_found">Nenhuma música encontrada com esse termo!</string>
+    <string name="search_no_result_message">Ops! Nao encontramos nada com esse termo.. \nTente outro termo :)</string>
+    <string name="search_error_message">Houston, parece que temos um problema!\nTente novamente mais tarde! :)</string>
+
+    <string name="search_add_favorite_success">Salvo em favoritos!</string>
 </resources>

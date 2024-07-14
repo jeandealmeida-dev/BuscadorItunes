@@ -39,4 +39,14 @@
 
     </com.jeanpaulo.musiclibrary.commons.view.ScrollChildSwipeRefreshLayout>
 
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/new_playlist_cd"
+        android:src="@drawable/ic_save" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

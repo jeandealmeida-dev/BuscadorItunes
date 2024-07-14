@@ -3,54 +3,76 @@ package com.jeanpaulo.musiclibrary.commons.extras
 import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 
 
 class MyMediaPlayer(val context: Context) {
 
     private var mediaPlayer: MediaPlayer? = null
     private var onCompletionListener: (() -> Unit)? = null
+    private var onUpdateCounterListener: ((Long) -> Unit)? = null
+
+    private val updateCounterRunnable = MyMediaPlayerCounter(Handler(Looper.getMainLooper())) {
+        onUpdateCounterListener?.invoke(it)
+    }
+
+    private var currentUrl: String = ""
 
     fun setOnCompletionListener(onCompletionListener: () -> Unit) {
         this.onCompletionListener = onCompletionListener
     }
 
-    fun requireMediaPlayer() : MediaPlayer {
-        //TODO refactoring this method
-        return mediaPlayer!!
+    fun setOnUpdateCounterListener(onUpdateCounterListener: (Long) -> Unit) {
+        this.onUpdateCounterListener = onUpdateCounterListener
     }
 
-    fun playSong(url: String) {
-        if (mediaPlayer == null) {
-            mediaPlayer = MediaPlayer.create(context, Uri.parse(url))
-            mediaPlayer?.setOnPreparedListener {
-                it.start()
+    private fun getMediaPlayer(): MediaPlayer =
+        mediaPlayer ?: run {
+            mediaPlayer = MediaPlayer.create(context, Uri.parse(currentUrl)).apply {
+                setOnPreparedListener { player ->
+                    Log.d(TAG, "[Player] Ready to play")
+
+                    player.start()
+                    updateCounterRunnable.start()
+                }
+
+                setOnCompletionListener {
+                    Log.d(TAG, "[Player] Finish")
+                    onCompletionListener?.invoke()
+                    updateCounterRunnable.stop()
+                }
+
+                setOnErrorListener { mp, what, extra ->
+                    Log.d(TAG, "[Player] Error: ${what} - ${extra}")
+                    true
+                }
             }
-            mediaPlayer?.setOnCompletionListener {
-                onCompletionListener?.invoke()
-            }
-        } else {
-            changeMedia(url)
+            return@run mediaPlayer!!
         }
+
+    fun playSong(url: String) {
+        changeMedia(url)
     }
 
     fun play() {
-        checkPlayerNull()
-        mediaPlayer?.start()
+        getMediaPlayer().start()
+        updateCounterRunnable.play()
     }
 
     fun next(url: String) {
-        checkPlayerNull()
         changePlayerUrl(url)
     }
 
     fun pause() {
-        checkPlayerNull()
-        mediaPlayer?.pause()
+        updateCounterRunnable.pause()
+        getMediaPlayer().pause()
     }
 
-    fun changeMedia(url: String) {
-        checkPlayerNull()
-        mediaPlayer?.let {
+    private fun changeMedia(url: String) {
+        currentUrl = url
+        getMediaPlayer().let {
             it.reset()
             it.setDataSource(context, Uri.parse(url))
             it.prepareAsync()
@@ -61,8 +83,7 @@ class MyMediaPlayer(val context: Context) {
      * Use reset() for frequent media changes
      */
     fun reset() {
-        checkPlayerNull()
-        mediaPlayer?.reset()
+        getMediaPlayer().reset()
     }
 
     /***
@@ -70,9 +91,7 @@ class MyMediaPlayer(val context: Context) {
      * Use release() when you're done with the MediaPlayer or switching to a different media source.
      */
     fun stop() {
-        checkPlayerNull()
-
-        mediaPlayer?.let {
+        getMediaPlayer().let {
             it.pause()
             it.seekTo(0)
         }
@@ -84,7 +103,7 @@ class MyMediaPlayer(val context: Context) {
      * - You're switching to a different media source:
      */
     fun release() {
-        mediaPlayer?.let {
+        getMediaPlayer().let {
             it.stop()
             it.release()
         }
@@ -92,15 +111,14 @@ class MyMediaPlayer(val context: Context) {
     }
 
     private fun changePlayerUrl(url: String) {
-        mediaPlayer?.let {
+        getMediaPlayer().let {
             it.reset()
             it.setDataSource(context, Uri.parse(url))
             it.prepareAsync()
         }
     }
 
-    private fun checkPlayerNull() {
-        if (mediaPlayer == null)
-            throw Exception("You should call build before to use it!")
+    companion object {
+        const val TAG = "MyMediaPlayer"
     }
 }

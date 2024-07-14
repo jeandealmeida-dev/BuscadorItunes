@@ -91,7 +91,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/horizontal_progress"
             android:layout_alignStart="@+id/horizontal_progress"
-            android:text="1:04"
             android:textColor="?android:textColorSecondary"
             android:textStyle="bold"
             tools:text="1:04" />
@@ -102,10 +101,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/horizontal_progress"
             android:layout_alignEnd="@+id/horizontal_progress"
-            android:text="2:52"
+            android:text="@string/player_max_seconds"
             android:textColor="?android:textColorTertiary"
             android:textStyle="bold"
-            tools:text="2:52" />
+            tools:text="0:30" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -118,11 +117,12 @@
 
             <ImageButton
                 android:id="@+id/previous_button"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:background="@null"
-                android:src="@drawable/ic_previous" />
+                android:src="@drawable/ic_previous"
+                app:tint="@drawable/next_button_tint" />
 
             <ImageButton
                 android:id="@+id/play_button"
@@ -133,11 +133,12 @@
 
             <ImageButton
                 android:id="@+id/next_button"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:background="@null"
-                android:src="@drawable/ic_next" />
+                android:src="@drawable/ic_next"
+                app:tint="@drawable/next_button_tint" />
 
         </LinearLayout>
     </RelativeLayout>

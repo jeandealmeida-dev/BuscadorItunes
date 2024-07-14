@@ -2,6 +2,7 @@ package com.jeanpaulo.musiclibrary.music.domain
 
 import com.jeanpaulo.musiclibrary.commons.exceptions.EmptyResultException
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
+import com.jeanpaulo.musiclibrary.core.repository.database.entity.MusicEntity
 import com.jeanpaulo.musiclibrary.core.repository.database.mapper.toEntity
 import com.jeanpaulo.musiclibrary.favorite.data.FavoriteRepository
 import com.jeanpaulo.musiclibrary.music.data.MusicRepository
@@ -37,6 +38,7 @@ class MusicInteractorImpl @Inject constructor(
                 is EmptyResultException -> {
                     Single.error(it)
                 }
+
                 else -> {
                     Single.error(it)
                 }
@@ -44,7 +46,7 @@ class MusicInteractorImpl @Inject constructor(
         }
 
     override fun saveMusicInFavorite(music: Music): Completable =
-        musicRepository.save(music.toEntity()).concatMapCompletable {
+        musicRepository.save(MusicEntity.fromModel(music)).concatMapCompletable {
             favoriteRepository.save(musicId = it)
         }
 

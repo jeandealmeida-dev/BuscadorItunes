@@ -6,7 +6,6 @@ import com.jeanpaulo.musiclibrary.core.repository.database.entity.JoinPlaylistMu
 import com.jeanpaulo.musiclibrary.core.repository.database.mapper.toEntity
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.core.domain.model.Playlist
-import com.jeanpaulo.musiclibrary.core.repository.database.mapper.toModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject

@@ -2,6 +2,8 @@ package com.jeanpaulo.musiclibrary.playlist.ui.fragments
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
@@ -30,6 +32,7 @@ class PlaylistDetailFragment : BaseMvvmFragment() {
         setHasOptionsMenu(true)
         setupListeners()
         setupWidgets()
+        setupMenu()
         return _binding?.root
     }
 
@@ -79,5 +82,33 @@ class PlaylistDetailFragment : BaseMvvmFragment() {
         val action =
             PlaylistFragmentDirections.actionPlaylistFragmentToPlaylistDetailFragment()
         findNavController().navigate(action)
+    }
+
+    fun setupMenu() {
+        requireActivity()
+            .addMenuProvider(
+                PlaylistDetailFragmentMenuProvider(),
+                viewLifecycleOwner,
+                Lifecycle.State.RESUMED
+            )
+    }
+
+    inner class PlaylistDetailFragmentMenuProvider : MenuProvider {
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            menuInflater.inflate(R.menu.menu_playlist, menu)
+        }
+
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            return when (menuItem.itemId) {
+                android.R.id.home -> {
+                    requireActivity().onBackPressed()
+                    true
+                }
+
+                else -> {
+                    false
+                }
+            }
+        }
     }
 }

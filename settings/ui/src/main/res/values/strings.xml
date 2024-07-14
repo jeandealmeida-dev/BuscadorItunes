@@ -3,7 +3,7 @@
     <string name="menu_settings">Configurações</string>
 
     <!-- Settings -->
-    <string name="settings_theme_title">Tema</string>
+    <string name="settings_theme_title">Aparência</string>
 
     <string name="settings_feedback_summary">Encontrou um algum bug ou que tem alguma sugestao?</string>
     <string name="settings_feedback_title">Envie seu feedback</string>

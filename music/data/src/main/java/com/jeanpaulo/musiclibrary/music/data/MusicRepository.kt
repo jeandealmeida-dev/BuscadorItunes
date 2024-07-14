@@ -2,14 +2,11 @@ package com.jeanpaulo.musiclibrary.music.data
 
 import androidx.room.rxjava3.EmptyResultSetException
 import com.jeanpaulo.musiclibrary.commons.exceptions.EmptyResultException
-import com.jeanpaulo.musiclibrary.core.repository.remote.mapper.convertToMusic
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.core.repository.database.dao.ArtistDao
 import com.jeanpaulo.musiclibrary.core.repository.database.dao.CollectionDao
 import com.jeanpaulo.musiclibrary.core.repository.database.dao.MusicDao
 import com.jeanpaulo.musiclibrary.core.repository.database.entity.MusicEntity
-import com.jeanpaulo.musiclibrary.core.repository.database.mapper.toModel
-import com.jeanpaulo.musiclibrary.core.repository.database.mapper.toMusic
 import com.jeanpaulo.musiclibrary.core.repository.remote.ItunesService
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.functions.BiFunction
@@ -18,7 +15,6 @@ import javax.inject.Inject
 interface MusicRepository {
     fun lookup(musicId: Long, songMediaType: String): Single<Music>
     fun save(musicEntity: MusicEntity): Single<Long>
-
     fun findLocal(remoteId: Long): Single<Music>
     fun get(musicId: Long): Single<Music>
 }
@@ -32,7 +28,12 @@ class MusicRepositoryImpl @Inject constructor(
 
     override fun lookup(term: Long, mediaType: String): Single<Music> =
         itunesService.lookUp(term, mediaType)
-            .map { response -> response.result[0].convertToMusic() }
+            .map { response ->
+                if(response.result.isNotEmpty())
+                    response.result[0].toModel()
+                else
+                    throw EmptyResultException()
+            }
 
     override fun save(musicEntity: MusicEntity): Single<Long> {
         return when {
@@ -50,6 +51,7 @@ class MusicRepositoryImpl @Inject constructor(
                     }
                 )
             }
+
             else -> {
                 musicDao.insertMusic(music = musicEntity)
             }
@@ -71,13 +73,14 @@ class MusicRepositoryImpl @Inject constructor(
                         .blockingGet()
                 }
 
-                Single.just(musicEntity.toMusic())
+                Single.just(musicEntity.toModel())
             }
             .onErrorResumeNext {
                 throw when (it) {
                     is EmptyResultSetException -> {
                         EmptyResultException()
                     }
+
                     else -> {
                         it
                     }
@@ -91,13 +94,14 @@ class MusicRepositoryImpl @Inject constructor(
                     artistDao.getArtistById(musicEntity.artistId).blockingGet()
                 musicEntity.collection =
                     collectionDao.getCollectionById(musicEntity.collectionId).blockingGet()
-                musicEntity.toMusic()
+                musicEntity.toModel()
             }
             .onErrorResumeNext {
                 when (it) {
                     is EmptyResultSetException -> {
                         Single.error(EmptyResultException())
                     }
+
                     else -> {
                         Single.error(it)
                     }

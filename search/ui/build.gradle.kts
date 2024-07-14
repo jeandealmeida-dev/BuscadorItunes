@@ -11,6 +11,7 @@ dependencies {
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))
     implementation(project(ProjectDependencies.Module.Domain.search))
+    implementation(project(ProjectDependencies.Module.Domain.favorite))
 
     implementation(project(ProjectDependencies.Module.UI.music))
 

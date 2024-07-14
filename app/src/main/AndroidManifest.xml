@@ -30,7 +30,7 @@
             android:name="com.jeanpaulo.musiclibrary.settings.ui.SettingsActivity"
             android:exported="false" />
 
-        <service android:name="com.jeanpaulo.musiclibrary.core.service.MusicPlayerService" />
+        <service android:name="com.jeanpaulo.musiclibrary.core.music_player.MPService" />
 
     </application>
 

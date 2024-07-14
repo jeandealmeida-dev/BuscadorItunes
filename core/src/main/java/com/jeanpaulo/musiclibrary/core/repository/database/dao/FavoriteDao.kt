@@ -24,12 +24,12 @@ interface FavoriteDao {
 
     @Query("DELETE " +
             "FROM ${FavoriteEntity.TABLE} " +
-            "WHERE ${FavoriteEntity.MUSIC_ID} IN " +
+            "WHERE ${FavoriteEntity.T_MUSIC_ID} IN " +
             "( " +
                 "SELECT ${MusicEntity.T_ID} " +
                 "FROM ${MusicEntity.TABLE} " +
                 "INNER JOIN ${FavoriteEntity.TABLE} ON ${MusicEntity.T_ID}=${FavoriteEntity.T_MUSIC_ID} " +
-                "WHERE ${MusicEntity.REMOTE_ID} = :remoteId " +
+                "WHERE ${MusicEntity.T_REMOTE_ID} = :remoteId " +
             ")"
     )
     fun removeMusicFromFavorite(remoteId: Long): Completable
@@ -38,5 +38,10 @@ interface FavoriteDao {
     @Query("SELECT * " +
             "FROM ${FavoriteEntity.TABLE} ")
     fun getFavorites(): Flowable<List<FavoriteEntity>>
+
+    @Transaction
+    @Query("SELECT COUNT(*) " +
+            "FROM ${FavoriteEntity.TABLE} ")
+    fun getCount(): Single<Int>
 
 }

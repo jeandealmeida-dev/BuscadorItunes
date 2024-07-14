@@ -46,19 +46,6 @@ fun View.showSnackbar(snackbarText: String, timeLength: Int) {
     }
 }
 
-/**
- * Triggers a snackbar message when the value contained by snackbarTaskMessageLiveEvent is modified.
- */
-fun View.setupSnackbar(
-    lifecycleOwner: LifecycleOwner,
-    snackbarEvent: MutableLiveData<String>,
-    timeLength: Int
-) {
-    snackbarEvent.observe(lifecycleOwner) { event ->
-        showSnackbar(snackbarEvent.value ?: "", timeLength)
-    }
-}
-
 fun View.visible() {
     this.visibility = View.VISIBLE
 }

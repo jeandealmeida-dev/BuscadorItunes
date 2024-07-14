@@ -28,7 +28,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/background_light"
-                    tools:listitem="@layout/item_music" />
+                    tools:listitem="@layout/song_item" />
 
             </LinearLayout>
 
@@ -45,8 +45,7 @@
                     android:layout_width="96dp"
                     android:layout_height="96dp"
                     android:layout_gravity="center"
-                    android:contentDescription="@null"
-                    android:src="@mipmap/ic_launcher" />
+                    android:contentDescription="@null" />
 
                 <TextView
                     android:id="@+id/no_tasks_text"
@@ -69,5 +68,7 @@
         </RelativeLayout>
 
     </com.jeanpaulo.musiclibrary.commons.view.ScrollChildSwipeRefreshLayout>
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

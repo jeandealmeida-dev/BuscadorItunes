@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_activity_music_detail">...</string>
     <string name="action_settings">Configuracoes</string>
     <string name="action_favorite">Favorito</string>
 
-    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam felis magna, blandit a velit eu, euismod fringilla orci. Maecenas vehicula purus id ligula pulvinar placerat. Sed porttitor enim et eros aliquet, ut pellentesque tellus commodo. In nisi eros, egestas sed leo nec, volutpat convallis nisl. Aliquam nunc orci, interdum vitae iaculis vel, efficitur ut sem. Nam sollicitudin placerat ante, quis malesuada ligula feugiat sed. Morbi eu arcu ex. Nam eleifend mi felis, sed vulputate leo mattis id. Duis molestie eu magna eu pellentesque. Ut vitae lacinia augue, eget malesuada tellus. Aliquam erat volutpat.</string>
     <string name="now_playing">Reproduzindo</string>
+
+    <string name="player_seconds_formatter">0:%02d</string>
+    <string name="player_max_seconds">0:30</string>
 </resources>

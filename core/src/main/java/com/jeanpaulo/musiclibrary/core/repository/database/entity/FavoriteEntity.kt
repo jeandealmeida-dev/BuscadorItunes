@@ -14,9 +14,13 @@ import com.jeanpaulo.musiclibrary.core.domain.model.Favorite
     ]
 )
 class FavoriteEntity(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = ID) var favoriteId: Long = 0,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = ID) var id: Long = 0,
     @ColumnInfo(name = MUSIC_ID) val musicId: Long
 ) {
+    fun toModel() = Favorite(
+        musicId = musicId
+    )
+
     companion object {
         const val TABLE = "favorite"
 
