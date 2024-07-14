@@ -57,6 +57,11 @@ class MainActivity : BaseMvvmActivity() {
         }
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController(R.id.nav_host_fragment).navigateUp() ||
+                super.onSupportNavigateUp()
+    }
+
     private fun setupPlayers() {
         setupMiniPlayer()
         setupFullPlayer()
@@ -84,6 +89,8 @@ class MainActivity : BaseMvvmActivity() {
             })
     }
 
+    // RECEIVER
+
     override fun onResume() {
         super.onResume()
         setupMusicService()
@@ -100,13 +107,6 @@ class MainActivity : BaseMvvmActivity() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(musicPlayerReceiver)
         super.onPause()
     }
-
-    override fun onSupportNavigateUp(): Boolean {
-        return findNavController(R.id.nav_host_fragment).navigateUp() ||
-                super.onSupportNavigateUp()
-    }
-
-    // RECEIVER
 
     private val musicPlayerReceiver: MPReceiver<Song> =
         MPReceiver({

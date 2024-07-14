@@ -19,9 +19,8 @@ class MPReceiver<T>(val cast: (MPSong) -> T) : BroadcastReceiver() {
         Log.d("MPReceiver", "Receiving new broadcast command")
         intent?.extras?.let {
             val state = it.getParcelable<MPState>(MPParams.STATE)
-            val command = state?.command ?: it.getString(MPParams.COMMAND)
 
-            when (command) {
+            when (state?.command ?: it.getString(MPParams.COMMAND)) {
                 MPCommands.PLAY_SONG,
                 MPCommands.PLAY_SONG_LIST -> {
                     state?.currentSong?.let { song ->
@@ -51,7 +50,7 @@ class MPReceiver<T>(val cast: (MPSong) -> T) : BroadcastReceiver() {
                 }
 
 
-                else -> {} //TOOD
+                else -> {} //TODO
             }
         }
     }

@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.showTopSnackbar
 import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
-import com.jeanpaulo.musiclibrary.core.music_player.model.MPSong
 import com.jeanpaulo.musiclibrary.core.music_player.MPService
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.core.ui.adapter.SongListAdapter
@@ -83,11 +82,13 @@ class FavoriteFragment : BaseMvvmFragment() {
                 }
 
                 is FavoriteState.PlaySong -> {
-                    MPService.playASong(requireActivity(), state.music)
+                    MPService.playSong(requireActivity(), state.music.convertToSong())
                 }
 
                 is FavoriteState.PlaySongList -> {
-                    MPService.playSongList(requireActivity(), state.playlist)
+                    MPService.playSongList(
+                        requireActivity(),
+                        state.playlist.map { it.convertToSong() })
                 }
 
                 is FavoriteState.ShowMusicOptions -> {
@@ -107,7 +108,7 @@ class FavoriteFragment : BaseMvvmFragment() {
         }
     }
 
-    fun showMusicOptions(music: MPSong) {
+    fun showMusicOptions(music: SongUIModel) {
         SongOptionsBottomSheet.newInstance(
             music,
             listOf(
@@ -132,15 +133,15 @@ class FavoriteFragment : BaseMvvmFragment() {
             SongListAdapter(object : SongListListener {
 
                 override fun onPressed(music: SongUIModel) {
-                    viewModel.playMusic(music.convertToSong())
+                    viewModel.playMusic(music)
                 }
 
                 override fun onLongPressed(music: SongUIModel) {
-                    viewModel.options(music.convertToSong())
+                    viewModel.options(music)
                 }
 
                 override fun onActionPressed(music: SongUIModel) {
-                    viewModel.options(music.convertToSong())
+                    viewModel.options(music)
                 }
 
             })

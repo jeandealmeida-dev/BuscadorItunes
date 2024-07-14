@@ -14,7 +14,7 @@ class MyMediaPlayerCounter(
     private var isRunningPlayer = false
 
     fun start() {
-        Log.d("MPCounterRunnable", "[Counter] Start -> count = 0L")
+        Log.d("MyMediaPlayerCounter", "Start")
         count = 0L
 
         if (handler.hasCallbacks(this)) {
@@ -27,7 +27,7 @@ class MyMediaPlayerCounter(
     }
 
     fun play() {
-        Log.d("MPCounterRunnable", "[Counter] Play -> count = ${count}L")
+        Log.d("MyMediaPlayerCounter", "Play -> count = ${count}s")
 
         if (!isRunningPlayer) {
             start()
@@ -36,12 +36,12 @@ class MyMediaPlayerCounter(
     }
 
     fun pause() {
-        Log.d("MPCounterRunnable", "Pause -> count = ${count}L")
+        Log.d("MyMediaPlayerCounter", "Pause")
         isUpdating = false
     }
 
     fun stop() {
-        Log.d("MPCounterRunnable", "Stop -> count = ${count}L")
+        Log.d("MyMediaPlayerCounter", "Stop")
         count = 0L
         isUpdating = false
         isRunningPlayer = false

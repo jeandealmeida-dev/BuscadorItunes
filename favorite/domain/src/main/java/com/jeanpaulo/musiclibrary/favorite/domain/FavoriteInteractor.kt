@@ -16,7 +16,6 @@ interface FavoriteInteractor {
     fun isFavorite(dsTrackid: Long): Single<Boolean>
     fun getFavoriteMusics(): Flowable<List<Favorite>>
     fun getFavoriteCount(): Single<Int>
-
     fun removeFromFavorites(trackId: Long): Completable
     fun saveInFavorite(music: Music): Completable
 }

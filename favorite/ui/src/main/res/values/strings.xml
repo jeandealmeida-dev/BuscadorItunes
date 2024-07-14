@@ -10,4 +10,6 @@
     <string name="favorite_title">Favoritas</string>
 
     <string name="favorite_remove_success">Removido dos favoritos!</string>
+    <string name="favorite_musics_count">%s musicas</string>
+    <string name="favorite_music_count">1 música</string>
 </resources>

@@ -70,7 +70,7 @@ class MyMediaPlayer(val context: Context) {
         getMediaPlayer().pause()
     }
 
-    fun changeMedia(url: String) {
+    private fun changeMedia(url: String) {
         currentUrl = url
         getMediaPlayer().let {
             it.reset()

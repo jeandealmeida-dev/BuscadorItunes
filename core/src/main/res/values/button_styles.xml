@@ -10,7 +10,7 @@
 
     <style name="AppPlayButton_FullPlayer">
         <item name="android:src">@drawable/play_button_selector</item>
-        <item name="tint">?android:attr/colorAccent</item>
+        <item name="tint">?attr/colorAccent</item>
         <item name="android:background">@drawable/play_button_background</item>
         <item name="android:padding">@dimen/margin_sm_mid</item>
     </style>

@@ -5,4 +5,5 @@
     <string name="music_option_add_playlist">Adicionar a playlist</string>
     <string name="music_option_go_to_artist">Ver artista</string>
     <string name="music_option_go_to_album">Ver algum</string>
+    <string name="more_button_content_description">Mais</string>
 </resources>

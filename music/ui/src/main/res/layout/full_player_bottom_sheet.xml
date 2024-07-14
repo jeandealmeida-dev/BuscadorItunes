@@ -91,7 +91,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/horizontal_progress"
             android:layout_alignStart="@+id/horizontal_progress"
-            android:text="1:04"
             android:textColor="?android:textColorSecondary"
             android:textStyle="bold"
             tools:text="1:04" />
@@ -102,10 +101,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/horizontal_progress"
             android:layout_alignEnd="@+id/horizontal_progress"
-            android:text="0:30"
+            android:text="@string/player_max_seconds"
             android:textColor="?android:textColorTertiary"
             android:textStyle="bold"
-            tools:text="2:52" />
+            tools:text="0:30" />
 
         <LinearLayout
             android:layout_width="match_parent"

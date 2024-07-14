@@ -59,11 +59,11 @@ class SearchFragment : BaseMvvmFragment() {
     private fun setupListAdapter() {
         searchAdapter = SearchAdapter(object : SearchAdapter.SearchListener {
             override fun onItemPressed(music: SongUIModel) {
-                viewModel.playMusic(music.convertToSong())
+                viewModel.playMusic(music)
             }
 
             override fun onOptionsPressed(music: SongUIModel) {
-                viewModel.options(music.convertToSong())
+                viewModel.options(music)
             }
         })
 
@@ -90,16 +90,10 @@ class SearchFragment : BaseMvvmFragment() {
 
         viewModel.searchingState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                SearchState.Success -> {
-
-                }
-
-                is SearchState.OpenDetail -> {
-                    //TODO create a new detail music screen
-                }
+                SearchState.Success -> {}
 
                 is SearchState.PlaySong -> {
-                    MPService.playASong(requireActivity(), state.music)
+                    MPService.playSong(requireActivity(), state.music.convertToSong())
                 }
 
                 is SearchState.Options -> {
@@ -107,9 +101,6 @@ class SearchFragment : BaseMvvmFragment() {
                         state.music,
                         listOf(
                             SongOption.ADD_FAVORITE,
-                            SongOption.ADD_PLAYLIST,
-                            SongOption.GO_TO_ALBUM,
-                            SongOption.GO_TO_ARTIST
                         ),
                         object : SongOptionsBottomSheet.MusicOptionListener {
                             override fun onOptionSelected(option: SongOption) {
@@ -124,7 +115,7 @@ class SearchFragment : BaseMvvmFragment() {
         }
     }
 
-    fun onSearchOptionSelected(option: SongOption, music: MPSong) {
+    fun onSearchOptionSelected(option: SongOption, music: SongUIModel) {
         when (option) {
             SongOption.ADD_FAVORITE -> {
                 viewModel.addInFavorite(music)
@@ -134,7 +125,6 @@ class SearchFragment : BaseMvvmFragment() {
                 )
             }
 
-            SongOption.ADD_PLAYLIST -> viewModel.addInPlaylist(music)
             else -> {
                 requireContext().showTopSnackbar(
                     view = binding.root,

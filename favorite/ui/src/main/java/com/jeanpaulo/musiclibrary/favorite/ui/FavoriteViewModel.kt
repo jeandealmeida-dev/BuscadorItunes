@@ -2,8 +2,6 @@ package com.jeanpaulo.musiclibrary.favorite.ui
 
 import androidx.lifecycle.*
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
-import com.jeanpaulo.musiclibrary.core.music_player.model.MPPlaylist
-import com.jeanpaulo.musiclibrary.core.music_player.model.MPSong
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
 import io.reactivex.rxjava3.core.Scheduler
@@ -12,11 +10,11 @@ import javax.inject.Inject
 import javax.inject.Named
 
 sealed class FavoriteState {
-    object Loading : FavoriteState()
-    data class PlaySong(val music: MPSong) : FavoriteState()
-    data class PlaySongList(val playlist: MPPlaylist) : FavoriteState()
-    data class ShowMusicOptions(val music: MPSong) : FavoriteState()
-    data class Removed(val music: MPSong) : FavoriteState()
+    data object Loading : FavoriteState()
+    data class PlaySong(val music: SongUIModel) : FavoriteState()
+    data class PlaySongList(val playlist: List<SongUIModel>) : FavoriteState()
+    data class ShowMusicOptions(val music: SongUIModel) : FavoriteState()
+    data class Removed(val music: SongUIModel) : FavoriteState()
     data class Loaded(val musicList: List<SongUIModel>) : FavoriteState()
 }
 
@@ -56,26 +54,25 @@ class FavoriteViewModel @Inject constructor(
         )
     }
 
-    fun playMusic(music: MPSong) {
-        _favoriteState.value = FavoriteState.PlaySong(music)
+    fun playMusic(song: SongUIModel) {
+        _favoriteState.value = FavoriteState.PlaySong(song)
     }
 
     fun playSongList(songs: List<SongUIModel>) {
-        val playlist = MPPlaylist(songs = songs.map { it.convertToSong() }.toMutableList())
-        _favoriteState.value = FavoriteState.PlaySongList(playlist)
+        _favoriteState.value = FavoriteState.PlaySongList(songs)
     }
 
-    fun options(music: MPSong) {
-        _favoriteState.value = FavoriteState.ShowMusicOptions(music)
+    fun options(song: SongUIModel) {
+        _favoriteState.value = FavoriteState.ShowMusicOptions(song)
     }
 
-    fun remove(music: MPSong) {
+    fun remove(song: SongUIModel) {
         compositeDisposable.add(
-            interactor.removeFromFavorites(music.id)
+            interactor.removeFromFavorites(song.musicId)
                 .subscribeOn(ioScheduler)
                 .observeOn(mainScheduler)
                 .subscribe({
-                    _favoriteState.postValue(FavoriteState.Removed(music))
+                    _favoriteState.postValue(FavoriteState.Removed(song))
                 }, {
                     it.printStackTrace()
                 })

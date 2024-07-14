@@ -1,12 +1,9 @@
 package com.jeanpaulo.musiclibrary.search.ui.viewmodel
 
-import android.view.View
 import androidx.lifecycle.*
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
-import com.jeanpaulo.musiclibrary.core.music_player.model.MPSong
-import com.jeanpaulo.musiclibrary.core.presentation.SimpleMusicDetailUIModel
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
 import com.jeanpaulo.musiclibrary.search.domain.SearchInteractor
@@ -18,9 +15,8 @@ sealed class SearchState {
     object Loading : SearchState()
     object Error : SearchState()
     object Success : SearchState()
-    class OpenDetail(val view: View, val music: SimpleMusicDetailUIModel) : SearchState()
-    class PlaySong(val music: MPSong) : SearchState()
-    class Options(val music: MPSong) : SearchState()
+    class PlaySong(val music: SongUIModel) : SearchState()
+    class Options(val music: SongUIModel) : SearchState()
 }
 
 class SearchViewModel @Inject constructor(
@@ -49,31 +45,28 @@ class SearchViewModel @Inject constructor(
         currentQuery.value = it
     }
 
-    fun playMusic(music: MPSong) {
-        _searchingState.value = SearchState.PlaySong(music)
+    fun playMusic(song: SongUIModel) {
+        _searchingState.value = SearchState.PlaySong(song)
     }
 
-    fun options(music: MPSong) {
-        _searchingState.value = SearchState.Options(music)
+    fun options(song: SongUIModel) {
+        _searchingState.value = SearchState.Options(song)
     }
 
-    fun addInPlaylist(music: MPSong) {
-        TODO("Not yet implemented")
-    }
-
-    fun addInFavorite(music: MPSong) {
-        searchInteractor.getSearchMusic(musicId = music.id)?.let {
+    fun addInFavorite(song: SongUIModel) {
+        searchInteractor.getSearchMusic(musicId = song.musicId)?.let {
             compositeDisposable.add(
                 favoriteInteractor.saveInFavorite(it)
                     .subscribeOn(ioScheduler)
                     .observeOn(mainScheduler)
-                    .subscribe()
+                    .subscribe({}, { exception ->
+                        exception.printStackTrace()
+                    })
             )
         }
     }
 
-
     companion object {
-        private const val DEFAULT_QUERY = "Nirvana"
+        private const val DEFAULT_QUERY = "Pink Floyd"
     }
 }

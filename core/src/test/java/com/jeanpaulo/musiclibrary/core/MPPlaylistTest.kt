@@ -15,7 +15,7 @@ class MPPlaylistTest {
     @Test
     fun isEmpty_emptyPlaylist_returnsTrue() {
         val playlist = createPlaylist()
-        assertTrue(playlist.isEmpty())
+        assertFalse(playlist.hasNext())
     }
 
     @Test
@@ -27,7 +27,7 @@ class MPPlaylistTest {
             )
         )
         assertTrue(playlist.play()?.id == song.id)
-        assertFalse(playlist.isEmpty())
+        assertFalse(playlist.hasNext())
     }
 
     @Test
@@ -45,8 +45,8 @@ class MPPlaylistTest {
             )
         )
         assertTrue(playlist.play()?.id == song.id)
-        assertFalse(playlist.previous())
-        assertFalse(playlist.isEmpty())
+        assertFalse(playlist.hasPrevious())
+        assertFalse(playlist.hasNext())
 
         assertTrue(playlist.play()?.id == song.id)
     }
@@ -93,7 +93,7 @@ class MPPlaylistTest {
 
         // Check
         assertTrue(playlist.play()?.id == song.id)
-        assertFalse(playlist.isEmpty())
+        assertFalse(playlist.hasNext())
     }
 
     @Test
@@ -112,12 +112,12 @@ class MPPlaylistTest {
         // First next Call
         assertTrue(playlist.next())
         assertTrue(playlist.play()?.id == song2.id)
-        assertFalse(playlist.isEmpty())
+        assertFalse(playlist.hasNext())
 
         // Second next call
         assertFalse(playlist.next())
         assertTrue(playlist.play()?.id == song2.id)
-        assertFalse(playlist.isEmpty())
+        assertFalse(playlist.hasNext())
     }
 
     @Test

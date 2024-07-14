@@ -10,9 +10,9 @@ import javax.inject.Inject
 import javax.inject.Named
 
 sealed class PlaylistListState {
-    object Loading : PlaylistListState()
-    object Error : PlaylistListState()
-    object Empty : PlaylistListState()
+    data object Loading : PlaylistListState()
+    data object Error : PlaylistListState()
+    data object Empty : PlaylistListState()
     data class Success(val playlistList: List<Playlist>) : PlaylistListState()
 }
 
@@ -78,21 +78,4 @@ class PlaylistViewModel @Inject constructor(
                 })
         )
     }
-
-//    fun getFavoriteMusicCount() {
-//        compositeDisposable.add(
-//            favoriteInteractor.getFavoriteMusics()
-//                .subscribeOn(mainScheduler)
-//                .delay(500, TimeUnit.MILLISECONDS)
-//                .observeOn(ioScheduler)
-//                .doOnSubscribe {
-//                    _playlistListState.postValue(PlaylistListState.Loading)
-//                }
-//                .subscribe({ playlistList ->
-//
-//                }, {
-//
-//                })
-//        )
-//    }
 }

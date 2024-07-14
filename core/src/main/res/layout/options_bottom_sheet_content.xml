@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:padding="@dimen/margin_sm_mid"
+    android:layout_height="wrap_content">
+
+    <!-- Drag handle for accessibility -->
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:id="@+id/drag_handle"
+        style="@style/AppBottomSheetDragHandle"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <include
+        android:id="@+id/item_music"
+        layout="@layout/song_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/drag_handle"
+        android:layout_alignParentLeft="true"
+        android:layout_toStartOf="@+id/favorite_button" />
+
+    <CheckBox
+        android:id="@+id/favorite_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/item_music"
+        android:layout_alignBottom="@+id/item_music"
+        android:layout_alignParentRight="true"
+        android:background="@null"
+        android:button="@drawable/favorite_button_selector" />
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/item_music"
+        android:backgroundTint="?colorAccent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/separator"
+        android:padding="@dimen/margin_md"
+        tools:itemCount="3"
+        tools:listitem="@layout/option_item" />
+
+</RelativeLayout>
