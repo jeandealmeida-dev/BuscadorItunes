@@ -20,9 +20,9 @@ This is an Android Project that implements an Music library. It can look up for 
                 <li>Search music by track name, artist or collection</li>
                 <li>Reproduce the music's preview</li>
                 <li>Save a song as favorite</li>
-                <li><i>Comming soon..</i> Add a song in a playlist</li>
-                <li><i>Comming soon..</i> Open album details</li>
-                <li><i>Comming soon..</i> Open artist details</li>
+                <li>Add a song in a playlist <i>(Comming soon..)</i></li>
+                <li>Open album details <i>(Comming soon..)</i></li>
+                <li>Open artist details <i>(Comming soon..)</i></li>
               </ul>
             </td>
         </tr>
@@ -35,7 +35,7 @@ This is an Android Project that implements an Music library. It can look up for 
                 <li>Reproduce the music's preview</li>
                 <li>Reproduce a favorite list</li>
                 <li>Manage favorite playlist</li>
-                <li><i>Comming soon..</i> Reproduce a playlist music list</li>
+                <li>Reproduce a playlist music list <i>(Comming soon..)</i></li>
               </ul>
             </td>
         </tr>
