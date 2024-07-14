@@ -1,7 +1,9 @@
 package com.jeanpaulo.musiclibrary.favorite.ui
 
+import android.content.Context
 import androidx.lifecycle.*
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
+import com.jeanpaulo.musiclibrary.core.music_player.MPService
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
 import io.reactivex.rxjava3.core.Scheduler
@@ -11,8 +13,6 @@ import javax.inject.Named
 
 sealed class FavoriteState {
     data object Loading : FavoriteState()
-    data class PlaySong(val music: SongUIModel) : FavoriteState()
-    data class PlaySongList(val playlist: List<SongUIModel>) : FavoriteState()
     data class ShowMusicOptions(val music: SongUIModel) : FavoriteState()
     data class Removed(val music: SongUIModel) : FavoriteState()
     data class Loaded(val musicList: List<SongUIModel>) : FavoriteState()
@@ -54,12 +54,15 @@ class FavoriteViewModel @Inject constructor(
         )
     }
 
-    fun playMusic(song: SongUIModel) {
-        _favoriteState.value = FavoriteState.PlaySong(song)
+    fun playMusic(context: Context, song: SongUIModel) {
+        MPService.playSong(context, song.convertToSong())
     }
 
-    fun playSongList(songs: List<SongUIModel>) {
-        _favoriteState.value = FavoriteState.PlaySongList(songs)
+    fun playSongList(context: Context, songs: List<SongUIModel>) {
+        MPService.playSongList(
+            context,
+            songs.map { it.convertToSong() }
+        )
     }
 
     fun options(song: SongUIModel) {

@@ -2,6 +2,7 @@ package com.jeanpaulo.musiclibrary.core
 
 import com.jeanpaulo.musiclibrary.core.music_player.model.MPPlaylist
 import com.jeanpaulo.musiclibrary.core.music_player.model.MPSong
+import junit.framework.Assert.assertNotNull
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -26,7 +27,9 @@ class MPPlaylistTest {
                 song
             )
         )
-        assertTrue(playlist.play()?.id == song.id)
+        val playedSong = playlist.play()
+        assertNotNull(playedSong)
+        assertEquals(playedSong?.id, song.id)
         assertFalse(playlist.hasNext())
     }
 
@@ -44,11 +47,9 @@ class MPPlaylistTest {
                 song
             )
         )
-        assertTrue(playlist.play()?.id == song.id)
+        assertEquals(playlist.play()?.id, song.id)
         assertFalse(playlist.hasPrevious())
         assertFalse(playlist.hasNext())
-
-        assertTrue(playlist.play()?.id == song.id)
     }
 
     @Test
@@ -60,16 +61,16 @@ class MPPlaylistTest {
                 song1, song2
             )
         )
-        assertTrue(playlist.play()?.id == song1.id)
+        assertEquals(playlist.play()?.id, song1.id)
 
         assertTrue(playlist.next())
-        assertTrue(playlist.play()?.id == song2.id)
+        assertEquals(playlist.play()?.id, song2.id)
 
         assertFalse(playlist.next())
-        assertTrue(playlist.play()?.id == song2.id)
+        assertEquals(playlist.play()?.id, song2.id)
 
         assertTrue(playlist.previous())
-        assertTrue(playlist.play()?.id == song1.id)
+        assertEquals(playlist.play()?.id, song1.id)
 
         assertFalse(playlist.previous())
     }
@@ -88,11 +89,11 @@ class MPPlaylistTest {
                 song
             )
         )
-        assertTrue(playlist.play()?.id == song.id)
+        assertEquals(playlist.play()?.id, song.id)
         assertFalse(playlist.next())
 
         // Check
-        assertTrue(playlist.play()?.id == song.id)
+        assertEquals(playlist.play()?.id, song.id)
         assertFalse(playlist.hasNext())
     }
 
@@ -107,16 +108,16 @@ class MPPlaylistTest {
         )
 
         // Initial State
-        assertTrue(playlist.play()?.id == song1.id)
+        assertEquals(playlist.play()?.id, song1.id)
 
         // First next Call
         assertTrue(playlist.next())
-        assertTrue(playlist.play()?.id == song2.id)
+        assertEquals(playlist.play()?.id, song2.id)
         assertFalse(playlist.hasNext())
 
         // Second next call
         assertFalse(playlist.next())
-        assertTrue(playlist.play()?.id == song2.id)
+        assertEquals(playlist.play()?.id, song2.id)
         assertFalse(playlist.hasNext())
     }
 

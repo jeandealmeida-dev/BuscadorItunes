@@ -13,9 +13,6 @@ import com.jeanpaulo.musiclibrary.commons.extensions.ui.gone
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.showTopSnackbar
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.visible
 import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
-import com.jeanpaulo.musiclibrary.core.music_player.model.MPSong
-import com.jeanpaulo.musiclibrary.core.domain.model.Music
-import com.jeanpaulo.musiclibrary.core.music_player.MPService
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.core.ui.bottomsheet.SongOption
 import com.jeanpaulo.musiclibrary.core.ui.bottomsheet.SongOptionsBottomSheet
@@ -59,7 +56,7 @@ class SearchFragment : BaseMvvmFragment() {
     private fun setupListAdapter() {
         searchAdapter = SearchAdapter(object : SearchAdapter.SearchListener {
             override fun onItemPressed(music: SongUIModel) {
-                viewModel.playMusic(music)
+                viewModel.playMusic(requireContext(), music)
             }
 
             override fun onOptionsPressed(music: SongUIModel) {
@@ -91,10 +88,6 @@ class SearchFragment : BaseMvvmFragment() {
         viewModel.searchingState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 SearchState.Success -> {}
-
-                is SearchState.PlaySong -> {
-                    MPService.playSong(requireActivity(), state.music.convertToSong())
-                }
 
                 is SearchState.Options -> {
                     SongOptionsBottomSheet.newInstance(

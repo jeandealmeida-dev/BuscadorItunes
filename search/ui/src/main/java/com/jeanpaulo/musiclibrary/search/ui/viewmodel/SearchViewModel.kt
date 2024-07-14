@@ -1,9 +1,11 @@
 package com.jeanpaulo.musiclibrary.search.ui.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.*
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
+import com.jeanpaulo.musiclibrary.core.music_player.MPService
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
 import com.jeanpaulo.musiclibrary.search.domain.SearchInteractor
@@ -15,7 +17,6 @@ sealed class SearchState {
     object Loading : SearchState()
     object Error : SearchState()
     object Success : SearchState()
-    class PlaySong(val music: SongUIModel) : SearchState()
     class Options(val music: SongUIModel) : SearchState()
 }
 
@@ -45,8 +46,8 @@ class SearchViewModel @Inject constructor(
         currentQuery.value = it
     }
 
-    fun playMusic(song: SongUIModel) {
-        _searchingState.value = SearchState.PlaySong(song)
+    fun playMusic(context: Context, song: SongUIModel) {
+        MPService.playSong(context, song.convertToSong())
     }
 
     fun options(song: SongUIModel) {

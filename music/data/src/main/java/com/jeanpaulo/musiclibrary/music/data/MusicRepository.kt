@@ -28,7 +28,12 @@ class MusicRepositoryImpl @Inject constructor(
 
     override fun lookup(term: Long, mediaType: String): Single<Music> =
         itunesService.lookUp(term, mediaType)
-            .map { response -> response.result[0].toModel() }
+            .map { response ->
+                if(response.result.isNotEmpty())
+                    response.result[0].toModel()
+                else
+                    throw EmptyResultException()
+            }
 
     override fun save(musicEntity: MusicEntity): Single<Long> {
         return when {
@@ -46,6 +51,7 @@ class MusicRepositoryImpl @Inject constructor(
                     }
                 )
             }
+
             else -> {
                 musicDao.insertMusic(music = musicEntity)
             }
@@ -74,6 +80,7 @@ class MusicRepositoryImpl @Inject constructor(
                     is EmptyResultSetException -> {
                         EmptyResultException()
                     }
+
                     else -> {
                         it
                     }
@@ -94,6 +101,7 @@ class MusicRepositoryImpl @Inject constructor(
                     is EmptyResultSetException -> {
                         Single.error(EmptyResultException())
                     }
+
                     else -> {
                         Single.error(it)
                     }

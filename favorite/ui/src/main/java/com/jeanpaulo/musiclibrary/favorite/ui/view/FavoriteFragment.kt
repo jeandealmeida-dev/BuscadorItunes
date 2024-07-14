@@ -63,7 +63,7 @@ class FavoriteFragment : BaseMvvmFragment() {
     fun setupFab() {
         binding.playAllButton.setOnClickListener {
             val listSong = listAdapter.getList()
-            viewModel.playSongList(listSong)
+            viewModel.playSongList(requireContext(), listSong)
         }
     }
 
@@ -79,16 +79,6 @@ class FavoriteFragment : BaseMvvmFragment() {
                     } else {
                         listAdapter.submitList(state.musicList)
                     }
-                }
-
-                is FavoriteState.PlaySong -> {
-                    MPService.playSong(requireActivity(), state.music.convertToSong())
-                }
-
-                is FavoriteState.PlaySongList -> {
-                    MPService.playSongList(
-                        requireActivity(),
-                        state.playlist.map { it.convertToSong() })
                 }
 
                 is FavoriteState.ShowMusicOptions -> {
@@ -133,7 +123,7 @@ class FavoriteFragment : BaseMvvmFragment() {
             SongListAdapter(object : SongListListener {
 
                 override fun onPressed(music: SongUIModel) {
-                    viewModel.playMusic(music)
+                    viewModel.playMusic(requireContext(), music)
                 }
 
                 override fun onLongPressed(music: SongUIModel) {

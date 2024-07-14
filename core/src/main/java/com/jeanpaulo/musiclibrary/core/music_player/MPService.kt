@@ -60,7 +60,7 @@ class MPService : Service() {
 
             receivingCommand(command, playlist)
         }
-        return super.onStartCommand(intent, flags, startId)
+        return START_NOT_STICKY
     }
 
     private fun extractPlaylistArgs(extras: Bundle) =
@@ -90,9 +90,7 @@ class MPService : Service() {
             }
 
             MPCommands.ADD_SONG -> {
-                playlist.songs.map {
-                    currentPlaylist.add(it)
-                }
+                currentPlaylist.songs.addAll(playlist.songs)
                 broadcastCommand(command)
             }
 
