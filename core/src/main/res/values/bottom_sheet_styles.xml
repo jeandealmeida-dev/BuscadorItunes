@@ -10,7 +10,7 @@
     </style>
 
     <style name="AppMiniPlayer">
-        <item name="android:theme">?attr/bottomSheetTheme</item>
+        <item name="android:theme">@style/AppTheme.BottomSheet</item>
 <!--        <item name="backgroundTint">?attr/backgroundColor</item>-->
         <item name="layout_behavior">@string/bottom_sheet_behavior</item>
         <item name="cardCornerRadius">@dimen/radius_xl</item>

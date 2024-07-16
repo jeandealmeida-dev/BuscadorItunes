@@ -8,11 +8,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.jeanpaulo.musiclibrary.commons.extensions.ui.getThemeStyle
 import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
 import com.jeanpaulo.musiclibrary.commons.R
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.gone
 import com.jeanpaulo.musiclibrary.core.databinding.OptionsBottomSheetBinding
-import com.jeanpaulo.musiclibrary.core.music_player.model.MPSong
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.squareup.picasso.Picasso
 
@@ -25,8 +24,7 @@ class SongOptionsBottomSheet(
     private lateinit var binding: OptionsBottomSheetBinding
     private var bottomSheetPeekHeight = 0
 
-    override fun getTheme(): Int =
-        requireContext().getThemeStyle(R.attr.bottomSheetTheme)
+    override fun getTheme(): Int = com.jeanpaulo.musiclibrary.core.R.style.AppTheme_BottomSheet
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +35,7 @@ class SongOptionsBottomSheet(
         binding.bottomSheet.setBackgroundResource(R.drawable.bottom_sheet_background)
         // 86dp
         bottomSheetPeekHeight = resources
-            .getDimensionPixelSize(com.jeanpaulo.musiclibrary.core.R.dimen.bottom_sheet_default_peek_height);
+            .getDimensionPixelSize(com.jeanpaulo.musiclibrary.core.R.dimen.bottom_sheet_default_peek_height)
 
         setupWidgets()
         return binding.root
@@ -61,6 +59,12 @@ class SongOptionsBottomSheet(
             musicName.text = song.musicName
             artistName.text = song.artistName
             Picasso.with(requireContext()).load(song.artworkUrl).into(artwork)
+
+            actionButton.gone()
+        }
+
+        binding.content.favoriteButton.setOnClickListener {
+            listener.onOptionSelected(SongOption.ADD_FAVORITE)
         }
 
         val listAdapter = SongOptionsAdapter(options) {
