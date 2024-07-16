@@ -3,7 +3,6 @@ package com.jeanpaulo.musiclibrary.settings.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -24,7 +23,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     fun setupSettings() {
         findPreference<ListPreference>(getString(R.string.preference_theme_key))
             ?.setOnPreferenceChangeListener { _, newValue ->
-                applyTheme(newValue as String?)
+                applyTheme(resources, newValue as String?)
                 true
             }
 
@@ -49,19 +48,5 @@ class SettingsFragment : PreferenceFragmentCompat() {
             Intent(Intent.ACTION_VIEW).apply {
                 data = Uri.parse("mailto:?subject=$subject&to=$mailTo")
             })
-    }
-
-    private fun applyTheme(theme: String?) {
-        when (theme) {
-            getString(R.string.preference_theme_value_light) -> AppCompatDelegate.setDefaultNightMode(
-                AppCompatDelegate.MODE_NIGHT_NO
-            )
-
-            getString(R.string.preference_theme_value_dark) -> AppCompatDelegate.setDefaultNightMode(
-                AppCompatDelegate.MODE_NIGHT_YES
-            )
-
-            else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-        }
     }
 }
