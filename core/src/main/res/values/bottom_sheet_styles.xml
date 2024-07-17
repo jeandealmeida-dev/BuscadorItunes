@@ -32,8 +32,8 @@
     <!-- DRAG HANDLER -->
     <style name="AppBottomSheetDragHandle">
         <item name="android:paddingTop">10dp</item>
-        <item name="android:layout_marginBottom">-5dp</item>
-        <item name="tint">?colorAccent</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="tint">?colorPrimary</item>
         <item name="srcCompat">@drawable/m3_bottom_sheet_drag_handle</item>
     </style>
 

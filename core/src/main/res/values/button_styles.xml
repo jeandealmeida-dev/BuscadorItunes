@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="AppPlayButton">
         <item name="android:src">@drawable/play_button_selector</item>
-        <item name="tint">?android:attr/colorForeground</item>
+        <item name="tint">?attr/colorPrimaryDark</item>
         <item name="android:background">@drawable/play_button_background</item>
         <item name="android:padding">@dimen/margin_sm_mid</item>
     </style>
 
-    <style name="AppPlayButton_FullPlayer">
-        <item name="android:src">@drawable/play_button_selector</item>
-        <item name="tint">?attr/colorAccent</item>
-        <item name="android:background">@drawable/play_button_background</item>
-        <item name="android:padding">@dimen/margin_sm_mid</item>
+    <style name="AppPlayButton.FAB" parent="AppPlayButton">
+        <item name="android:src">@null</item>
+        <item name="srcCompat">@drawable/ic_play</item>
+        <item name="fabSize">normal</item>
     </style>
 </resources>
