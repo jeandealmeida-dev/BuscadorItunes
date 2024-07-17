@@ -30,7 +30,7 @@ class MiniPlayerBottomSheet(
             addBottomSheetCallback(object :
                 BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                         MPService.stop(context)
                     }
                 }
