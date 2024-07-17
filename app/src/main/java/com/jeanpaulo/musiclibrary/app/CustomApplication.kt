@@ -9,6 +9,8 @@ import dagger.Component
 import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
+import com.jeanpaulo.musiclibrary.settings.ui.applyTheme
+import com.jeanpaulo.musiclibrary.settings.ui.getPreferenceTheme
 
 @Component(modules = [AndroidInjectionModule::class])
 interface ApplicationComponent : AndroidInjector<CustomApplication>
@@ -22,9 +24,9 @@ class CustomApplication : DaggerApplication() {
             .builder()
             .application(this)
             .build()
-
-        appComponent.inject(this)
-
+            .apply {
+                inject(this@CustomApplication)
+            }
         return appComponent
     }
 
@@ -32,10 +34,12 @@ class CustomApplication : DaggerApplication() {
         super.onCreate()
 
         Stetho.initializeWithDefaults(this)
-        //DEBUG CODE
-        //if (BuildConfig.DEBUG) {
-            //Timber.plant(Timber.DebugTree());
-        //}
+        loadPreferenceTheme()
+    }
+
+    private fun loadPreferenceTheme() {
+        val themePreference = getPreferenceTheme(resources)
+        applyTheme(resources, themePreference)
     }
 
     override fun attachBaseContext(base: Context?) {

@@ -145,7 +145,6 @@ object ProjectDependencies {
     fun Picasso() = "com.squareup.picasso:picasso:2.5.2"
     fun SLF4J() = "org.slf4j:slf4j-api:2.0.5"
     fun Logback() = "com.github.tony19:logback-android:2.0.0"
-    fun Timber() = "com.jakewharton.timber:timber:5.0.1"
     fun Stetho() = "com.facebook.stetho:stetho:1.6.0"
     fun JUnit() = "junit:junit:4.13.2"
 }
