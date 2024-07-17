@@ -14,7 +14,7 @@ class MyMediaPlayerCounter(
     private var isRunningPlayer = false
 
     fun start() {
-        Log.d("MyMediaPlayerCounter", "Start")
+        Log.d(TAG, "Start")
         count = 0L
 
         if (handler.hasCallbacks(this)) {
@@ -27,7 +27,7 @@ class MyMediaPlayerCounter(
     }
 
     fun play() {
-        Log.d("MyMediaPlayerCounter", "Play -> count = ${count}s")
+        Log.d(TAG, "Play -> count = ${count}s")
 
         if (!isRunningPlayer) {
             start()
@@ -36,12 +36,12 @@ class MyMediaPlayerCounter(
     }
 
     fun pause() {
-        Log.d("MyMediaPlayerCounter", "Pause")
+        Log.d(TAG, "Pause")
         isUpdating = false
     }
 
     fun stop() {
-        Log.d("MyMediaPlayerCounter", "Stop")
+        Log.d(TAG, "Stop")
         count = 0L
         isUpdating = false
         isRunningPlayer = false
@@ -59,6 +59,7 @@ class MyMediaPlayerCounter(
     }
 
     companion object {
+        const val TAG = "MyMediaPlayerCounter"
         const val ONE_SECOND = 1000L
     }
 }
