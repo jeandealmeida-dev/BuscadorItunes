@@ -31,6 +31,8 @@
         android:layout_alignBottom="@+id/item_music"
         android:layout_alignParentRight="true"
         android:background="@null"
+        android:layout_marginRight="@dimen/margin_md"
+        android:buttonTint="?colorAccent"
         android:button="@drawable/favorite_button_selector" />
 
     <View
@@ -38,14 +40,15 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/item_music"
-        android:backgroundTint="?colorAccent" />
+        android:background="?colorPrimary" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/separator"
-        android:padding="@dimen/margin_md"
+        android:paddingTop="@dimen/margin_sm"
+        android:paddingHorizontal="@dimen/margin_md"
         tools:itemCount="3"
         tools:listitem="@layout/option_item" />
 

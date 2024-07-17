@@ -80,7 +80,7 @@ class SearchAdapter(
                 }
             }
 
-            binding.moreButton.setOnClickListener {
+            binding.actionButton.setOnClickListener {
                 listener.onOptionsPressed(music)
             }
         }

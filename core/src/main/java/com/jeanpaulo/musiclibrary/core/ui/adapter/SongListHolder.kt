@@ -17,7 +17,7 @@ class SongListHolder(val binding: SongItemBinding) :
             Picasso.with(binding.root.context).load(url).into(binding.artwork)
         }
 
-        binding.moreButton.setOnClickListener { listener.onActionPressed(music) }
+        binding.actionButton.setOnClickListener { listener.onActionPressed(music) }
         setOnClickListener { listener.onPressed(music) }
         setOnLongClickListener {
             listener.onLongPressed(music)
@@ -28,6 +28,6 @@ class SongListHolder(val binding: SongItemBinding) :
     fun onViewRecycled() {
         binding.root.setOnClickListener(null)
         binding.root.setOnLongClickListener(null)
-        binding.moreButton.setOnClickListener(null)
+        binding.actionButton.setOnClickListener(null)
     }
 }

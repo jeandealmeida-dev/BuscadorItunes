@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <ImageButton
-        android:id="@+id/more_button"
+        android:id="@+id/action_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/item_music"
@@ -16,13 +16,12 @@
         android:buttonTint="?colorAccent"
         android:src="@drawable/ic_more_vert" />
 
-
     <RelativeLayout
         android:id="@+id/item_music"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/more_button"
+        android:layout_toStartOf="@+id/action_button"
         android:padding="@dimen/margin_md">
 
         <ImageView
