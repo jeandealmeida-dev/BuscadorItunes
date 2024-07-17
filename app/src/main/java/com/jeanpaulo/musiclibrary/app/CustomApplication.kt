@@ -24,8 +24,8 @@ class CustomApplication : DaggerApplication() {
             .builder()
             .application(this)
             .build()
-            .also {
-                it.inject(this)
+            .apply {
+                inject(this@CustomApplication)
             }
         return appComponent
     }
@@ -34,12 +34,7 @@ class CustomApplication : DaggerApplication() {
         super.onCreate()
 
         Stetho.initializeWithDefaults(this)
-
         loadPreferenceTheme()
-        //DEBUG CODE
-        //if (BuildConfig.DEBUG) {
-        //Timber.plant(Timber.DebugTree());
-        //}
     }
 
     private fun loadPreferenceTheme() {

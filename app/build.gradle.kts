@@ -72,7 +72,6 @@ dependencies {
     // Others
     implementation(ProjectDependencies.SLF4J())
     implementation(ProjectDependencies.Logback())
-    implementation(ProjectDependencies.Timber())
     implementation(ProjectDependencies.Stetho())
 
     // Picasso
