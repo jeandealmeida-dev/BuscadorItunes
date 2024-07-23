@@ -26,7 +26,7 @@ class ModulePlugin : Plugin<Project> {
     override fun apply(project: Project) {
         // Apply Required Plugins.
         project.plugins.apply("kotlin-android")
-        project.plugins.apply( "kotlin-kapt")
+        project.plugins.apply("kotlin-kapt")
 
         // Configure common android build parameters.
         val androidExtension = project.extensions.findByName("android") as? BaseExtension
@@ -35,7 +35,7 @@ class ModulePlugin : Plugin<Project> {
 
                 compileSdkVersion(Config.compileSdkVersion)
 
-                // TODO trick to set namespace using project.group
+                // trick to set namespace using project.group
                 namespace = Config.namespace + project.path.replace(":", ".")
 
                 buildFeatures.apply {
@@ -45,8 +45,6 @@ class ModulePlugin : Plugin<Project> {
                 buildToolsVersion(Config.buildToolsVersion)
 
                 defaultConfig {
-                    //applicationId = Config.applicationId
-
                     minSdkVersion(Config.minSdkVersion)
                     targetSdkVersion(Config.targetSdkVersion)
 
