@@ -29,7 +29,10 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Run unit tests and generate Jacoco report
+      - name: Run unit tests
+        run: ./gradlew test
+
+      - name: Generate Jacoco report
         run: ./gradlew jacocoTestReport
 
       - name: Check Jacoco reports
