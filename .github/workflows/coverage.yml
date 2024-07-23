@@ -32,10 +32,16 @@ jobs:
       - name: Run unit tests and generate Jacoco report
         run: ./gradlew jacocoTestReport
 
-      - name: Find Jacoco reports
+      - name: Check Jacoco reports
         run: |
-          echo "Finding all jacocoTestReport.xml files..."
-          find . -name "jacocoTestReport.xml"
+          for file in $(find . -name "jacocoTestReport.xml"); do
+            echo "Checking $file"
+            if [ -s "$file" ]; then
+              echo "$file has content"
+            else
+              echo "$file is empty"
+            fi
+          done
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4.0.1
