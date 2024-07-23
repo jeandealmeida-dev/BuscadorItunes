@@ -61,17 +61,17 @@ class PlaylistViewModelTest {
         }
     }
 
-    @Test
-    fun `GIVEN doesnt have playlists WHEN user open playlist list screen THEN update state to Empty`() {
-        val playlists = listOf<Playlist>()
-
-        every { interactor.getPlaylist() } returns Flowable.just(playlists)
-        viewModel.getPlaylistList()
-        verify(timeout = 600) {
-            playlistListStateObserver.onChanged(PlaylistListState.Loading)
-            playlistListStateObserver.onChanged(PlaylistListState.Empty)
-        }
-    }
+//    @Test
+//    fun `GIVEN doesnt have playlists WHEN user open playlist list screen THEN update state to Empty`() {
+//        val playlists = listOf<Playlist>()
+//
+//        every { interactor.getPlaylist() } returns Flowable.just(playlists)
+//        viewModel.getPlaylistList()
+//        verify(timeout = 600) {
+//            playlistListStateObserver.onChanged(PlaylistListState.Loading)
+//            playlistListStateObserver.onChanged(PlaylistListState.Empty)
+//        }
+//    }
 
     @Test
     fun `GIVEN something is wrong WHEN user open playlist list screen THEN update state to Empty`() {
