@@ -36,11 +36,7 @@ jobs:
         run: |
           for file in $(find . -name "jacocoTestReport.xml"); do
             echo "Checking $file"
-            if [ -s "$file" ]; then
-              echo "$file has content"
-            else
-              echo "$file is empty"
-            fi
+            cat "$file"
           done
 
       - name: Upload coverage to Codecov
