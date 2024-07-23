@@ -32,6 +32,12 @@ jobs:
       - name: Run unit tests and generate Jacoco report
         run: ./gradlew jacocoTestReport
 
+      - name: Verify Jacoco report
+        run: |
+           echo "Checking if Jacoco report exists..."
+           ls -l build/reports/jacoco
+           cat build/reports/jacoco/jacocoTestReport.xml
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4.0.1
         with:
