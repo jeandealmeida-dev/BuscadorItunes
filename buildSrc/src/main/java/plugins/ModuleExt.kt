@@ -11,7 +11,9 @@ open class MyModuleExtension {
 open class JacocoOptions {
     open var isEnabled: Boolean = true
 
-    open var excludes: ArrayList<String> = arrayListOf()
+    open var excludes: ArrayList<String> = arrayListOf(
+        "**/di/**"
+    )
     open fun excludes(vararg excludes: String) {
         this.excludes.addAll(excludes)
     }

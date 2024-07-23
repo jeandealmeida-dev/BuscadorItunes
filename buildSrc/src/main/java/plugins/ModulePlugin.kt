@@ -18,8 +18,10 @@ import org.gradle.kotlin.dsl.register
 import org.gradle.language.nativeplatform.internal.BuildType
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import org.gradle.testing.jacoco.tasks.JacocoReport
+import org.gradle.testing.jacoco.tasks.JacocoReportsContainer
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import testImplementation
+import java.util.Locale
 
 class ModulePlugin : Plugin<Project> {
 
@@ -63,10 +65,12 @@ class ModulePlugin : Plugin<Project> {
                         is LibraryExtension -> defaultConfig {
                             consumerProguardFiles(defaultProguardFilePath)
                         }
+
                         is AppExtension -> buildTypes {
                             getByName(BuildType.DEBUG.name) {
                                 isDebuggable = true
                                 isMinifyEnabled = false
+                                enableUnitTestCoverage = true
                             }
 
                             getByName(BuildType.RELEASE.name) {
@@ -96,11 +100,8 @@ class ModulePlugin : Plugin<Project> {
             }
         }
 
-
-        // Adds required dependencies for all modules.
         project.dependencies {
-            add(testImplementation, ProjectDependencies.JUnit())
-            // Compose
+            // Adds shared required dependencies for all modules.     
         }
 
         // Config Jacoco for each module
@@ -120,6 +121,7 @@ class ModulePlugin : Plugin<Project> {
                                     configureJacoco(project, libraryVariants, jacocoOptions)
                                 }
                             }
+
                             is AppPlugin -> {
                                 project.extensions.getByType(AppExtension::class.java).run {
                                     configureJacoco(project, applicationVariants, jacocoOptions)
@@ -138,24 +140,63 @@ class ModulePlugin : Plugin<Project> {
         options: JacocoOptions
     ) {
         variants.all {
-            val variantName = name
             val isDebuggable = this.buildType.isDebuggable
             if (!isDebuggable) {
                 project.logger.info("Skipping Jacoco for $name because it is not debuggable.")
                 return@all
             }
 
-            project.tasks.register<JacocoReport>("jacoco${variantName.capitalize()}Report") {
+            // Extract variant name and capitalize the first letter
+            val variantName = name.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+            }
 
-                val javaClasses = project
-                    .fileTree("${project.buildDir}/intermediates/javac/$variantName") {
+            project.tasks.register<JacocoReport>("jacocoTestReport") {
+                // Depend on unit tests and Android tests tasks
+                //dependsOn(listOf(unitTests, androidTests))
+                val unitTests = "test${variantName}UnitTest"
+                val androidTests = "connected${variantName}AndroidTest"
+
+                dependsOn(listOf(unitTests))
+
+                // Set task grouping and description
+                group = "Reporting"
+                description = "Execute UI and unit tests, generate and combine Jacoco coverage report"
+
+                // report format
+                reports {
+                    csv.required.set(false)
+                    xml.required.set(true)
+                    html.required.set(true)
+                    html.outputLocation.set(project.file("${project.buildDir}/reports/jacocoHtml"))
+                }
+
+                val sourceDir = "${project.projectDir}/src/main/java"
+
+                // Set source directories to the main source directory
+                sourceDirectories.setFrom(sourceDir)
+                additionalSourceDirs.setFrom(sourceDir)
+
+                // Set class directories to compiled Java and Kotlin classes, excluding specified exclusions
+                classDirectories.setFrom(
+                    project.fileTree("${project.buildDir}/intermediates/javac/$variantName") {
+                        setExcludes(options.excludes)
+                    },
+                    project.fileTree("${project.buildDir}/tmp/kotlin-classes/$variantName") {
                         setExcludes(options.excludes)
                     }
+                )
 
-                val kotlinClasses = project
-                    .fileTree("${project.buildDir}/tmp/kotlin-classes/$variantName") {
-                        setExcludes(options.excludes)
+                // Using the default Jacoco exec file output path.
+                val execFile = "jacoco/test${variantName}UnitTest.exec"
+                executionData.setFrom(
+                    project.fileTree("${project.buildDir}") {
+                        setIncludes(listOf(execFile))
                     }
+                )
+
+                // Do not run task if there's no execution data.
+                setOnlyIf { executionData.files.any { it.exists() } }
             }
         }
     }

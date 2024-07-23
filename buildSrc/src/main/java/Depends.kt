@@ -142,16 +142,26 @@ object ProjectDependencies {
 
     fun Mockk() = "io.mockk:mockk:1.13.5"
 
+    object Mockk {
+        val version = "1.13.5"
+        fun core() = "io.mockk:mockk:${version}"
+        fun android() = "io.mockk:mockk-android:${version}"
+    }
+
     fun Picasso() = "com.squareup.picasso:picasso:2.5.2"
-    fun SLF4J() = "org.slf4j:slf4j-api:2.0.5"
-    fun Logback() = "com.github.tony19:logback-android:2.0.0"
     fun Stetho() = "com.facebook.stetho:stetho:1.6.0"
     fun JUnit() = "junit:junit:4.13.2"
+
+    object Jacoco {
+        fun core() = "org.jacoco:org.jacoco.core:0.8.4"
+        fun agent() = "org.jacoco:org.jacoco.agent:0.8.7"
+    }
 }
 
 val implementation = "implementation"
 val kapt = "kapt"
 val testImplementation = "testImplementation"
+val androidTestImplementation = "androidTestImplementation"
 
 fun Project.addDaggerDependencies() {
     dependencies {
@@ -195,5 +205,23 @@ fun Project.addMoshiDependencies(){
         add(implementation, ProjectDependencies.Moshi.Kotlin())
         add(kapt, ProjectDependencies.Moshi.Codegen())
         add(implementation, ProjectDependencies.Moshi.Adapters())
+    }
+}
+
+fun Project.addUnitTestDependencies(){
+    dependencies {
+        add(implementation,ProjectDependencies.Jacoco.core())
+        add(testImplementation,ProjectDependencies.Jacoco.agent())
+        add(testImplementation, ProjectDependencies.JUnit())
+        add(testImplementation, ProjectDependencies.Mockk.core())
+    }
+}
+
+fun Project.addAndroidTestDependencies(){
+    dependencies {
+        add(androidTestImplementation, ProjectDependencies.Mockk.android())
+        add(androidTestImplementation, ProjectDependencies.AndroidX.JUnit())
+        add(androidTestImplementation, ProjectDependencies.AndroidX.Espresso())
+
     }
 }
