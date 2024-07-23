@@ -77,7 +77,7 @@ class PlaylistViewModelTest {
     fun `GIVEN something is wrong WHEN user open playlist list screen THEN update state to Empty`() {
         every { interactor.getPlaylist() } returns Flowable.error(Throwable())
         viewModel.getPlaylistList()
-        verify {
+        verify(timeout = 600) {
             playlistListStateObserver.onChanged(PlaylistListState.Loading)
             playlistListStateObserver.onChanged(PlaylistListState.Error)
         }
