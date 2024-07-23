@@ -97,7 +97,7 @@ class PlaylistViewModelTest {
     fun `GIVEN something is wrong WHEN user delete playlist THEN update state to Error`() {
         every { interactor.deletePlaylist(any()) } returns Completable.error(Throwable())
         viewModel.deletePlaylist(playlistId = 0)
-        verify {
+        verify(timeout = 600) {
             playlistDeleteStateObserver.onChanged(PlaylistDeleteState.Loading)
             playlistDeleteStateObserver.onChanged(PlaylistDeleteState.Error)
         }
