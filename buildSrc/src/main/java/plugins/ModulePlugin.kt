@@ -71,7 +71,6 @@ class ModulePlugin : Plugin<Project> {
                                 isDebuggable = true
                                 isMinifyEnabled = false
                                 enableUnitTestCoverage = true
-                                isTestCoverageEnabled = true
                             }
 
                             getByName(BuildType.RELEASE.name) {
