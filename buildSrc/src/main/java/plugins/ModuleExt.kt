@@ -8,13 +8,25 @@ open class MyModuleExtension {
         action.execute(jacoco)
     }
 }
+
 open class JacocoOptions {
     open var isEnabled: Boolean = true
 
     open var excludes: ArrayList<String> = arrayListOf(
         "**/di/**"
     )
-    open fun excludes(vararg excludes: String) {
+
+    private fun excludes(vararg excludes: String) {
         this.excludes.addAll(excludes)
+    }
+
+    open fun excludesUI() {
+        excludes(
+            "**/*Holder.class",
+            "**/*Activity.class",
+            "**/*Fragment.class",
+            "**/*Adapter.class",
+            "**/*BottomSheet.class",
+        )
     }
 }

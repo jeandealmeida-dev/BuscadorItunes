@@ -4,6 +4,12 @@ plugins {
     id(ProjectPlugins.NavigationSafeArgs)
 }
 
+myOptions {
+    jacoco {
+        excludesUI()
+    }
+}
+
 addDaggerDependencies()
 addRxJavaDependencies()
 

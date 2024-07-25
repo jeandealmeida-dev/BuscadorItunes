@@ -3,6 +3,12 @@ plugins {
     id(ProjectPlugins.MyPlugin)
 }
 
+myOptions {
+    jacoco {
+        isEnabled = false
+    }
+}
+
 addDaggerDependencies()
 addRxJavaDependencies()
 
