@@ -13,7 +13,8 @@ open class JacocoOptions {
     open var isEnabled: Boolean = true
 
     open var excludes: ArrayList<String> = arrayListOf(
-        "**/di/**"
+        "**/di/**",
+        "**/*Ext*"
     )
 
     private fun excludes(vararg excludes: String) {
@@ -22,11 +23,14 @@ open class JacocoOptions {
 
     open fun excludesUI() {
         excludes(
-            "**/*Holder.class",
-            "**/*Activity.class",
-            "**/*Fragment.class",
-            "**/*Adapter.class",
-            "**/*BottomSheet.class",
+            "**/*Holder*",
+            "**/*Activity*",
+            "**/*Binding*",
+            "**/*Fragment*",
+            "**/*Adapter*",
+            "**/*MenuProvider*",
+            "**/*BuildConfig*",
+            "**/*BottomSheet*",
         )
     }
 }
