@@ -3,11 +3,11 @@ package com.jeanpaulo.musiclibrary.favorite.ui
 import android.content.Context
 import androidx.lifecycle.*
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
+import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.core.music_player.MPService
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
 import io.reactivex.rxjava3.core.Scheduler
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -16,6 +16,8 @@ sealed class FavoriteState {
     data class ShowMusicOptions(val music: SongUIModel) : FavoriteState()
     data class Removed(val music: SongUIModel) : FavoriteState()
     data class Loaded(val musicList: List<SongUIModel>) : FavoriteState()
+    data object Empty : FavoriteState()
+    data object Error : FavoriteState()
 }
 
 class FavoriteViewModel @Inject constructor(
@@ -44,11 +46,21 @@ class FavoriteViewModel @Inject constructor(
                 .doOnSubscribe {
                     _favoriteState.postValue(FavoriteState.Loading)
                 }
-                .delay(500, TimeUnit.MILLISECONDS)
+                //.delay(500, TimeUnit.MILLISECONDS)
                 .subscribe({ favorites ->
-                    val musicFiltered = favorites.map { SongUIModel.fromModel(it.music) }
+                    if(favorites.isEmpty()){
+                        _favoriteState.postValue(FavoriteState.Empty)
+                        return@subscribe
+                    }
+
+                    val musicFiltered = favorites.map {
+                        it.music?.let { music ->
+                            SongUIModel.fromModel(music)
+                        } ?: SongUIModel.fromModel(Music(musicId = it.musicId, trackName = ""))
+                    }
                     _favoriteState.postValue(FavoriteState.Loaded(musicFiltered))
                 }, {
+                    _favoriteState.postValue(FavoriteState.Error)
                     it.printStackTrace()
                 })
         )

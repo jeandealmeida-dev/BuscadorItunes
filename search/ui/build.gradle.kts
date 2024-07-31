@@ -13,6 +13,8 @@ myOptions {
 addDaggerDependencies()
 addRxJavaDependencies()
 
+addUnitTestDependencies()
+
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))
@@ -25,9 +27,6 @@ dependencies {
     implementation(ProjectDependencies.AndroidX.core())
     implementation(ProjectDependencies.AndroidX.AppCompat())
     implementation(ProjectDependencies.Android.MaterialComponents())
-    testImplementation(ProjectDependencies.JUnit())
-    androidTestImplementation(ProjectDependencies.AndroidX.JUnit())
-    androidTestImplementation(ProjectDependencies.AndroidX.Espresso())
 
     // AndroidX
     implementation(ProjectDependencies.AndroidX.CardView())
@@ -38,4 +37,8 @@ dependencies {
 
     // Pagging
     implementation(ProjectDependencies.AndroidX.Paging())
+    implementation(ProjectDependencies.AndroidX.PagingRxJava())
+
+    // UI Test
+    testImplementation(ProjectDependencies.AndroidX.ArchCoreTesting())
 }

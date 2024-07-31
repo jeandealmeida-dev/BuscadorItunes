@@ -116,6 +116,7 @@ object ProjectDependencies {
         fun JUnit() = "androidx.test.ext:junit:1.1.4"
         fun Espresso() = "androidx.test.espresso:espresso-core:3.5.0"
         fun Paging() = "androidx.paging:paging-runtime:3.1.1"
+        fun PagingRxJava() = "androidx.paging:paging-rxjava3:3.1.1"
         fun Fragment() = "androidx.fragment:fragment-ktx:1.5.5"
         fun CardView() = "androidx.cardview:cardview:1.0.0"
         fun RecyclerView() = "androidx.recyclerview:recyclerview:1.2.1"

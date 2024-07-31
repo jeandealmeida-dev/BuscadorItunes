@@ -13,6 +13,8 @@ myOptions {
 addDaggerDependencies()
 addRxJavaDependencies()
 
+addUnitTestDependencies()
+
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))
@@ -24,4 +26,7 @@ dependencies {
 
     // Android X
     implementation(ProjectDependencies.AndroidX.Preference())
+
+    // UI Test
+    testImplementation(ProjectDependencies.AndroidX.ArchCoreTesting())
 }

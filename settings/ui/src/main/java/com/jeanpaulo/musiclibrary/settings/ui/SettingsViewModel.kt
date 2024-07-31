@@ -12,6 +12,11 @@ class SettingsViewModel @Inject constructor(
     private val playlistInteractor: PlaylistInteractor,
 ) : BaseViewModel() {
     fun clearDatabase() {
-        playlistInteractor.deleteAllPlaylists()
+        compositeDisposable.add(
+            playlistInteractor.deleteAllPlaylists()
+                .subscribeOn(ioScheduler)
+                .observeOn(mainScheduler)
+                .subscribe()
+        )
     }
 }

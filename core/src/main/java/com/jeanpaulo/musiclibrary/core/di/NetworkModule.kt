@@ -1,5 +1,6 @@
 package com.jeanpaulo.musiclibrary.core.di
 
+import com.jeanpaulo.musiclibrary.core.BuildConfig
 import com.jeanpaulo.musiclibrary.core.repository.remote.ItunesService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
@@ -18,13 +19,9 @@ import javax.inject.Singleton
 @Module
 abstract class NetworkModule {
 
-    @Module
     companion object {
 
-        const val BASE_URL = "https://itunes.apple.com"
-
         @Singleton
-        @JvmStatic
         @Provides
         fun provideMoshi(): Moshi = Moshi.Builder()
             .add(Date::class.java, Rfc3339DateJsonAdapter())
@@ -32,10 +29,9 @@ abstract class NetworkModule {
             .build()
 
         @Singleton
-        @JvmStatic
         @Provides
         fun provideRetrofit(moshi: Moshi): Retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.API_BASE_URL)
             .addConverterFactory(nullOnEmptyConverterFactory)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
@@ -56,7 +52,6 @@ abstract class NetworkModule {
             }
         }
 
-        @JvmStatic
         @Provides
         fun provideService(retrofit: Retrofit): ItunesService = retrofit.create(
             ItunesService::class.java
