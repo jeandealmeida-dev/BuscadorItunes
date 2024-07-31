@@ -13,6 +13,9 @@ myOptions {
 addDaggerDependencies()
 addRxJavaDependencies()
 
+//Tests
+addUnitTestDependencies()
+
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))
@@ -30,4 +33,7 @@ dependencies {
 
     implementation(ProjectDependencies.AndroidX.Navigation.Fragment())
     implementation(ProjectDependencies.AndroidX.Navigation.UI())
+
+    // UI Test
+    testImplementation(ProjectDependencies.AndroidX.ArchCoreTesting())
 }

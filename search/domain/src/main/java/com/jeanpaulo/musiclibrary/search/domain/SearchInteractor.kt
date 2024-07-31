@@ -4,33 +4,35 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.search.data.SearchRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.update
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import javax.inject.Inject
 
 interface SearchInteractor {
-    fun getSearchResults(query: String): Flow<PagingData<Music>>
+    fun getSearchResults(query: String): Flowable<PagingData<Music>>
     fun getSearchMusic(musicId: Long): Music?
 }
 
 class SearchInteractorImpl @Inject constructor(
-    val repository: SearchRepository
+    private val repository: SearchRepository
 ) : SearchInteractor {
 
-    private val _musicList = MutableStateFlow<List<Music>>(emptyList())
+    private val _musicList = BehaviorSubject.createDefault<List<Music>>(emptyList())
 
-    override fun getSearchResults(query: String): Flow<PagingData<Music>> =
+
+    override fun getSearchResults(query: String): Flowable<PagingData<Music>> =
         repository.getSearchResults(query)
             .map { pagingData ->
                 pagingData.map { music ->
-                    _musicList.update { current ->
-                        current + music
-                    }
+                    updateMusicList(_musicList.value?.plus(music) ?: listOf(music))
                     music
                 }
             }
 
-    override fun getSearchMusic(musicId: Long): Music? = _musicList.value.find { it.musicId == musicId }
+    override fun getSearchMusic(musicId: Long): Music? =
+        _musicList.value?.find { it.musicId == musicId }
+
+    fun updateMusicList(musicList: List<Music>) {
+        _musicList.onNext(musicList)
+    }
 }
