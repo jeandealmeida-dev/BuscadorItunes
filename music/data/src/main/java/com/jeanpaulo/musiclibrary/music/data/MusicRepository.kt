@@ -20,10 +20,10 @@ interface MusicRepository {
 }
 
 class MusicRepositoryImpl @Inject constructor(
-    val itunesService: ItunesService,
-    val musicDao: MusicDao,
-    val artistDao: ArtistDao,
-    val collectionDao: CollectionDao,
+    private val itunesService: ItunesService,
+    private val musicDao: MusicDao,
+    private val artistDao: ArtistDao,
+    private val collectionDao: CollectionDao,
 ) : MusicRepository {
 
     override fun lookup(term: Long, mediaType: String): Single<Music> =

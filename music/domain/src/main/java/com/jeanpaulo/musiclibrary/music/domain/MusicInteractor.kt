@@ -1,9 +1,7 @@
 package com.jeanpaulo.musiclibrary.music.domain
 
-import com.jeanpaulo.musiclibrary.commons.exceptions.EmptyResultException
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.core.repository.database.entity.MusicEntity
-import com.jeanpaulo.musiclibrary.core.repository.database.mapper.toEntity
 import com.jeanpaulo.musiclibrary.favorite.data.FavoriteRepository
 import com.jeanpaulo.musiclibrary.music.data.MusicRepository
 import com.jeanpaulo.musiclibrary.music.domain.MusicInteractor.Companion.SONG
@@ -25,25 +23,15 @@ interface MusicInteractor {
 }
 
 class MusicInteractorImpl @Inject constructor(
-    val musicRepository: MusicRepository,
-    val favoriteRepository: FavoriteRepository,
+    private val musicRepository: MusicRepository,
+    private val favoriteRepository: FavoriteRepository,
 ) : MusicInteractor {
 
     override fun getMusic(id: Long): Single<Music> =
         musicRepository.lookup(id, SONG)
 
     override fun findLocal(remoteId: Long): Single<Music> =
-        musicRepository.findLocal(remoteId).onErrorResumeNext {
-            when (it) {
-                is EmptyResultException -> {
-                    Single.error(it)
-                }
-
-                else -> {
-                    Single.error(it)
-                }
-            }
-        }
+        musicRepository.findLocal(remoteId)
 
     override fun saveMusicInFavorite(music: Music): Completable =
         musicRepository.save(MusicEntity.fromModel(music)).concatMapCompletable {
