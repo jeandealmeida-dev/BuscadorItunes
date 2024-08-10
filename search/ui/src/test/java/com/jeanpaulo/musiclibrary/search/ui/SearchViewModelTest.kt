@@ -77,7 +77,6 @@ class SearchViewModelTest {
         }
     }
 
-    @Ignore("test is failing in compare two paging data")
     @Test
     fun `GIVEN a query WHEN search by a term THEN get music list filtered by term`() {
         //GIVEN
@@ -92,8 +91,7 @@ class SearchViewModelTest {
 
         verifyOrder {
             stateObserver.onChanged(SearchState.Loading)
-            //TODO is not working
-            //stateObserver.onChanged(match { equalsState(it, SearchState.Success(pagingDataSong))})
+            stateObserver.onChanged(match { equalsState(it, SearchState.Success(pagingDataSong))})
         }
     }
 }

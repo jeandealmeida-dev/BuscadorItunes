@@ -44,31 +44,4 @@ class PlaylistDetailViewModelTest {
         playlistDetailStateObserver = spyk<Observer<PlaylistDetailState>>(CustomSafeObserver { })
         viewModel.playlistDetailState.observeForever(playlistDetailStateObserver)
     }
-
-    @Test
-    fun `GIVEN user open playlist tab WHEN it has favorites THEN update state to Success with favorite list`() {
-        //TODO Jean fix test
-        /*val music = Music(1, 0L, "", "", Date(), true, 0L, "")
-        val favorites = listOf(Favorite(1).apply { this.music = music })
-
-        every { interactor.getFavoriteMusics() } returns Flowable.just(favorites)
-        viewModel.getFavoriteList()
-        playlistDetailStateObserver.onChanged(PlaylistDetailState.Success(listOf(music)))*/
-    }
-
-    @Test
-    fun `GIVEN user open playlist tab WHEN it has NOT favorites THEN update state to Success but empty`() {
-        //TODO Jean fix test
-        /*every { interactor.getFavoriteMusics() } returns Flowable.error(EmptyResultException())
-        viewModel.getFavoriteList()
-        playlistDetailStateObserver.onChanged(PlaylistDetailState.Success(emptyList()))*/
-    }
-
-    @Test
-    fun `GIVEN user open playlist tab WHEN get error THEN update state to Error`() {
-        //TODO Jean fix test
-        /*every { interactor.getFavoriteMusics() } returns Flowable.error(NotImplementedError())
-        viewModel.getFavoriteList()
-        playlistDetailStateObserver.onChanged(PlaylistDetailState.Error)*/
-    }
 }
