@@ -14,6 +14,7 @@ open class JacocoOptions {
 
     open var excludes: ArrayList<String> = arrayListOf(
         "**/di/**",
+        "**/dao/**",
         "**/*Ext*"
     )
 
@@ -28,9 +29,17 @@ open class JacocoOptions {
             "**/*Binding*",
             "**/*Fragment*",
             "**/*Adapter*",
+            "**/*UIModel*",
             "**/*MenuProvider*",
             "**/*BuildConfig*",
             "**/*BottomSheet*",
+        )
+    }
+
+    open fun excludeRepository(){
+        excludes(
+            "**/dao/**",
+            "**/entity/**",
         )
     }
 }
