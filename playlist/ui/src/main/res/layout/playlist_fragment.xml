@@ -69,10 +69,12 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
+        style="@style/AppFAButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_margin="32dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginBottom="100dp"
         android:contentDescription="@string/new_playlist_cd"
         android:src="@drawable/ic_add" />
 

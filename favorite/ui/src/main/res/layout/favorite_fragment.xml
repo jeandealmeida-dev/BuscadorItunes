@@ -52,15 +52,13 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/play_all_button"
+        style="@style/AppPlayButton.FAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_md"
-        android:tint="@drawable/play_button_tint"
         android:visibility="visible"
-        app:fabSize="normal"
         app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|right|end"
-        app:srcCompat="@drawable/ic_play" />
+        app:layout_anchorGravity="bottom|right|end" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

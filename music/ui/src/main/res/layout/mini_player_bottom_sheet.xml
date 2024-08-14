@@ -32,6 +32,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:orientation="vertical"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/play_button"
                 android:paddingHorizontal="@dimen/margin_md">
 
                 <TextView

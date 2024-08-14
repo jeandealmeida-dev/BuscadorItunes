@@ -18,6 +18,11 @@ class MyMediaPlayer(val context: Context) {
         onUpdateCounterListener?.invoke(it)
     }
 
+    private val updateVolumeRunnable =
+        MyMediaPlayerFade(Handler(Looper.getMainLooper())) { volume ->
+            mediaPlayer?.setVolume(volume, volume)
+        }
+
     private var currentUrl: String = ""
 
     fun setOnCompletionListener(onCompletionListener: () -> Unit) {
@@ -35,6 +40,7 @@ class MyMediaPlayer(val context: Context) {
                     Log.d(TAG, "[Player] Ready to play")
 
                     player.start()
+                    updateVolumeRunnable.start()
                     updateCounterRunnable.start()
                 }
 
@@ -62,7 +68,7 @@ class MyMediaPlayer(val context: Context) {
     }
 
     fun next(url: String) {
-        changePlayerUrl(url)
+        changeMedia(url)
     }
 
     fun pause() {
@@ -108,14 +114,6 @@ class MyMediaPlayer(val context: Context) {
             it.release()
         }
         mediaPlayer = null
-    }
-
-    private fun changePlayerUrl(url: String) {
-        getMediaPlayer().let {
-            it.reset()
-            it.setDataSource(context, Uri.parse(url))
-            it.prepareAsync()
-        }
     }
 
     companion object {

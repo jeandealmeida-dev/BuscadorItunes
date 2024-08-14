@@ -16,7 +16,6 @@
         android:buttonTint="?colorAccent"
         android:src="@drawable/ic_more_vert" />
 
-
     <RelativeLayout
         android:id="@+id/item_music"
         android:layout_width="wrap_content"
