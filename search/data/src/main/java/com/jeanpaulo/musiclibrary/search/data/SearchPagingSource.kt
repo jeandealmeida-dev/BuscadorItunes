@@ -1,13 +1,11 @@
 package com.jeanpaulo.musiclibrary.search.data
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.jeanpaulo.musiclibrary.core.repository.remote.ItunesService
 import com.jeanpaulo.musiclibrary.core.repository.remote.response.MusicResponse
+import io.reactivex.rxjava3.schedulers.Schedulers
 import java.lang.Exception
-
-private const val SEARCH_STARTING_PAGE_INDEX = 0
 
 class SearchPagingSource(
     private val itunesService: ItunesService,
@@ -20,10 +18,13 @@ class SearchPagingSource(
         return try {
             val listMusic = itunesService.searchMusic(
                 term = query,
-                mediaType = SearchParams.SONG_MEDIA_TYPE,
+                mediaType = SONG_MEDIA_TYPE,
                 offset = position * params.loadSize,
                 limit = params.loadSize
-            ).blockingGet().result
+            )
+                .subscribeOn(Schedulers.io())
+                .blockingGet()
+                .result
 
             LoadResult.Page(
                 data = listMusic,
@@ -37,5 +38,10 @@ class SearchPagingSource(
 
     override fun getRefreshKey(state: PagingState<Int, MusicResponse>): Int? {
         return null
+    }
+
+    companion object {
+        const val SONG_MEDIA_TYPE = "song"
+        const val SEARCH_STARTING_PAGE_INDEX = 0
     }
 }

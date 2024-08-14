@@ -1,0 +1,49 @@
+name: Android Coverage
+
+on:
+  workflow_dispatch:
+  push:
+#    branches: [ main ]
+#  pull_request:
+#    branches: [ main ]
+
+jobs:
+  build:
+#    runs-on: ubuntu-latest
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          api-level: 34
+          build-tools: 34.0.0
+
+      - name: Build with Gradle
+        run: ./gradlew clean build
+
+      - name: Run unit tests e generate Jacoco report
+        run: ./gradlew test jacocoTestReport --warning-mode all
+
+      - name: Check Jacoco reports
+        run: |
+          for file in $(find . -name "jacocoTestReport.xml"); do
+            echo "Checking $file"
+            cat "$file"
+          done
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          files: '**/jacocoTestReport.xml'
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          flags: unittests

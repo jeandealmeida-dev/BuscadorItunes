@@ -3,9 +3,9 @@ package com.jeanpaulo.musiclibrary.playlist.data
 import com.jeanpaulo.musiclibrary.core.repository.database.dao.PlaylistDao
 import com.jeanpaulo.musiclibrary.core.repository.database.dao.JoinPlaylistMusicDao
 import com.jeanpaulo.musiclibrary.core.repository.database.entity.JoinPlaylistMusicEntity
-import com.jeanpaulo.musiclibrary.core.repository.database.mapper.toEntity
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.core.domain.model.Playlist
+import com.jeanpaulo.musiclibrary.core.repository.database.entity.PlaylistEntity
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
@@ -32,7 +32,7 @@ class PlaylistDetailRepositoryImpl @Inject constructor(
 
 
     override fun savePlaylist(playlist: Playlist): Single<Long> =
-        playlistDao.insertPlaylist(playlist.toEntity())
+        playlistDao.insertPlaylist(PlaylistEntity.from(playlist))
 
 
     override fun saveMusicInPlaylist(music: Music, playlistId: Long): Completable =

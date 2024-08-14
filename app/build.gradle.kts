@@ -70,8 +70,6 @@ dependencies {
     implementation(ProjectDependencies.AndroidX.Navigation.UI())
 
     // Others
-    implementation(ProjectDependencies.SLF4J())
-    implementation(ProjectDependencies.Logback())
     implementation(ProjectDependencies.Stetho())
 
     // Picasso

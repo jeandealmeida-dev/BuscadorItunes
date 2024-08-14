@@ -1,0 +1,6 @@
+ext {
+    API_BASE_URL = "https://itunes.apple.com"
+    DEFAULT_DELAY_DEBUG = "600L"
+    DEFAULT_DELAY_RELEASE = "0L"
+    versionName = "1.0"
+}

@@ -54,6 +54,10 @@ class MainActivity : BaseMvvmActivity() {
                 }
             }
         }
+
+        binding.navView.setOnItemReselectedListener { menu ->
+            findNavController(R.id.nav_host_fragment).clearBackStack(menu.itemId)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

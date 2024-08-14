@@ -7,11 +7,11 @@ data class Music(
     val id: Long = 0,
     val musicId: Long,
     val trackName: String,
-    val artworkUrl: String?,
-    val releaseDate: Date?,
-    val streamable: Boolean?,
-    val trackTimeMillis: Long?,
-    val previewUrl: String?
+    val artworkUrl: String? = null,
+    val releaseDate: Date? = null,
+    val streamable: Boolean? = null,
+    val trackTimeMillis: Long? = null,
+    val previewUrl: String? = null
 ) {
     var musicCollection: Collection? = null
     var musicArtist: Artist? = null

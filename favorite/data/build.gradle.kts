@@ -8,6 +8,8 @@ addDaggerDependencies()
 addRetrofitDependencies()
 addRoomDependencies()
 
+addUnitTestDependencies()
+
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))
