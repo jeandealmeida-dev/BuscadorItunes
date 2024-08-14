@@ -12,18 +12,21 @@ class MyMediaPlayerCounter(
     var isUpdating = true
 
     private var isRunningPlayer = false
+    private var isRunnablePosted = false
 
     fun start() {
         Log.d(TAG, "Start")
         count = 0L
 
-        if (handler.hasCallbacks(this)) {
+        if (isRunnablePosted) {
             handler.removeCallbacks(this)
+            isRunnablePosted = false
         }
 
         isRunningPlayer = true
         isUpdating = true
         handler.post(this)
+        isRunnablePosted = true
     }
 
     fun play() {
@@ -47,6 +50,7 @@ class MyMediaPlayerCounter(
         isRunningPlayer = false
 
         handler.removeCallbacks(this)
+        isRunnablePosted = false
     }
 
     override fun run() {
@@ -55,6 +59,9 @@ class MyMediaPlayerCounter(
                 onUpdate(count++)
             }
             handler.postDelayed(this, ONE_SECOND)
+            isRunnablePosted = true
+        } else {
+            isRunnablePosted = false
         }
     }
 

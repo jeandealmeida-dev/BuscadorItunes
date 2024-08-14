@@ -1,6 +1,9 @@
 package com.jeanpaulo.musiclibrary.core.repository.database.entity
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 import com.jeanpaulo.musiclibrary.core.domain.model.Favorite
 
 @Entity(
@@ -29,5 +32,9 @@ class FavoriteEntity(
 
         const val T_ID = "${TABLE}.${ID}"
         const val T_MUSIC_ID = "${TABLE}.${MUSIC_ID}"
+
+        fun fromModel(favorite: Favorite) = FavoriteEntity(
+            musicId = favorite.musicId
+        )
     }
 }

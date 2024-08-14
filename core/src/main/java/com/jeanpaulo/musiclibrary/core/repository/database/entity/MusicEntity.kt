@@ -88,5 +88,4 @@ class MusicEntity(
             collectionId = music.musicCollection?.collectionId ?: 0,
         )
     }
-
 }

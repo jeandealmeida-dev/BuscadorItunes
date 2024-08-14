@@ -2,7 +2,7 @@ package com.jeanpaulo.musiclibrary.search.ui.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.*
-import androidx.paging.cachedIn
+import androidx.paging.PagingData
 import androidx.paging.map
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
 import com.jeanpaulo.musiclibrary.core.music_player.MPService
@@ -16,7 +16,7 @@ import javax.inject.Named
 sealed class SearchState {
     object Loading : SearchState()
     object Error : SearchState()
-    object Success : SearchState()
+    data class Success(val musicList: PagingData<SongUIModel>) : SearchState()
     class Options(val music: SongUIModel) : SearchState()
 }
 
@@ -30,20 +30,31 @@ class SearchViewModel @Inject constructor(
     private val _searchingState = MutableLiveData<SearchState>()
     val searchingState: LiveData<SearchState> get() = _searchingState
 
-    private var currentQuery = MutableLiveData(DEFAULT_QUERY)
-
-    val musicList = currentQuery.switchMap { query ->
-        return@switchMap searchInteractor
-            .getSearchResults(query)
-            .asLiveData()
-            .map { pagged ->
-                pagged.map { SongUIModel.fromModel(it) }
-            }
-            .cachedIn(viewModelScope)
+    fun init() {
+        setCurrentQuery(DEFAULT_QUERY)
     }
 
-    fun setCurrentQuery(it: String) {
-        currentQuery.value = it
+    fun setCurrentQuery(query: String) {
+        compositeDisposable.add(
+            searchInteractor.getSearchResults(query)
+                .subscribeOn(ioScheduler)
+                //.delay(500, TimeUnit.MILLISECONDS)
+                .observeOn(mainScheduler)
+                .doOnSubscribe {
+                    _searchingState.value = SearchState.Loading
+                }
+                .map { paged ->
+                    paged.map { SongUIModel.fromModel(it) }
+                }
+                .subscribe(
+                    { result ->
+                        _searchingState.postValue(SearchState.Success(result))
+                    },
+                    { error ->
+                        _searchingState.postValue(SearchState.Error)
+                    }
+                )
+        )
     }
 
     fun playMusic(context: Context, song: SongUIModel) {

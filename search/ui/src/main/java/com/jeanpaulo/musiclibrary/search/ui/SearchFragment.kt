@@ -30,7 +30,7 @@ class SearchFragment : BaseMvvmFragment() {
     val viewModel by appViewModel<SearchViewModel>()
 
     private var _binding: FragMusicSearchBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = requireNotNull(_binding)
 
     private lateinit var searchAdapter: SearchAdapter
     private lateinit var searchMenuProvider: SearchMenuProvider
@@ -41,6 +41,8 @@ class SearchFragment : BaseMvvmFragment() {
         setupListeners()
         setupWidgets()
         setupMenu()
+
+        viewModel.init()
     }
 
     override fun onCreateView(
@@ -81,13 +83,11 @@ class SearchFragment : BaseMvvmFragment() {
     }
 
     fun setupListeners() {
-        viewModel.musicList.observe(viewLifecycleOwner) { pagingData ->
-            searchAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
-        }
-
         viewModel.searchingState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                SearchState.Success -> {}
+                is SearchState.Success -> {
+                    searchAdapter.submitData(viewLifecycleOwner.lifecycle, state.musicList)
+                }
 
                 is SearchState.Options -> {
                     SongOptionsBottomSheet.newInstance(
@@ -128,7 +128,7 @@ class SearchFragment : BaseMvvmFragment() {
     }
 
     fun setupWidgets() {
-        binding.apply {
+        with(binding) {
             //root.setupSnackbar(this@SearchFragment, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
 
             searchErrorLayout.setOnClickListener { searchAdapter.retry() }

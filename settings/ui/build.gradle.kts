@@ -4,8 +4,16 @@ plugins {
     id(ProjectPlugins.NavigationSafeArgs)
 }
 
+myOptions {
+    jacoco {
+        excludesUI()
+    }
+}
+
 addDaggerDependencies()
 addRxJavaDependencies()
+
+addUnitTestDependencies()
 
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
@@ -18,4 +26,7 @@ dependencies {
 
     // Android X
     implementation(ProjectDependencies.AndroidX.Preference())
+
+    // UI Test
+    testImplementation(ProjectDependencies.AndroidX.ArchCoreTesting())
 }

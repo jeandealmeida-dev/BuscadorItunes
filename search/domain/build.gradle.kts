@@ -7,6 +7,9 @@ plugins {
 addDaggerDependencies()
 addRxJavaDependencies()
 
+//Tests
+addUnitTestDependencies()
+
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))

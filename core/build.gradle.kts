@@ -9,6 +9,9 @@ addRoomDependencies()
 addRetrofitDependencies()
 addMoshiDependencies()
 
+// Tests
+addUnitTestDependencies()
+
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
 
