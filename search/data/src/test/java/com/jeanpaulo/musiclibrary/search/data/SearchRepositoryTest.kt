@@ -17,6 +17,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 
 class SearchRepositoryTest {
@@ -36,7 +37,7 @@ class SearchRepositoryTest {
 //    @Test
 //    fun `GIVEN valid query WHEN getSearchResults is called THEN return PagingData of Music`() =
 //        runTest {
-//            // Arrange
+//            // GIVEN
 //            val pagingData = PagingData.from(musicListResponse)
 //            mockkConstructor(SearchPagingSource::class)
 //            every { anyConstructed<SearchPagingSource>().load(any()) } returns PagingSource.LoadResult.Page(
@@ -49,12 +50,12 @@ class SearchRepositoryTest {
 //                musicResponse
 //            )
 //
-//            // Act
+//            // WHEN
 //            val result = repository.getSearchResults(query)
 //                .subscribeOn(Schedulers.trampoline())
 //                .blockingFirst()
 //
-//            // Assert
+//            // THEN
 //            assert(result is PagingData<MusicResponse>)
 //        }
 //
@@ -81,4 +82,23 @@ class SearchRepositoryTest {
 //            assert(result is PagingData<Music>)
 //            assertEquals(0, (result as PagingData<*>).itemCount)
 //        }
+
+    @Ignore("Its not working")
+    @Test
+    fun `GIVEN a query WHEN getSearchResults is called THEN return expected PagingData`() {
+        // Given
+        val query = "test query"
+        every { service.searchMusic(query, any(), any(), any()) } returns Single.just(musicResponse)
+
+        // When
+        val testObserver = repository.getSearchResults(query)
+            .subscribeOn(Schedulers.trampoline())
+            .test()
+
+        // Then
+        testObserver.assertNoErrors()
+        testObserver.assertValue { pagingDataResult ->
+            pagingDataResult == PagingData.from(musicListResponse)
+        }
+    }
 }

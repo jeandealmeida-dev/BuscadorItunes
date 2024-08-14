@@ -11,6 +11,7 @@ import javax.inject.Inject
 interface SearchInteractor {
     fun getSearchResults(query: String): Flowable<PagingData<Music>>
     fun getSearchMusic(musicId: Long): Music?
+    fun getSearchMusicList(): List<Music>
 }
 
 class SearchInteractorImpl @Inject constructor(
@@ -31,6 +32,8 @@ class SearchInteractorImpl @Inject constructor(
 
     override fun getSearchMusic(musicId: Long): Music? =
         _musicList.value?.find { it.musicId == musicId }
+
+    override fun getSearchMusicList(): List<Music> = _musicList.value ?: emptyList()
 
     fun updateMusicList(musicList: List<Music>) {
         _musicList.onNext(musicList)
