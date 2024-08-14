@@ -3,9 +3,9 @@ name: Android Coverage
 on:
   workflow_dispatch:
   push:
-#    branches: [ main ]
-#  pull_request:
-#    branches: [ main ]
+    branches: [ main ]
+  pull_request:
+    types: [ opened, reopened, ready_for_review ]
 
 jobs:
   build:
