@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/jeandealmeida-dev/BuscadorItunes/graph/badge.svg?token=MEG0SCTPOB)](https://codecov.io/gh/jeandealmeida-dev/BuscadorItunes)
+
 # 30 Vibes
 
 This is an Android Project that implements an Music library. It can look up for a song by the name than if you press an item list it shows the music detail. Also you can reproduce the music`s preview. 
