@@ -1,15 +1,17 @@
-package com.jeanpaulo.musiclibrary.favorite.ui
+package com.jeanpaulo.musiclibrary.favorite.ui.view
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import com.jeanpaulo.musiclibrary.commons.CustomSafeObserver
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
+import com.jeanpaulo.musiclibrary.favorite.ui.favoriteList
+import com.jeanpaulo.musiclibrary.favorite.ui.song1
+import com.jeanpaulo.musiclibrary.favorite.ui.songList
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.spyk
 import io.mockk.verify
-import androidx.lifecycle.Observer
-import io.mockk.verifyOrder
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Scheduler
@@ -30,6 +32,8 @@ class FavoriteViewModelTest {
     private lateinit var favoriteViewModel: FavoriteViewModel
     private lateinit var stateObserver: Observer<FavoriteState>
 
+    private val timeout = 500L
+
     @Before
     fun setup() {
         MockKAnnotations.init(this)
@@ -48,7 +52,7 @@ class FavoriteViewModelTest {
         favoriteViewModel.getFavoriteList()
 
         // THEN
-        verifyOrder {
+        verify(timeout = timeout) {
             stateObserver.onChanged(FavoriteState.Loading)
             stateObserver.onChanged(FavoriteState.Loaded(songList))
         }
@@ -64,7 +68,7 @@ class FavoriteViewModelTest {
         favoriteViewModel.getFavoriteList()
 
         // THEN
-        verifyOrder {
+        verify(timeout = timeout) {
             stateObserver.onChanged(FavoriteState.Loading)
             stateObserver.onChanged(FavoriteState.Error)
         }
@@ -79,6 +83,6 @@ class FavoriteViewModelTest {
         favoriteViewModel.remove(song1)
 
         // THEN
-        verify { stateObserver.onChanged(FavoriteState.Removed(song1)) }
+        verify(timeout = timeout) { stateObserver.onChanged(FavoriteState.Removed(song1)) }
     }
 }

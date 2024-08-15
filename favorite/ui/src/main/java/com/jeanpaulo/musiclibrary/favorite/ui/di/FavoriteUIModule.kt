@@ -5,7 +5,7 @@ import com.jeanpaulo.musiclibrary.commons.di.ViewModelKey
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractorImpl
 import com.jeanpaulo.musiclibrary.favorite.domain.di.FavoriteDomainModule
-import com.jeanpaulo.musiclibrary.favorite.ui.FavoriteViewModel
+import com.jeanpaulo.musiclibrary.favorite.ui.view.FavoriteViewModel
 import com.jeanpaulo.musiclibrary.favorite.ui.view.FavoriteFragment
 import com.jeanpaulo.musiclibrary.favorite.ui.widgets.FavoriteContainerFragment
 import com.jeanpaulo.musiclibrary.favorite.ui.widgets.FavoriteContainerViewModel

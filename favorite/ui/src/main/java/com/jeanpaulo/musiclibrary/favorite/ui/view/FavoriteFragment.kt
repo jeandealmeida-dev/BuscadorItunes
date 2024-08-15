@@ -8,14 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.showTopSnackbar
 import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
-import com.jeanpaulo.musiclibrary.core.music_player.MPService
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.core.ui.adapter.SongListAdapter
 import com.jeanpaulo.musiclibrary.core.ui.adapter.SongListListener
 import com.jeanpaulo.musiclibrary.core.ui.bottomsheet.SongOption
 import com.jeanpaulo.musiclibrary.core.ui.bottomsheet.SongOptionsBottomSheet
-import com.jeanpaulo.musiclibrary.favorite.ui.FavoriteState
-import com.jeanpaulo.musiclibrary.favorite.ui.FavoriteViewModel
 import com.jeanpaulo.musiclibrary.favorite.ui.R
 import com.jeanpaulo.musiclibrary.favorite.ui.databinding.FavoriteFragmentBinding
 

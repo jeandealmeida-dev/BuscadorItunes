@@ -1,4 +1,4 @@
-package com.jeanpaulo.musiclibrary.favorite.ui
+package com.jeanpaulo.musiclibrary.favorite.ui.view
 
 import android.content.Context
 import androidx.lifecycle.*
