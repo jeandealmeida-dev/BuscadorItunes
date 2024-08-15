@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
+import com.jeanpaulo.musiclibrary.commons.view.ViewState
 import com.jeanpaulo.musiclibrary.favorite.ui.R
 import com.jeanpaulo.musiclibrary.favorite.ui.databinding.FavoriteContainerBinding
 
@@ -15,21 +16,25 @@ class FavoriteContainerFragment(
     private val viewModel by appViewModel<FavoriteContainerViewModel>()
 
     private var _binding: FavoriteContainerBinding? = null
-    private val binding: FavoriteContainerBinding get() = _binding!!
+    private val binding: FavoriteContainerBinding get() = requireNotNull(_binding)
+
+    private var skeleton: FavoriteContainerSkeleton? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FavoriteContainerBinding.inflate(inflater, container, false)
-        setupListeners()
-        setupEvent()
-        return binding.root
-    }
+    ): View = FavoriteContainerBinding.inflate(inflater, container, false).also {
+        _binding = it
+    }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setupListeners()
+        setupEvent()
+        setupView()
+
         viewModel.getFavoriteCount()
     }
 
@@ -38,18 +43,24 @@ class FavoriteContainerFragment(
         _binding = null
     }
 
+    private fun setupView() {
+        skeleton = FavoriteContainerSkeleton(binding.root)
+    }
 
-    fun setupListeners() {
+    private fun setupListeners() {
         viewModel.favoriteCountState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is FavoriteCountState.Success -> {
-                    val countString = if(state.total > 1) {
-                        resources.getString(R.string.favorite_musics_count)
-                    } else {
-                        resources.getString(R.string.favorite_music_count)
-                    }
+                is ViewState.Success -> {
+                    skeleton?.hideSkeletons()
+                    binding.txtDescription.text = formatMusicCountText(state.data).format(state.data)
+                }
 
-                    binding.favoriteDescriptionText.text = countString.format(state.total)
+                ViewState.Loading -> {
+                    skeleton?.showSkeletons()
+                }
+
+                ViewState.Error -> {
+                    skeleton?.hideSkeletons()
                 }
 
                 else -> {}
@@ -57,7 +68,13 @@ class FavoriteContainerFragment(
         }
     }
 
-    fun setupEvent() {
+    private fun formatMusicCountText(count: Int) =  if (count > 1) {
+        resources.getString(R.string.favorite_musics_count)
+    } else {
+        resources.getString(R.string.favorite_music_count)
+    }
+
+    private fun setupEvent() {
         binding.root.setOnClickListener {
             onClickEvent()
         }

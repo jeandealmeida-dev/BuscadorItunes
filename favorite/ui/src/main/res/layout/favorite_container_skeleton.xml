@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -12,35 +11,33 @@
         android:id="@+id/icon"
         android:layout_width="@dimen/artwork_size_md"
         android:layout_height="@dimen/artwork_size_md"
+        android:layout_alignParentLeft="true"
         android:scaleType="center"
         android:src="@drawable/ic_star_filled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <LinearLayout
         android:id="@+id/txt_title"
-        style="@style/AppTextStyle.Head"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="20dp"
         android:layout_marginHorizontal="@dimen/margin_md"
+        android:background="@color/color_primary_dark"
         android:text="@string/favorite_title"
         app:layout_constraintBottom_toTopOf="@id/txt_description"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/icon"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <LinearLayout
         android:id="@+id/txt_description"
-        style="@style/AppTextStyle.Caption"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="18dp"
         android:layout_marginTop="5dp"
+        android:background="@color/color_primary_dark"
         app:layout_constraintBaseline_toBottomOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/txt_title"
         app:layout_constraintStart_toStartOf="@+id/txt_title"
-        app:layout_constraintTop_toBottomOf="@+id/txt_title"
-        tools:text="@string/favorite_musics_count" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
