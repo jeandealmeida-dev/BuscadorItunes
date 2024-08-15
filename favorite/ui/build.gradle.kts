@@ -36,4 +36,11 @@ dependencies {
 
     // UI Test
     testImplementation(ProjectDependencies.AndroidX.ArchCoreTesting())
+
+    // Skeleton
+    implementation(ProjectDependencies.Skeleton.core() )
+    implementation(ProjectDependencies.Skeleton.ShimmerLayout())
+
+    // Constraint Layout
+    implementation(ProjectDependencies.AndroidX.ConstraintLayout())
 }
