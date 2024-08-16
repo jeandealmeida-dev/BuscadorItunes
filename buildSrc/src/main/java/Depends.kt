@@ -159,7 +159,7 @@ object ProjectDependencies {
     }
 
     object Skeleton {
-        fun core() = "com.ethanhua:skeleton:1.1.2"
+        fun core() = "com.ethanhua:skeleton:1.1.0"
         fun ShimmerLayout() = "io.supercharge:shimmerlayout:2.1.0"
     }
 }
