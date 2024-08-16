@@ -1,23 +1,24 @@
 package com.jeanpaulo.musiclibrary.favorite.ui.view
 
 import android.content.Context
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
+import com.jeanpaulo.musiclibrary.commons.view.ViewState
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.core.music_player.MPService
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
 import io.reactivex.rxjava3.core.Scheduler
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
 
 sealed class FavoriteState {
-    data object Loading : FavoriteState()
+    data class Wrapper(val viewState: ViewState<List<SongUIModel>>) : FavoriteState()
+
     data class ShowMusicOptions(val music: SongUIModel) : FavoriteState()
     data class Removed(val music: SongUIModel) : FavoriteState()
-    data class Loaded(val musicList: List<SongUIModel>) : FavoriteState()
-    data object Empty : FavoriteState()
-    data object Error : FavoriteState()
 }
 
 class FavoriteViewModel @Inject constructor(
@@ -44,12 +45,14 @@ class FavoriteViewModel @Inject constructor(
                 .subscribeOn(ioScheduler)
                 .observeOn(mainScheduler)
                 .doOnSubscribe {
-                    _favoriteState.postValue(FavoriteState.Loading)
+                    val loading = FavoriteState.Wrapper(ViewState.Loading)
+                    _favoriteState.postValue(loading)
                 }
-                //.delay(500, TimeUnit.MILLISECONDS)
+                .delay(500, TimeUnit.MILLISECONDS)
                 .subscribe({ favorites ->
-                    if(favorites.isEmpty()){
-                        _favoriteState.postValue(FavoriteState.Empty)
+                    if (favorites.isEmpty()) {
+                        val emptyState = FavoriteState.Wrapper(ViewState.Empty)
+                        _favoriteState.postValue(emptyState)
                         return@subscribe
                     }
 
@@ -58,9 +61,12 @@ class FavoriteViewModel @Inject constructor(
                             SongUIModel.fromModel(music)
                         } ?: SongUIModel.fromModel(Music(musicId = it.musicId, trackName = ""))
                     }
-                    _favoriteState.postValue(FavoriteState.Loaded(musicFiltered))
+                    val successState = FavoriteState.Wrapper(ViewState.Success(musicFiltered))
+                    _favoriteState.postValue(successState)
                 }, {
-                    _favoriteState.postValue(FavoriteState.Error)
+                    val errorState = FavoriteState.Wrapper(ViewState.Error)
+                    _favoriteState.postValue(errorState)
+
                     it.printStackTrace()
                 })
         )
