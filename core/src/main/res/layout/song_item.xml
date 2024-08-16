@@ -1,67 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingVertical="@dimen/margin_md">
+
+    <ImageView
+        android:id="@+id/artwork"
+        android:layout_width="@dimen/artwork_size_md"
+        android:layout_height="@dimen/artwork_size_md"
+        android:layout_marginStart="@dimen/margin_md"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@android:drawable/ic_menu_camera" />
+
+    <TextView
+        android:id="@+id/musicName"
+        style="@style/AppTextStyle.Head"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_md"
+        android:layout_marginBottom="@dimen/margin_xs_mid"
+        app:layout_constraintBottom_toTopOf="@id/artistName"
+        app:layout_constraintEnd_toStartOf="@+id/action_button"
+        app:layout_constraintStart_toEndOf="@+id/artwork"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Musica" />
+
+    <TextView
+        android:id="@+id/artistName"
+        style="@style/AppTextStyle.Caption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/musicName"
+        app:layout_constraintStart_toStartOf="@+id/musicName"
+        app:layout_constraintTop_toBottomOf="@+id/musicName"
+        tools:text="Banda ou Artista" />
 
     <ImageButton
         android:id="@+id/action_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/item_music"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/margin_md"
+        android:layout_marginStart="@dimen/margin_md"
         android:background="@null"
         android:buttonTint="?colorAccent"
-        android:src="@drawable/ic_more_vert" />
+        android:padding="@dimen/margin_md"
+        android:src="@drawable/ic_more_vert"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <RelativeLayout
-        android:id="@+id/item_music"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/action_button"
-        android:padding="@dimen/margin_md">
-
-        <ImageView
-            android:id="@+id/artwork"
-            android:layout_width="@dimen/artwork_size_md"
-            android:layout_height="@dimen/artwork_size_md"
-            android:layout_alignParentLeft="true"
-            android:scaleType="fitXY"
-            tools:src="@android:drawable/ic_menu_camera" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/artwork"
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/margin_md">
-
-            <TextView
-                android:id="@+id/musicName"
-                style="@style/AppTextStyle.Head"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                tools:text="Nome da musica" />
-
-            <TextView
-                android:id="@+id/artistName"
-                style="@style/AppTextStyle.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                tools:text="Nome da banda" />
-
-        </LinearLayout>
-
-    </RelativeLayout>
-
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

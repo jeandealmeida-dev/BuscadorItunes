@@ -2,6 +2,7 @@ package com.jeanpaulo.musiclibrary.commons.extras
 
 import android.os.Handler
 import android.util.Log
+import com.jeanpaulo.musiclibrary.commons.BuildConfig
 
 class MyMediaPlayerCounter(
     val handler: Handler,
@@ -15,7 +16,7 @@ class MyMediaPlayerCounter(
     private var isRunnablePosted = false
 
     fun start() {
-        Log.d(TAG, "Start")
+        log_d("Start")
         count = 0L
 
         if (isRunnablePosted) {
@@ -30,7 +31,7 @@ class MyMediaPlayerCounter(
     }
 
     fun play() {
-        Log.d(TAG, "Play -> count = ${count}s")
+        log_d("Play -> count = ${count}s")
 
         if (!isRunningPlayer) {
             start()
@@ -39,12 +40,12 @@ class MyMediaPlayerCounter(
     }
 
     fun pause() {
-        Log.d(TAG, "Pause")
+        log_d("Pause")
         isUpdating = false
     }
 
     fun stop() {
-        Log.d(TAG, "Stop")
+        log_d("Stop")
         count = 0L
         isUpdating = false
         isRunningPlayer = false
@@ -62,6 +63,12 @@ class MyMediaPlayerCounter(
             isRunnablePosted = true
         } else {
             isRunnablePosted = false
+        }
+    }
+
+    private fun log_d(text: String){
+        if(BuildConfig.DEBUG){
+            Log.d(TAG, text)
         }
     }
 

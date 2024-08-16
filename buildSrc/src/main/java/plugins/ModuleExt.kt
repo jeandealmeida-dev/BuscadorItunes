@@ -30,6 +30,7 @@ open class JacocoOptions {
             "**/*Fragment*",
             "**/*Adapter*",
             "**/*UIModel*",
+            "**/*Skeleton*",
             "**/*MenuProvider*",
             "**/*BuildConfig*",
             "**/*BottomSheet*",

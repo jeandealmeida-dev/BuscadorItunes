@@ -1,20 +1,32 @@
-package com.jeanpaulo.musiclibrary.favorite.ui
+package com.jeanpaulo.musiclibrary.favorite.ui.view
 
+import android.content.ComponentName
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import com.jeanpaulo.musiclibrary.commons.CustomSafeObserver
+import com.jeanpaulo.musiclibrary.commons.view.ViewState
+import com.jeanpaulo.musiclibrary.core.music_player.MPService
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
+import com.jeanpaulo.musiclibrary.favorite.ui.equalState
+import com.jeanpaulo.musiclibrary.favorite.ui.favoriteList
+import com.jeanpaulo.musiclibrary.favorite.ui.song1
+import com.jeanpaulo.musiclibrary.favorite.ui.songList
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.runs
 import io.mockk.spyk
 import io.mockk.verify
-import androidx.lifecycle.Observer
-import io.mockk.verifyOrder
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -29,6 +41,8 @@ class FavoriteViewModelTest {
     private val scheduler: Scheduler = Schedulers.trampoline()
     private lateinit var favoriteViewModel: FavoriteViewModel
     private lateinit var stateObserver: Observer<FavoriteState>
+
+    private val timeout = 3000L
 
     @Before
     fun setup() {
@@ -48,9 +62,14 @@ class FavoriteViewModelTest {
         favoriteViewModel.getFavoriteList()
 
         // THEN
-        verifyOrder {
-            stateObserver.onChanged(FavoriteState.Loading)
-            stateObserver.onChanged(FavoriteState.Loaded(songList))
+        verify(timeout = timeout) {
+            stateObserver.onChanged(FavoriteState.Wrapper(ViewState.Loading))
+            stateObserver.onChanged(match {
+                equalState(
+                    it,
+                    FavoriteState.Wrapper(ViewState.Success(songList))
+                )
+            })
         }
     }
 
@@ -64,9 +83,9 @@ class FavoriteViewModelTest {
         favoriteViewModel.getFavoriteList()
 
         // THEN
-        verifyOrder {
-            stateObserver.onChanged(FavoriteState.Loading)
-            stateObserver.onChanged(FavoriteState.Error)
+        verify(timeout = timeout) {
+            stateObserver.onChanged(FavoriteState.Wrapper(ViewState.Loading))
+            stateObserver.onChanged(FavoriteState.Wrapper(ViewState.Error))
         }
     }
 
@@ -79,6 +98,30 @@ class FavoriteViewModelTest {
         favoriteViewModel.remove(song1)
 
         // THEN
-        verify { stateObserver.onChanged(FavoriteState.Removed(song1)) }
+        verify(timeout = timeout) { stateObserver.onChanged(FavoriteState.Removed(song1)) }
+    }
+
+    @Test
+    fun `WHEN options is selected THEN state is ShowMusicOptions`() {
+        // WHEN
+        favoriteViewModel.options(song1)
+
+        // THEN
+        verify { stateObserver.onChanged(FavoriteState.ShowMusicOptions(song1)) }
+    }
+
+    @Ignore("Its not working: putExtra is not mocked ")
+    @Test
+    fun `GIVEN song is selected WHEN playSong is called THEN should call play song service method`() {
+        // GIVEN
+        val context = mockk<Context>(relaxed = true)
+        mockkStatic(MPService::class)
+        every { MPService.playSong(any(), any()) } just runs
+
+        // WHEN
+        favoriteViewModel.playMusic(context, song1)
+
+        // THEN
+        verify { MPService.playSong(context, song1.convertToSong()) }
     }
 }

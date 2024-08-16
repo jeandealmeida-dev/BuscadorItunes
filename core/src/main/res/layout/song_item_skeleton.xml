@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:clickable="true"
+android:focusable="true"
+android:paddingVertical="@dimen/margin_md">
+
+<LinearLayout
+    android:id="@+id/artwork"
+    android:layout_width="@dimen/artwork_size_md"
+    android:layout_height="@dimen/artwork_size_md"
+    android:layout_marginStart="@dimen/margin_md"
+    android:background="@drawable/skeleton_background"
+    android:orientation="horizontal"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+<LinearLayout
+    android:id="@+id/musicName"
+    style="@style/Skeleton.Head"
+    android:layout_width="200dp"
+    android:layout_marginHorizontal="@dimen/margin_md"
+    android:layout_marginBottom="@dimen/margin_xs_mid"
+    app:layout_constraintBottom_toTopOf="@id/artistName"
+    app:layout_constraintStart_toEndOf="@+id/artwork"
+    app:layout_constraintTop_toTopOf="parent" />
+
+<LinearLayout
+    android:id="@+id/artistName"
+    style="@style/Skeleton.Caption"
+    android:layout_width="120dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="@+id/musicName"
+    app:layout_constraintTop_toBottomOf="@+id/musicName" />
+
+<LinearLayout
+    android:orientation="horizontal"
+    android:id="@+id/action_button"
+    android:layout_width="20dp"
+    android:layout_height="40dp"
+    android:layout_marginStart="@dimen/margin_md"
+    android:layout_marginEnd="@dimen/margin_md"
+    android:background="@drawable/skeleton_background"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

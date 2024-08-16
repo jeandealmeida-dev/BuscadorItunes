@@ -34,7 +34,7 @@ class MyMediaPlayerFade(
     }
 
     private fun fadeIn() {
-        volume += 1f / (FADE_DURATION / FADE_INTERVAL)
+        volume = (volume + 1f / (FADE_DURATION / FADE_INTERVAL)).coerceIn(0f, 1f)
         if (volume <= 1f) {
             onUpdate(volume)
             handler.postDelayed(this, FADE_INTERVAL)
@@ -45,7 +45,7 @@ class MyMediaPlayerFade(
     }
 
     private fun fadeOut() {
-        volume -= 1f / (FADE_DURATION / FADE_INTERVAL)
+        volume = (volume - 1f / (FADE_DURATION / FADE_INTERVAL)).coerceIn(0f, 1f)
         if (volume >= 0f) {
             onUpdate(volume)
             handler.postDelayed(this, FADE_INTERVAL)
@@ -57,7 +57,7 @@ class MyMediaPlayerFade(
     companion object {
         private const val TAG = "MyMediaPlayerFade"
 
-        private const val FADE_DURATION = 1000L // duração do fade-in em milissegundos
-        private const val FADE_INTERVAL = 100L // intervalo de aumento do volume em milissegundos
+        private const val FADE_DURATION = 1000L
+        private const val FADE_INTERVAL = 100L
     }
 }
