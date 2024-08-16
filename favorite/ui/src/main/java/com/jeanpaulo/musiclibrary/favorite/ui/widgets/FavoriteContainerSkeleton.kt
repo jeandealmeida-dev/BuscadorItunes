@@ -10,11 +10,14 @@ class FavoriteContainerSkeleton(private var view: View) {
     private var skeleton: SkeletonScreen? = null
 
     fun showSkeletons(){
-        skeleton = Skeleton.bind(view).load(R.layout.favorite_container_skeleton).show()
+        skeleton = Skeleton
+            .bind(view)
+            .duration(1400)
+            .angle(30)
+            .load(R.layout.favorite_container_description_skeleton).show()
     }
 
     fun hideSkeletons(){
         skeleton?.hide()
     }
-
 }

@@ -44,7 +44,7 @@ class FavoriteContainerFragment(
     }
 
     private fun setupView() {
-        skeleton = FavoriteContainerSkeleton(binding.root)
+        skeleton = FavoriteContainerSkeleton(binding.txtDescription)
     }
 
     private fun setupListeners() {

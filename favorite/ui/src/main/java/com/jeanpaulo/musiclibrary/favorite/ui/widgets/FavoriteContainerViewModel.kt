@@ -28,7 +28,7 @@ class FavoriteContainerViewModel @Inject constructor(
                 .doOnSubscribe {
                     _favoriteCountState.postValue(ViewState.Loading)
                 }
-                .delay(500, TimeUnit.MILLISECONDS)
+                .delay(2000, TimeUnit.MILLISECONDS)
                 .subscribe({ count ->
                     _favoriteCountState.postValue(ViewState.Success(count))
                 }, {
