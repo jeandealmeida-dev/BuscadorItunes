@@ -1,0 +1,17 @@
+<resources>
+
+    <style name="Skeleton">
+        <item name="android:background">@drawable/skeleton_background</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="Skeleton.Caption">
+        <item name="android:layout_height">18dp</item>
+    </style>
+
+    <style name="Skeleton.Head">
+        <item name="android:layout_height">20dp</item>
+    </style>
+
+
+</resources>

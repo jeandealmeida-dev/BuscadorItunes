@@ -16,12 +16,18 @@ dependencies {
     implementation(project(ProjectDependencies.Module.commons))
 
     // Base
-    implementation(ProjectDependencies.AndroidX.core())
-    implementation(ProjectDependencies.AndroidX.AppCompat())
+//    implementation(ProjectDependencies.AndroidX.core())
+//    implementation(ProjectDependencies.AndroidX.AppCompat())
+//    testImplementation(ProjectDependencies.JUnit())
+//    androidTestImplementation(ProjectDependencies.AndroidX.JUnit())
+//    androidTestImplementation(ProjectDependencies.AndroidX.Espresso())
+
     implementation(ProjectDependencies.Android.MaterialComponents())
-    testImplementation(ProjectDependencies.JUnit())
-    androidTestImplementation(ProjectDependencies.AndroidX.JUnit())
-    androidTestImplementation(ProjectDependencies.AndroidX.Espresso())
+    implementation(ProjectDependencies.AndroidX.ConstraintLayout())
+    implementation(ProjectDependencies.AndroidX.RecyclerView())
+
+    implementation(ProjectDependencies.Skeleton.core())
+    implementation(ProjectDependencies.Skeleton.ShimmerLayout())
 
     // Picasso
     implementation(ProjectDependencies.Picasso())
