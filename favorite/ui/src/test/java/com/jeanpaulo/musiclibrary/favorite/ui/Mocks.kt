@@ -17,24 +17,3 @@ val favorite2 = Favorite(music2.musicId).apply { music = music2 }
 
 val favoriteList = listOf<Favorite>(favorite1, favorite2)
 val songList = listOf<SongUIModel>(song1, song2)
-
-fun equalViewState(
-    state1: ViewState<List<SongUIModel>>,
-    state2: ViewState<List<SongUIModel>>
-): Boolean {
-    return when {
-        state1 is ViewState.Success && state2 is ViewState.Success -> state1.data == state2.data
-        else -> state1 == state2
-    }
-}
-
-fun equalState(state1: FavoriteState, state2: FavoriteState): Boolean {
-    return when {
-        state1 is FavoriteState.Wrapper && state2 is FavoriteState.Wrapper -> equalViewState(
-            state1.viewState,
-            state2.viewState
-        )
-
-        else -> state1 == state2
-    }
-}

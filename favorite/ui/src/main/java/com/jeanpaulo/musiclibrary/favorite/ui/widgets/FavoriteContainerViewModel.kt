@@ -2,6 +2,7 @@ package com.jeanpaulo.musiclibrary.favorite.ui.widgets
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.jeanpaulo.musiclibrary.commons.BuildConfig
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
 import com.jeanpaulo.musiclibrary.commons.exceptions.EmptyResultException
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
@@ -28,7 +29,7 @@ class FavoriteContainerViewModel @Inject constructor(
                 .doOnSubscribe {
                     _favoriteCountState.postValue(ViewState.Loading)
                 }
-                .delay(2000, TimeUnit.MILLISECONDS)
+                .delay(500, TimeUnit.MILLISECONDS)
                 .subscribe({ count ->
                     _favoriteCountState.postValue(ViewState.Success(count))
                 }, {

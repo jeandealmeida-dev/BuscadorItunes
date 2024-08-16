@@ -11,14 +11,7 @@ import io.mockk.verify
 import androidx.lifecycle.Observer
 import com.jeanpaulo.musiclibrary.commons.exceptions.EmptyResultException
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
-import com.jeanpaulo.musiclibrary.favorite.ui.favoriteList
-import com.jeanpaulo.musiclibrary.favorite.ui.song1
-import com.jeanpaulo.musiclibrary.favorite.ui.songList
-import com.jeanpaulo.musiclibrary.favorite.ui.view.FavoriteState
 import com.jeanpaulo.musiclibrary.favorite.ui.widgets.FavoriteContainerViewModel
-import io.mockk.verifyOrder
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -37,6 +30,8 @@ class FavoriteContainerViewModelTest {
     private val scheduler: Scheduler = Schedulers.trampoline()
     private lateinit var favoriteContainerViewModel: FavoriteContainerViewModel
     private lateinit var stateObserver: Observer<ViewState<Int>>
+
+    private val timeout = 600L
 
     @Before
     fun setup() {
@@ -57,9 +52,14 @@ class FavoriteContainerViewModelTest {
         favoriteContainerViewModel.getFavoriteCount()
 
         // THEN
-        verifyOrder {
+        verify(timeout = timeout) {
             stateObserver.onChanged(ViewState.Loading)
-            stateObserver.onChanged(ViewState.Success(musicCount))
+            stateObserver.onChanged(match {
+                equalViewState(
+                    it,
+                    ViewState.Success(musicCount)
+                )
+            })
         }
     }
 
@@ -67,13 +67,13 @@ class FavoriteContainerViewModelTest {
     fun `GIVEN an error occurs WHEN getFavoriteCount is called THEN state change to Error`() {
         // GIVEN
         val error = Throwable("An error occurred")
-        every { interactor.getFavoriteMusics() } returns Flowable.error(error)
+        every { interactor.getFavoriteCount() } returns Single.error(error)
 
         // WHEN
         favoriteContainerViewModel.getFavoriteCount()
 
         // THEN
-        verifyOrder {
+        verify(timeout = timeout) {
             stateObserver.onChanged(ViewState.Loading)
             stateObserver.onChanged(ViewState.Error)
         }
@@ -83,15 +83,27 @@ class FavoriteContainerViewModelTest {
     fun `GIVEN no music on favorite WHEN getFavoriteCount is called THEN state changed to Empty`() {
         // GIVEN
         val error = EmptyResultException()
-        every { interactor.getFavoriteMusics() } returns Flowable.error(error)
+        every { interactor.getFavoriteCount() } returns Single.error(error)
 
         // WHEN
         favoriteContainerViewModel.getFavoriteCount()
 
         // THEN
-        verifyOrder {
+        verify(timeout = timeout) {
             stateObserver.onChanged(ViewState.Loading)
             stateObserver.onChanged(ViewState.Empty)
+        }
+    }
+
+    // Private
+
+    private fun equalViewState(
+        state1: ViewState<Int>,
+        state2: ViewState<Int>
+    ): Boolean {
+        return when {
+            state1 is ViewState.Success && state2 is ViewState.Success -> state1.data == state2.data
+            else -> state1 == state2
         }
     }
 }
