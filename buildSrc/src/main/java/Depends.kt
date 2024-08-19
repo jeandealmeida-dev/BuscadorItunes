@@ -7,6 +7,7 @@ object ProjectDependencies {
         const val app = ":app"
         const val core = ":core"
         const val commons = ":commons"
+        const val player = ":player"
         const val music = ":music"
         const val music_detail = ":music:detail"
 

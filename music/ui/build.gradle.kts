@@ -17,14 +17,10 @@ dependencies {
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))
     implementation(project(ProjectDependencies.Module.Domain.music))
+    implementation(project(ProjectDependencies.Module.player))
 
-    // Base
-    implementation(ProjectDependencies.AndroidX.core())
-    implementation(ProjectDependencies.AndroidX.AppCompat())
+    // Material
     implementation(ProjectDependencies.Android.MaterialComponents())
-    testImplementation(ProjectDependencies.JUnit())
-    androidTestImplementation(ProjectDependencies.AndroidX.JUnit())
-    androidTestImplementation(ProjectDependencies.AndroidX.Espresso())
 
     //AndroidX
     implementation(ProjectDependencies.AndroidX.CardView())

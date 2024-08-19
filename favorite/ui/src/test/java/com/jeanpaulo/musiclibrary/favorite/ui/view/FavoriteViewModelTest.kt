@@ -5,12 +5,12 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.jeanpaulo.musiclibrary.commons.CustomSafeObserver
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
-import com.jeanpaulo.musiclibrary.core.music_player.MPService
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
 import com.jeanpaulo.musiclibrary.favorite.ui.favoriteList
 import com.jeanpaulo.musiclibrary.favorite.ui.song1
 import com.jeanpaulo.musiclibrary.favorite.ui.songList
+import com.jeanpaulo.musiclibrary.player.mp.MPService
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -121,7 +121,7 @@ class FavoriteViewModelTest {
         favoriteViewModel.playMusic(context, song1)
 
         // THEN
-        verify { MPService.playSong(context, song1.convertToSong()) }
+        verify { MPService.playSong(context, song1.convertToSong().toMPSong()) }
     }
 
     // Private

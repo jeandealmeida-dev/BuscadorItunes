@@ -3,6 +3,7 @@ include(
     ":app",
     ":core",
     ":commons",
+    ":player",
 
     ":playlist",
     ":playlist:ui",

@@ -14,13 +14,7 @@ addUnitTestDependencies()
 
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
-
-    // Base
-//    implementation(ProjectDependencies.AndroidX.core())
-//    implementation(ProjectDependencies.AndroidX.AppCompat())
-//    testImplementation(ProjectDependencies.JUnit())
-//    androidTestImplementation(ProjectDependencies.AndroidX.JUnit())
-//    androidTestImplementation(ProjectDependencies.AndroidX.Espresso())
+    implementation(project(ProjectDependencies.Module.player))
 
     implementation(ProjectDependencies.Android.MaterialComponents())
     implementation(ProjectDependencies.AndroidX.ConstraintLayout())

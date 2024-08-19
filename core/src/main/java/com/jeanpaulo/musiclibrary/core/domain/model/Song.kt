@@ -1,6 +1,7 @@
 package com.jeanpaulo.musiclibrary.core.domain.model
 
-import com.jeanpaulo.musiclibrary.core.music_player.model.MPSong
+import com.jeanpaulo.musiclibrary.player.mp.model.MPSong
+
 
 data class Song(
     val musicId: Long,

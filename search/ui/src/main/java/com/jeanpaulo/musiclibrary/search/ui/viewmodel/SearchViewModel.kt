@@ -5,9 +5,9 @@ import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
-import com.jeanpaulo.musiclibrary.core.music_player.MPService
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
+import com.jeanpaulo.musiclibrary.player.mp.MPService
 import com.jeanpaulo.musiclibrary.search.domain.SearchInteractor
 import io.reactivex.rxjava3.core.Scheduler
 import javax.inject.Inject
@@ -58,7 +58,8 @@ class SearchViewModel @Inject constructor(
     }
 
     fun playMusic(context: Context, song: SongUIModel) {
-        MPService.playSong(context, song.convertToSong())
+        val mpSong = song.convertToSong().toMPSong()
+        MPService.playSongList(context, listOf(mpSong))
     }
 
     fun options(song: SongUIModel) {

@@ -11,11 +11,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.jeanpaulo.musiclibrary.app.databinding.ActivityMusicBinding
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmActivity
 import com.jeanpaulo.musiclibrary.core.domain.model.Song
-import com.jeanpaulo.musiclibrary.core.music_player.MPEvents
-import com.jeanpaulo.musiclibrary.core.music_player.MPReceiver
-import com.jeanpaulo.musiclibrary.music.ui.bottom_sheet.FullPlayerBottomSheet
-import com.jeanpaulo.musiclibrary.music.ui.bottom_sheet.MiniPlayerBottomSheet
+import com.jeanpaulo.musiclibrary.player.mp.MPEvents
+import com.jeanpaulo.musiclibrary.player.mp.MPReceiver
 import com.jeanpaulo.musiclibrary.settings.ui.SettingsActivity
+import com.jeanpaulo.musiclibrary.player.presentation.FullPlayerBottomSheet
+import com.jeanpaulo.musiclibrary.player.presentation.MiniPlayerBottomSheet
 
 
 class MainActivity : BaseMvvmActivity() {
@@ -124,8 +124,10 @@ class MainActivity : BaseMvvmActivity() {
             override fun onPlaySong(currentSong: Song, hasNext: Boolean, hasPrevious: Boolean) {
                 miniPlayerBottomSheet.expand()
 
-                miniPlayerBottomSheet.updatePlayer(currentSong)
-                fullPlayerDialog.updatePlayer(currentSong, hasNext, hasPrevious)
+                val mpSong = currentSong.toMPSong()
+
+                miniPlayerBottomSheet.updatePlayer(mpSong)
+                fullPlayerDialog.updatePlayer(mpSong, hasNext, hasPrevious)
             }
 
             override fun onPause() {

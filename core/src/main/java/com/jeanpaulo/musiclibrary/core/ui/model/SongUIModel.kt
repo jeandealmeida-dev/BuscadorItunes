@@ -1,6 +1,5 @@
 package com.jeanpaulo.musiclibrary.core.ui.model
 
-import com.jeanpaulo.musiclibrary.core.music_player.model.MPSong
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.core.domain.model.Song
 

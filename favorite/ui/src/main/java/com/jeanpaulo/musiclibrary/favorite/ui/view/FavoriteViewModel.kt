@@ -6,9 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
-import com.jeanpaulo.musiclibrary.core.music_player.MPService
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
+import com.jeanpaulo.musiclibrary.player.mp.MPService
 import io.reactivex.rxjava3.core.Scheduler
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -73,13 +73,14 @@ class FavoriteViewModel @Inject constructor(
     }
 
     fun playMusic(context: Context, song: SongUIModel) {
-        MPService.playSong(context, song.convertToSong())
+        val mpSong = song.convertToSong().toMPSong()
+        MPService.playSongList(context, listOf(mpSong))
     }
 
     fun playSongList(context: Context, songs: List<SongUIModel>) {
         MPService.playSongList(
             context,
-            songs.map { it.convertToSong() }
+            songs.map { it.convertToSong().toMPSong() }
         )
     }
 
