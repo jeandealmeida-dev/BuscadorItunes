@@ -4,6 +4,12 @@ plugins {
     id(ProjectPlugins.Parcelize) // required to use parcelize
 }
 
+myOptions {
+    jacoco {
+        isEnabled = false
+    }
+}
+
 dependencies {
     // Project
     implementation(project(ProjectDependencies.Module.commons))
