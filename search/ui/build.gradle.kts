@@ -17,15 +17,14 @@ addUnitTestDependencies()
 
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
+    implementation(project(ProjectDependencies.Module.player))
     implementation(project(ProjectDependencies.Module.core))
     implementation(project(ProjectDependencies.Module.Domain.search))
     implementation(project(ProjectDependencies.Module.Domain.favorite))
 
     implementation(project(ProjectDependencies.Module.UI.music))
 
-    // Base
-    implementation(ProjectDependencies.AndroidX.core())
-    implementation(ProjectDependencies.AndroidX.AppCompat())
+    // Material
     implementation(ProjectDependencies.Android.MaterialComponents())
 
     // AndroidX

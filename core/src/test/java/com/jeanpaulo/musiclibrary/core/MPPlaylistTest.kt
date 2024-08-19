@@ -1,7 +1,7 @@
 package com.jeanpaulo.musiclibrary.core
 
-import com.jeanpaulo.musiclibrary.core.music_player.model.MPPlaylist
-import com.jeanpaulo.musiclibrary.core.music_player.model.MPSong
+import com.jeanpaulo.musiclibrary.player.model.MPPlaylist
+import com.jeanpaulo.musiclibrary.player.model.MPSong
 import junit.framework.Assert.assertNotNull
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

@@ -19,9 +19,9 @@ addUnitTestDependencies()
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))
+    implementation(project(ProjectDependencies.Module.player))
 
     implementation(project(ProjectDependencies.Module.Domain.favorite))
-//    implementation(project(ProjectDependencies.Module.UI.music))
 
     implementation(ProjectDependencies.Android.MaterialComponents())
     implementation(ProjectDependencies.Picasso())

@@ -39,6 +39,7 @@ dependencies {
 
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))
+    implementation(project(ProjectDependencies.Module.player))
 
     // Base
     implementation(ProjectDependencies.AndroidX.Design())
