@@ -73,13 +73,14 @@ class FavoriteViewModel @Inject constructor(
     }
 
     fun playMusic(context: Context, song: SongUIModel) {
-        MPService.playSong(context, song.convertToSong())
+        val mpSong = song.convertToSong().toMPSong()
+        MPService.playSongList(context, listOf(mpSong))
     }
 
     fun playSongList(context: Context, songs: List<SongUIModel>) {
         MPService.playSongList(
             context,
-            songs.map { it.convertToSong() }
+            songs.map { it.convertToSong().toMPSong() }
         )
     }
 

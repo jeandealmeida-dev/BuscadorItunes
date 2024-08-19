@@ -184,17 +184,10 @@ class MPService : Service() {
             })
         }
 
-        fun playSong(context: Context, song: MPSong) {
-            context.startService(createIntent(context).apply {
-                putExtra(COMMAND, MPCommands.PLAY_SONG)
-                putExtra(PLAYLIST, MPPlaylist(songs = mutableListOf(song)))
-            })
-        }
-
         fun playSongList(context: Context, songs: List<MPSong>) {
             val playlist = MPPlaylist(songs = songs.toMutableList())
             context.startService(createIntent(context).apply {
-                putExtra(COMMAND, MPCommands.PLAY_SONG_LIST)
+                putExtra(COMMAND, if (songs.size > 1) MPCommands.PLAY_SONG_LIST else MPCommands.PLAY_SONG)
                 putExtra(PLAYLIST, playlist)
             })
         }

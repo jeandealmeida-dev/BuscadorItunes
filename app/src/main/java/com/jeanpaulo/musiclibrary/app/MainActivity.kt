@@ -124,8 +124,10 @@ class MainActivity : BaseMvvmActivity() {
             override fun onPlaySong(currentSong: Song, hasNext: Boolean, hasPrevious: Boolean) {
                 miniPlayerBottomSheet.expand()
 
-                miniPlayerBottomSheet.updatePlayer(currentSong.toMPSong())
-                fullPlayerDialog.updatePlayer(currentSong.toMPSong(), hasNext, hasPrevious)
+                val mpSong = currentSong.toMPSong()
+
+                miniPlayerBottomSheet.updatePlayer(mpSong)
+                fullPlayerDialog.updatePlayer(mpSong, hasNext, hasPrevious)
             }
 
             override fun onPause() {

@@ -58,7 +58,8 @@ class SearchViewModel @Inject constructor(
     }
 
     fun playMusic(context: Context, song: SongUIModel) {
-        MPService.playSong(context, song.convertToSong().toMPSong())
+        val mpSong = song.convertToSong().toMPSong()
+        MPService.playSongList(context, listOf(mpSong))
     }
 
     fun options(song: SongUIModel) {
