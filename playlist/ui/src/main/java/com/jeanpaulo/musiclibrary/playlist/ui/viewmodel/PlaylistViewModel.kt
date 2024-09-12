@@ -3,6 +3,7 @@ package com.jeanpaulo.musiclibrary.playlist.ui.viewmodel
 import androidx.lifecycle.*
 import com.jeanpaulo.musiclibrary.core.domain.model.Playlist
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
+import com.jeanpaulo.musiclibrary.core.BuildConfig
 import com.jeanpaulo.musiclibrary.playlist.domain.PlaylistInteractor
 import io.reactivex.rxjava3.core.Scheduler
 import java.util.concurrent.TimeUnit
@@ -47,11 +48,11 @@ class PlaylistViewModel @Inject constructor(
         compositeDisposable.add(
             interactor.deletePlaylist(playlistId)
                 .subscribeOn(ioScheduler)
-                .delay(500, TimeUnit.MILLISECONDS)
-                .observeOn(mainScheduler)
                 .doOnSubscribe {
                     _playlistDeleteState.value = PlaylistDeleteState.Loading
                 }
+                .observeOn(mainScheduler)
+                .delay(BuildConfig.DEFAULT_DELAY, TimeUnit.MILLISECONDS)
                 .subscribe({
                     _playlistDeleteState.value = PlaylistDeleteState.Success
                 }, {
@@ -64,11 +65,11 @@ class PlaylistViewModel @Inject constructor(
         compositeDisposable.add(
             interactor.getPlaylist()
                 .subscribeOn(mainScheduler)
-                .delay(500, TimeUnit.MILLISECONDS)
-                .observeOn(ioScheduler)
                 .doOnSubscribe {
                     _playlistListState.postValue(PlaylistListState.Loading)
                 }
+                .observeOn(ioScheduler)
+                .delay(BuildConfig.DEFAULT_DELAY, TimeUnit.MILLISECONDS)
                 .subscribe({ playlistList ->
                     _playlistListState.postValue(
                         PlaylistListState.Success(playlistList)

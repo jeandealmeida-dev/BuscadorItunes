@@ -20,6 +20,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jeanpaulo.musiclibrary.core.domain.model.Playlist
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
+import com.jeanpaulo.musiclibrary.core.BuildConfig
 import com.jeanpaulo.musiclibrary.playlist.domain.PlaylistDetailInteractor
 import io.reactivex.rxjava3.core.Scheduler
 import java.util.concurrent.TimeUnit
@@ -44,11 +45,11 @@ class PlaylistDetailViewModel @Inject constructor(
         compositeDisposable.add(
             interactor.getPlaylist(playlistId)
                 .subscribeOn(ioScheduler)
-                .observeOn(mainScheduler)
                 .doOnSubscribe {
                     _playlistDetailState.value = PlaylistDetailState.Loading
                 }
-                .delay(500, TimeUnit.MILLISECONDS)
+                .observeOn(mainScheduler)
+                .delay(BuildConfig.DEFAULT_DELAY, TimeUnit.MILLISECONDS)
                 .subscribe({ playlist ->
                     _playlistDetailState.value = PlaylistDetailState.Success(playlist)
                 }, {

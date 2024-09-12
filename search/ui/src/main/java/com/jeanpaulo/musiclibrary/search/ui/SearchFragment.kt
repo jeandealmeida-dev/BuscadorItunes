@@ -1,39 +1,49 @@
 package com.jeanpaulo.musiclibrary.search.ui
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
+import androidx.paging.PagingData
+import com.google.android.material.snackbar.Snackbar
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
+import com.jeanpaulo.musiclibrary.commons.extensions.addDivider
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.gone
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.showSnackbar
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.showTopSnackbar
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.visible
-import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
-import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
+import com.jeanpaulo.musiclibrary.commons.view.ViewState
+import com.jeanpaulo.musiclibrary.core.ui.adapter.SongListSkeleton
 import com.jeanpaulo.musiclibrary.core.ui.bottomsheet.SongOption
 import com.jeanpaulo.musiclibrary.core.ui.bottomsheet.SongOptionsBottomSheet
+import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.search.ui.adapter.SearchAdapter
 import com.jeanpaulo.musiclibrary.search.ui.adapter.SearchLoadStateAdapter
 import com.jeanpaulo.musiclibrary.search.ui.databinding.FragMusicSearchBinding
-import com.jeanpaulo.musiclibrary.search.ui.viewmodel.SearchState
 import com.jeanpaulo.musiclibrary.search.ui.viewmodel.SearchViewModel
 
-
-/**
- * Display a grid of [Music]s. User can choose to view all, active or completed tasks.
- */
 class SearchFragment : BaseMvvmFragment() {
     val viewModel by appViewModel<SearchViewModel>()
 
     private var _binding: FragMusicSearchBinding? = null
     private val binding get() = requireNotNull(_binding)
 
+    private var skeleton: SongListSkeleton? = null
     private lateinit var searchAdapter: SearchAdapter
     private lateinit var searchMenuProvider: SearchMenuProvider
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) = FragMusicSearchBinding.inflate(inflater, container, false).also {
+        _binding = it
+        (requireActivity() as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
+    }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,18 +51,19 @@ class SearchFragment : BaseMvvmFragment() {
         setupListeners()
         setupWidgets()
         setupMenu()
+        setupSkeleton()
 
         viewModel.init()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragMusicSearchBinding.inflate(inflater, container, false)
-        (requireActivity() as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
-        return binding.root
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        searchMenuProvider.onDestroy()
     }
 
     private fun setupListAdapter() {
@@ -62,19 +73,19 @@ class SearchFragment : BaseMvvmFragment() {
             }
 
             override fun onOptionsPressed(music: SongUIModel) {
-                viewModel.options(music)
+                showOptionsBottomSheet(music)
             }
         })
 
         searchAdapter.addLoadStateListener { loadState ->
             binding.searchErrorLayout.isVisible = loadState.source.refresh is LoadState.Error
-            binding.searchResultList.isVisible = loadState.source.refresh is LoadState.NotLoading
+            binding.listSearchResult.isVisible = loadState.source.refresh is LoadState.NotLoading
 
             if (loadState.source.refresh is LoadState.NotLoading &&
                 loadState.append.endOfPaginationReached &&
                 searchAdapter.itemCount < 1
             ) {
-                binding.searchResultList.gone()
+                binding.listSearchResult.gone()
                 binding.noResultLayout.visible()
             } else {
                 binding.noResultLayout.gone()
@@ -82,30 +93,82 @@ class SearchFragment : BaseMvvmFragment() {
         }
     }
 
-    fun setupListeners() {
+    private fun setupListeners() {
         viewModel.searchingState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SearchState.Success -> {
-                    searchAdapter.submitData(viewLifecycleOwner.lifecycle, state.musicList)
-                }
-
-                is SearchState.Options -> {
-                    SongOptionsBottomSheet.newInstance(
-                        state.music,
-                        listOf(
-                            SongOption.ADD_FAVORITE,
-                        ),
-                        object : SongOptionsBottomSheet.MusicOptionListener {
-                            override fun onOptionSelected(option: SongOption) {
-                                onSearchOptionSelected(option, state.music)
-                            }
-                        }
-                    ).show(parentFragmentManager, SongOptionsBottomSheet.TAG)
-                }
-
-                else -> {}
+                ViewState.Loading -> handleLoading()
+                is ViewState.Success -> handleSuccess(state.data)
+                is ViewState.Error -> handleError()
+                is ViewState.Empty -> handleEmpty()
             }
         }
+    }
+
+    private fun setupSkeleton() {
+        skeleton = SongListSkeleton(binding.listSearchResult)
+    }
+
+    private fun setupWidgets() {
+        with(binding) {
+            searchErrorLayout.setOnClickListener { searchAdapter.retry() }
+            listSearchResult.adapter = searchAdapter.withLoadStateHeaderAndFooter(
+                header = SearchLoadStateAdapter { searchAdapter.retry() },
+                footer = SearchLoadStateAdapter { searchAdapter.retry() },
+            )
+            listSearchResult.addDivider()
+        }
+    }
+
+    private fun setupMenu() {
+        searchMenuProvider = SearchMenuProvider {
+            viewModel.setCurrentQuery(it)
+        }.also { menuProvider ->
+            requireActivity()
+                .addMenuProvider(
+                    menuProvider,
+                    viewLifecycleOwner,
+                    Lifecycle.State.RESUMED
+                )
+        }
+    }
+
+    // Handle
+
+    private fun handleLoading() {
+        skeleton?.showSkeletons()
+    }
+
+    private fun handleEmpty() {
+        // TODO
+    }
+
+    private fun handleError() {
+        view?.showSnackbar(getString(R.string.search_error_message), Snackbar.LENGTH_LONG)
+        skeleton?.hideSkeletons()
+    }
+
+    private fun handleSuccess(pagingData: PagingData<SongUIModel>) {
+        searchAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+        skeleton?.hideSkeletons()
+    }
+
+    // BottomSheet
+
+    private fun showOptionsBottomSheet(music: SongUIModel) {
+        SongOptionsBottomSheet.newInstance(
+            music,
+            listOf(
+                SongOption.ADD_FAVORITE,
+            ),
+            object : SongOptionsBottomSheet.MusicOptionListener {
+                override fun onOptionSelected(searchOption: SongOption) {
+                    onSearchOptionSelected(
+                        option = searchOption,
+                        music = music
+                    )
+                }
+            }
+        ).show(parentFragmentManager, SongOptionsBottomSheet.TAG)
     }
 
     fun onSearchOptionSelected(option: SongOption, music: SongUIModel) {
@@ -126,51 +189,4 @@ class SearchFragment : BaseMvvmFragment() {
             }
         }
     }
-
-    fun setupWidgets() {
-        with(binding) {
-            //root.setupSnackbar(this@SearchFragment, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
-
-            searchErrorLayout.setOnClickListener { searchAdapter.retry() }
-
-            searchResultList.setHasFixedSize(true)
-            searchResultList.itemAnimator = null
-            searchResultList.adapter = searchAdapter.withLoadStateHeaderAndFooter(
-                header = SearchLoadStateAdapter { searchAdapter.retry() },
-                footer = SearchLoadStateAdapter { searchAdapter.retry() },
-            )
-            searchResultList.layoutManager =
-                CustomLinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-            searchResultList.addItemDecoration(
-                DividerItemDecoration(
-                    requireContext(),
-                    DividerItemDecoration.VERTICAL
-                )
-            )
-        }
-    }
-
-    private fun setupMenu() {
-        searchMenuProvider = SearchMenuProvider {
-            viewModel.setCurrentQuery(it)
-        }.also { menuProvider ->
-            requireActivity()
-                .addMenuProvider(
-                    menuProvider,
-                    viewLifecycleOwner,
-                    Lifecycle.State.RESUMED
-                )
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        searchMenuProvider.onDestroy()
-    }
-
 }

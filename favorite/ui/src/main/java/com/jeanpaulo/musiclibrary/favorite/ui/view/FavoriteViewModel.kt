@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
+import com.jeanpaulo.musiclibrary.core.BuildConfig
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
@@ -43,12 +44,12 @@ class FavoriteViewModel @Inject constructor(
         compositeDisposable.add(
             interactor.getFavoriteMusics()
                 .subscribeOn(ioScheduler)
-                .observeOn(mainScheduler)
                 .doOnSubscribe {
                     val loading = FavoriteState.Wrapper(ViewState.Loading)
                     _favoriteState.postValue(loading)
                 }
-                .delay(500, TimeUnit.MILLISECONDS)
+                .observeOn(mainScheduler)
+                .delay(BuildConfig.DEFAULT_DELAY, TimeUnit.MILLISECONDS)
                 .subscribe({ favorites ->
                     if (favorites.isEmpty()) {
                         val emptyState = FavoriteState.Wrapper(ViewState.Empty)

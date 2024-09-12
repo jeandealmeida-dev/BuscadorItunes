@@ -11,6 +11,7 @@ class SettingsViewModel @Inject constructor(
     @Named("IOScheduler") private val ioScheduler: Scheduler,
     private val playlistInteractor: PlaylistInteractor,
 ) : BaseViewModel() {
+
     fun clearDatabase() {
         compositeDisposable.add(
             playlistInteractor.deleteAllPlaylists()

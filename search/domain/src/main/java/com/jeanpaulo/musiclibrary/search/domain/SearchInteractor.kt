@@ -20,7 +20,6 @@ class SearchInteractorImpl @Inject constructor(
 
     private val _musicList = BehaviorSubject.createDefault<List<Music>>(emptyList())
 
-
     override fun getSearchResults(query: String): Flowable<PagingData<Music>> =
         repository.getSearchResults(query)
             .map { pagingData ->
