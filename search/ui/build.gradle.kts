@@ -23,6 +23,7 @@ dependencies {
     implementation(project(ProjectDependencies.Module.Domain.favorite))
 
     implementation(project(ProjectDependencies.Module.UI.music))
+    implementation(project(ProjectDependencies.Module.UI.artist))
 
     // Material
     implementation(ProjectDependencies.Android.MaterialComponents())
@@ -40,4 +41,8 @@ dependencies {
 
     // UI Test
     testImplementation(ProjectDependencies.AndroidX.ArchCoreTesting())
+
+    // Navigation
+    implementation(ProjectDependencies.AndroidX.Navigation.Fragment())
+    implementation(ProjectDependencies.AndroidX.Navigation.UI())
 }

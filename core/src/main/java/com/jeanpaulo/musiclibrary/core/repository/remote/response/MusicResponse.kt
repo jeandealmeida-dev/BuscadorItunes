@@ -20,6 +20,7 @@ data class MusicResponse(
     @Json(name = "trackCount") val trackCount: Long? = null,
     @Json(name = "releaseDate") val releaseDate: Date? = null,
     @Json(name = "primaryGenreName") val primaryGenreName: String? = null,
+    @Json(name = "primaryGenreId") val primaryGenreId: Long? = null,
     @Json(name = "isStreamable") val isStreamable: Boolean? = null,
     @Json(name = "trackTimeMillis") val trackTimeMillis: Long? = null,
     @Json(name = "previewUrl") val previewUrl: String? = null
@@ -38,6 +39,7 @@ data class MusicResponse(
             name = artistName ?: EMPTY,
             country = country,
             primaryGenreName = primaryGenreName,
+            primaryGenreId = primaryGenreId,
         )
         it.musicCollection = Collection(
             collectionId = collectionId ?: NO_ID,

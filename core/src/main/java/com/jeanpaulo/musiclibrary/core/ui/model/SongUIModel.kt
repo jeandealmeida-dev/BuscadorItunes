@@ -6,9 +6,10 @@ import com.jeanpaulo.musiclibrary.core.domain.model.Song
 data class SongUIModel(
     val musicId: Long,
     val musicName: String,
+    val artistId: Long,
     val artistName: String,
+    val collectionId: Long,
     val collectionName: String,
-    val collectionYear: String,
     val artworkUrl: String?,
     val previewUrl: String?
 ) {
@@ -21,16 +22,15 @@ data class SongUIModel(
         previewUrl = this.previewUrl
     )
     companion object {
-        const val NO_COLLECTION_NAME = "-"
-        const val NO_ARTIST_NAME = "-"
 
         fun fromModel(music: Music) = SongUIModel(
             musicId = music.musicId,
             musicName = music.trackName,
             artworkUrl = music.artworkUrl,
-            artistName = music.musicArtist?.name ?: NO_ARTIST_NAME,
-            collectionName = music.musicCollection?.name ?: NO_COLLECTION_NAME,
-            collectionYear = music.formatedReleaseDate,
+            artistId = music.musicArtist?.artistId ?: -1,
+            artistName = music.musicArtist?.name ?: "",
+            collectionId = music.musicCollection?.collectionId ?: -1,
+            collectionName = music.musicCollection?.name ?: "",
             previewUrl = music.previewUrl
         )
     }

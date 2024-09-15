@@ -5,6 +5,7 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
@@ -13,12 +14,12 @@ import com.jeanpaulo.musiclibrary.commons.extensions.ui.gone
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.showTopSnackbar
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.visible
 import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
-import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.core.ui.bottomsheet.SongOption
 import com.jeanpaulo.musiclibrary.core.ui.bottomsheet.SongOptionsBottomSheet
+import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.search.ui.adapter.SearchAdapter
 import com.jeanpaulo.musiclibrary.search.ui.adapter.SearchLoadStateAdapter
-import com.jeanpaulo.musiclibrary.search.ui.databinding.FragMusicSearchBinding
+import com.jeanpaulo.musiclibrary.search.ui.databinding.SearchFragmentBinding
 import com.jeanpaulo.musiclibrary.search.ui.viewmodel.SearchState
 import com.jeanpaulo.musiclibrary.search.ui.viewmodel.SearchViewModel
 
@@ -29,7 +30,7 @@ import com.jeanpaulo.musiclibrary.search.ui.viewmodel.SearchViewModel
 class SearchFragment : BaseMvvmFragment() {
     val viewModel by appViewModel<SearchViewModel>()
 
-    private var _binding: FragMusicSearchBinding? = null
+    private var _binding: SearchFragmentBinding? = null
     private val binding get() = requireNotNull(_binding)
 
     private lateinit var searchAdapter: SearchAdapter
@@ -50,18 +51,18 @@ class SearchFragment : BaseMvvmFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragMusicSearchBinding.inflate(inflater, container, false)
+        _binding = SearchFragmentBinding.inflate(inflater, container, false)
         (requireActivity() as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         return binding.root
     }
 
     private fun setupListAdapter() {
         searchAdapter = SearchAdapter(object : SearchAdapter.SearchListener {
-            override fun onItemPressed(music: SongUIModel) {
+            override fun onItemPressed(music: SearchUIModel) {
                 viewModel.playMusic(requireContext(), music)
             }
 
-            override fun onOptionsPressed(music: SongUIModel) {
+            override fun onOptionsPressed(music: SearchUIModel) {
                 viewModel.options(music)
             }
         })
@@ -91,13 +92,14 @@ class SearchFragment : BaseMvvmFragment() {
 
                 is SearchState.Options -> {
                     SongOptionsBottomSheet.newInstance(
-                        state.music,
+                        state.music.convertToSongUIModel(),
                         listOf(
                             SongOption.ADD_FAVORITE,
+                            SongOption.GO_TO_ARTIST
                         ),
                         object : SongOptionsBottomSheet.MusicOptionListener {
-                            override fun onOptionSelected(option: SongOption) {
-                                onSearchOptionSelected(option, state.music)
+                            override fun onOptionSelected(option: SongOption, song: SongUIModel) {
+                                onSearchOptionSelected(option, song)
                             }
                         }
                     ).show(parentFragmentManager, SongOptionsBottomSheet.TAG)
@@ -111,10 +113,20 @@ class SearchFragment : BaseMvvmFragment() {
     fun onSearchOptionSelected(option: SongOption, music: SongUIModel) {
         when (option) {
             SongOption.ADD_FAVORITE -> {
-                viewModel.addInFavorite(music)
+                viewModel.addInFavorite(music.musicId)
                 requireContext().showTopSnackbar(
                     view = binding.root,
                     text = getString(R.string.search_add_favorite_success)
+                )
+            }
+
+            SongOption.GO_TO_ARTIST -> {
+                findNavController().navigate(
+                    SearchFragmentDirections
+                        .actionSearchFragmentToArtistFragment(
+                            artistId = music.artistId,
+                            artistName = music.artistName
+                        )
                 )
             }
 
@@ -172,5 +184,4 @@ class SearchFragment : BaseMvvmFragment() {
         super.onDestroy()
         searchMenuProvider.onDestroy()
     }
-
 }

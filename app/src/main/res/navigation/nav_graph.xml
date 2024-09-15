@@ -5,11 +5,7 @@
     android:id="@+id/main_navigation"
     app:startDestination="@id/nav_search">
 
-    <fragment
-        android:id="@+id/nav_search"
-        android:name="com.jeanpaulo.musiclibrary.search.ui.SearchFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/frag_music_search"/>
+    <include app:graph="@navigation/search_graph" />
 
     <include app:graph="@navigation/playlist_graph" />
 

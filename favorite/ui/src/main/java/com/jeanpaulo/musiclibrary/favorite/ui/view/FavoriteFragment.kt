@@ -173,10 +173,10 @@ class FavoriteFragment : BaseMvvmFragment() {
                 SongOption.REMOVE_FAVORITE,
             ),
             object : SongOptionsBottomSheet.MusicOptionListener {
-                override fun onOptionSelected(searchOption: SongOption) {
+                override fun onOptionSelected(searchOption: SongOption, song: SongUIModel) {
                     when (searchOption) {
                         SongOption.REMOVE_FAVORITE -> {
-                            viewModel.remove(music)
+                            viewModel.remove(song)
                         }
 
                         else -> {}

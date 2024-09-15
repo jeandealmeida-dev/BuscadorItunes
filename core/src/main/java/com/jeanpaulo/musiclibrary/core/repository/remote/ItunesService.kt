@@ -22,6 +22,15 @@ interface ItunesService {
     @GET("lookup")
     fun lookUp(
         @Query("id") id: Long,
-        @Query("entity") entity: String
+        @Query("entity") entity: String,
+        @Query("limit") limit: Int? = null,
+        @Query("sort") sort: String? = null,
     ): Single<LookUpResponse>
+
+    companion object {
+        const val SONG_ENTITY = "song"
+        const val ARTIST_ENTITY = "musicArtist"
+        const val RECENT_SORT = "recent"
+        const val POPULAR_SORT = "popular"
+    }
 }

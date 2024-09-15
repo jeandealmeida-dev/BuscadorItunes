@@ -64,11 +64,11 @@ class SongOptionsBottomSheet(
         }
 
         binding.content.favoriteButton.setOnClickListener {
-            listener.onOptionSelected(SongOption.ADD_FAVORITE)
+            listener.onOptionSelected(SongOption.ADD_FAVORITE, song)
         }
 
         val listAdapter = SongOptionsAdapter(options) {
-            listener.onOptionSelected(it)
+            listener.onOptionSelected(it, song)
             dismiss()
         }
 
@@ -86,7 +86,7 @@ class SongOptionsBottomSheet(
 
     interface MusicOptionListener {
 
-        fun onOptionSelected(searchOption: SongOption)
+        fun onOptionSelected(searchOption: SongOption, song: SongUIModel)
     }
 
     companion object {

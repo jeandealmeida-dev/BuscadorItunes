@@ -7,4 +7,5 @@
     <string name="search_error_message">Houston, parece que temos um problema!\nTente novamente mais tarde! :)</string>
 
     <string name="search_add_favorite_success">Salvo em favoritos!</string>
+    <string name="menu_search">Pesquisar</string>
 </resources>
