@@ -3,6 +3,9 @@ package com.jeanpaulo.musiclibrary.playlist.ui.viewmodel
 import androidx.lifecycle.*
 import com.jeanpaulo.musiclibrary.core.domain.model.Playlist
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
+import com.jeanpaulo.musiclibrary.commons.di.qualifiers.IOScheduler
+import com.jeanpaulo.musiclibrary.commons.di.qualifiers.MainScheduler
+import com.jeanpaulo.musiclibrary.core.BuildConfig
 import com.jeanpaulo.musiclibrary.playlist.domain.PlaylistInteractor
 import io.reactivex.rxjava3.core.Scheduler
 import java.util.concurrent.TimeUnit
@@ -23,8 +26,8 @@ sealed class PlaylistDeleteState {
 }
 
 class PlaylistViewModel @Inject constructor(
-    @Named("MainScheduler") private val mainScheduler: Scheduler,
-    @Named("IOScheduler") private val ioScheduler: Scheduler,
+    @MainScheduler private val mainScheduler: Scheduler,
+    @IOScheduler private val ioScheduler: Scheduler,
     private val interactor: PlaylistInteractor,
 ) : BaseViewModel() {
 
@@ -34,11 +37,6 @@ class PlaylistViewModel @Inject constructor(
     private val _playlistDeleteState = MutableLiveData<PlaylistDeleteState>()
     val playlistDeleteState: LiveData<PlaylistDeleteState> get() = _playlistDeleteState
 
-    override fun onCreate() {
-        super.onCreate()
-        getPlaylistList()
-    }
-
     fun refresh() {
         getPlaylistList()
     }
@@ -47,11 +45,11 @@ class PlaylistViewModel @Inject constructor(
         compositeDisposable.add(
             interactor.deletePlaylist(playlistId)
                 .subscribeOn(ioScheduler)
-                .delay(500, TimeUnit.MILLISECONDS)
-                .observeOn(mainScheduler)
                 .doOnSubscribe {
                     _playlistDeleteState.value = PlaylistDeleteState.Loading
                 }
+                .observeOn(mainScheduler)
+                .delay(BuildConfig.DEFAULT_DELAY, TimeUnit.MILLISECONDS)
                 .subscribe({
                     _playlistDeleteState.value = PlaylistDeleteState.Success
                 }, {
@@ -64,11 +62,11 @@ class PlaylistViewModel @Inject constructor(
         compositeDisposable.add(
             interactor.getPlaylist()
                 .subscribeOn(mainScheduler)
-                .delay(500, TimeUnit.MILLISECONDS)
-                .observeOn(ioScheduler)
                 .doOnSubscribe {
                     _playlistListState.postValue(PlaylistListState.Loading)
                 }
+                .observeOn(ioScheduler)
+                .delay(BuildConfig.DEFAULT_DELAY, TimeUnit.MILLISECONDS)
                 .subscribe({ playlistList ->
                     _playlistListState.postValue(
                         PlaylistListState.Success(playlistList)

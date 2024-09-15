@@ -18,8 +18,11 @@ package com.jeanpaulo.musiclibrary.playlist.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.jeanpaulo.musiclibrary.core.domain.model.Playlist
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
+import com.jeanpaulo.musiclibrary.commons.di.qualifiers.IOScheduler
+import com.jeanpaulo.musiclibrary.commons.di.qualifiers.MainScheduler
+import com.jeanpaulo.musiclibrary.core.BuildConfig
+import com.jeanpaulo.musiclibrary.core.domain.model.Playlist
 import com.jeanpaulo.musiclibrary.playlist.domain.PlaylistCreateInteractor
 import io.reactivex.rxjava3.core.Scheduler
 import java.util.concurrent.TimeUnit
@@ -33,8 +36,8 @@ sealed class PlaylistCreateState {
 }
 
 class PlaylistCreateViewModel @Inject constructor(
-    @Named("MainScheduler") private val mainScheduler: Scheduler,
-    @Named("IOScheduler") private val ioScheduler: Scheduler,
+    @MainScheduler private val mainScheduler: Scheduler,
+    @IOScheduler private val ioScheduler: Scheduler,
     private val playlistInteractor: PlaylistCreateInteractor,
 ) : BaseViewModel() {
 
@@ -50,11 +53,11 @@ class PlaylistCreateViewModel @Inject constructor(
                 )
             )
                 .subscribeOn(ioScheduler)
-                .delay(500, TimeUnit.MILLISECONDS)
-                .observeOn(mainScheduler)
                 .doOnSubscribe {
                     _playlistCreateState.value = PlaylistCreateState.Loading
                 }
+                .observeOn(mainScheduler)
+                .delay(BuildConfig.DEFAULT_DELAY, TimeUnit.MILLISECONDS)
                 .subscribe({ playlistId ->
                     _playlistCreateState.value = PlaylistCreateState.Success(playlistId)
                 }, {

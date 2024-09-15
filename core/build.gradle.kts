@@ -4,6 +4,36 @@ plugins {
     id(ProjectPlugins.Parcelize) // required to use parcelize
 }
 
+android {
+    buildTypes {
+        debug {
+            buildConfigField(
+                "long",
+                "DEFAULT_DELAY",
+                "${project.rootProject.extra["DEFAULT_DELAY_DEBUG"]}"
+            )
+            buildConfigField(
+                "String",
+                "API_BASE_URL",
+                "\"${project.rootProject.extra["API_BASE_URL"]}\""
+            )
+        }
+
+        release {
+            buildConfigField(
+                "long",
+                "DEFAULT_DELAY",
+                "${project.rootProject.extra["DEFAULT_DELAY_RELEASE"]}"
+            )
+            buildConfigField(
+                "String",
+                "API_BASE_URL",
+                "\"${project.rootProject.extra["API_BASE_URL"]}\""
+            )
+        }
+    }
+}
+
 addDaggerDependencies()
 addRoomDependencies()
 addRetrofitDependencies()

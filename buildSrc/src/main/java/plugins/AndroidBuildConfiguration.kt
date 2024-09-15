@@ -30,8 +30,6 @@ object AndroidBuildConfiguration {
                 vectorDrawables.useSupportLibrary = true
                 testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-                buildConfigField("String", "API_BASE_URL", "\"${project.rootProject.extra["API_BASE_URL"]}\"")
-
                 val defaultProguardFilePath = "proguard-rules.pro"
                 when (this) {
                     is LibraryExtension -> consumerProguardFiles(defaultProguardFilePath)
@@ -40,8 +38,6 @@ object AndroidBuildConfiguration {
                             isDebuggable = true
                             isMinifyEnabled = false
                             enableUnitTestCoverage = true
-
-                            buildConfigField("long", "DEFAULT_DELAY", project.rootProject.extra["DEFAULT_DELAY_DEBUG"] as String)
                         }
                         getByName("release") {
                             isDebuggable = false

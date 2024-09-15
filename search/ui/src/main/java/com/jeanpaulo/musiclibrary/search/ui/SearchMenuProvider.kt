@@ -72,7 +72,7 @@ class SearchMenuProvider(
     companion object {
         const val TAG = "SearchFragment"
 
-        const val SEARCH_DEBOUNCE_MS = 800L
+        const val SEARCH_DEBOUNCE_MS = 2000L
         const val SEARCH_COUNT_CHAR_FILTER = 2
     }
 }

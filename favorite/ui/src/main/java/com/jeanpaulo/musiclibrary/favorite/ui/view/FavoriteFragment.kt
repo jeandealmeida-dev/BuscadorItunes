@@ -5,13 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
+import com.jeanpaulo.musiclibrary.commons.extensions.addDivider
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.gone
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.showTopSnackbar
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.visible
-import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
 import com.jeanpaulo.musiclibrary.core.ui.adapter.SongListAdapter
 import com.jeanpaulo.musiclibrary.core.ui.adapter.SongListListener
@@ -97,20 +95,8 @@ class FavoriteFragment : BaseMvvmFragment() {
                 }
 
             })
-        binding.listFavorite.layoutManager =
-            CustomLinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.listFavorite.adapter = listAdapter
-
-        /*val itemDecorator =
-                DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-            ContextCompat.getDrawable(this, R.drawable.divider)?.let { itemDecorator.setDrawable(it) }*/
-
-        val itemDecorator = DividerItemDecoration(
-            requireContext(),
-            DividerItemDecoration.VERTICAL
-        )
-
-        binding.listFavorite.addItemDecoration(itemDecorator)
+        binding.listFavorite.addDivider()
     }
 
     private fun setupListeners() {

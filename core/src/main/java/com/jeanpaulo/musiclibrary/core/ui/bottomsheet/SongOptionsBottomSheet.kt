@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
 import com.jeanpaulo.musiclibrary.commons.R
+import com.jeanpaulo.musiclibrary.commons.extensions.addDivider
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.gone
 import com.jeanpaulo.musiclibrary.core.databinding.OptionsBottomSheetBinding
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
@@ -30,31 +28,27 @@ class SongOptionsBottomSheet(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = OptionsBottomSheetBinding.inflate(layoutInflater, container, false)
+    ) = OptionsBottomSheetBinding.inflate(layoutInflater, container, false).also {
+        binding = it
+    }.root
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.bottomSheet.setBackgroundResource(R.drawable.bottom_sheet_background)
         // 86dp
         bottomSheetPeekHeight = resources
             .getDimensionPixelSize(com.jeanpaulo.musiclibrary.core.R.dimen.bottom_sheet_default_peek_height)
-
         setupWidgets()
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         setupBehavior()
     }
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
-    fun setupBehavior() {
+    private fun setupBehavior() {
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
-        //bottomSheetBehavior.skipCollapsed = true //Avoid collapsed state
-//        bottomSheetBehavior.peekHeight = bottomSheetPeekHeight
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
-    fun setupWidgets() {
+    private fun setupWidgets() {
         binding.content.itemMusic.apply {
             musicName.text = song.musicName
             artistName.text = song.artistName
@@ -67,21 +61,11 @@ class SongOptionsBottomSheet(
             listener.onOptionSelected(SongOption.ADD_FAVORITE, song)
         }
 
-        val listAdapter = SongOptionsAdapter(options) {
+        binding.content.options.adapter = SongOptionsAdapter(options) {
             listener.onOptionSelected(it, song)
             dismiss()
         }
-
-        binding.content.options.layoutManager =
-            CustomLinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        binding.content.options.adapter = listAdapter
-
-        val itemDecorator = DividerItemDecoration(
-            requireContext(),
-            DividerItemDecoration.VERTICAL
-        )
-
-        binding.content.options.addItemDecoration(itemDecorator)
+        binding.content.options.addDivider()
     }
 
     interface MusicOptionListener {

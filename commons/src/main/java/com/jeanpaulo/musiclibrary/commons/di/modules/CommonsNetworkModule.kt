@@ -13,14 +13,6 @@ import javax.inject.Named
 class CommonsNetworkModule {
 
     @Provides
-    @Named("IOScheduler")
-    fun provideIOScheduler(): Scheduler = Schedulers.io()
-
-    @Provides
-    @Named("MainScheduler")
-    fun provideMainScheduler(): Scheduler = AndroidSchedulers.mainThread()
-
-    @Provides
     @IOScheduler
     fun provideIOSchedulers(): Scheduler = Schedulers.io()
 

@@ -7,7 +7,7 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
-class ActivityVMFragmentDelegate<T : com.jeanpaulo.musiclibrary.commons.base.BaseViewModel>(
+class ActivityVMFragmentDelegate<T : BaseViewModel>(
     private val clazz: KClass<T>,
     private val vmFactory: () -> ViewModelProvider.Factory
 ) : ReadOnlyProperty<Fragment, T> {
@@ -19,9 +19,7 @@ class ActivityVMFragmentDelegate<T : com.jeanpaulo.musiclibrary.commons.base.Bas
             it
         } ?: run {
             val activity = thisRef.requireActivity()
-            ViewModelProvider(activity, vmFactory.invoke()).get(clazz.java).apply {
-                activity.lifecycle.addObserver(this)
-            }.also {
+            ViewModelProvider(activity, vmFactory.invoke())[clazz.java].also {
                 cache = it
             }
         }

@@ -13,7 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.lang.reflect.Type
-import java.util.*
+import java.util.Date
 import javax.inject.Singleton
 
 @Module

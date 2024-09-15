@@ -13,25 +13,29 @@ import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmActivity
 import com.jeanpaulo.musiclibrary.core.domain.model.Song
 import com.jeanpaulo.musiclibrary.player.mp.MPEvents
 import com.jeanpaulo.musiclibrary.player.mp.MPReceiver
-import com.jeanpaulo.musiclibrary.settings.ui.SettingsActivity
 import com.jeanpaulo.musiclibrary.player.presentation.FullPlayerBottomSheet
 import com.jeanpaulo.musiclibrary.player.presentation.MiniPlayerBottomSheet
+import com.jeanpaulo.musiclibrary.settings.ui.SettingsActivity
 
 
 class MainActivity : BaseMvvmActivity() {
 
-    private lateinit var binding: ActivityMusicBinding
-
-    private lateinit var fullPlayerDialog: FullPlayerBottomSheet
-    private lateinit var miniPlayerBottomSheet: MiniPlayerBottomSheet
+    private var _binding: ActivityMusicBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMusicBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(ActivityMusicBinding.inflate(layoutInflater).apply {
+            _binding = this
+        }.root)
 
         setupNavigation()
         setupPlayers()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     private fun setupNavigation() {
@@ -40,7 +44,7 @@ class MainActivity : BaseMvvmActivity() {
 
         binding.navView.setupWithNavController(navController)
         binding.navView.setOnItemSelectedListener { item ->
-            fullPlayerDialog.hide()
+            fullPlayerDialog?.hide()
 
             when (item.itemId) {
                 R.id.nav_settings -> {
@@ -65,6 +69,11 @@ class MainActivity : BaseMvvmActivity() {
                 super.onSupportNavigateUp()
     }
 
+    // Players
+
+    private var fullPlayerDialog: FullPlayerBottomSheet? = null
+    private var miniPlayerBottomSheet: MiniPlayerBottomSheet? = null
+
     private fun setupPlayers() {
         setupMiniPlayer()
         setupFullPlayer()
@@ -75,7 +84,7 @@ class MainActivity : BaseMvvmActivity() {
             binding = binding.fullPlayer,
             listener = object : FullPlayerBottomSheet.FullPlayerBottomSheetListener {
                 override fun onDismiss() {
-                    miniPlayerBottomSheet.expand()
+                    miniPlayerBottomSheet?.expand()
                 }
 
             }
@@ -87,7 +96,7 @@ class MainActivity : BaseMvvmActivity() {
             binding = binding.miniPlayer,
             listener = object : MiniPlayerBottomSheet.MiniPlayerBottomSheetListener {
                 override fun onPlayerPressed() {
-                    fullPlayerDialog.expand()
+                    fullPlayerDialog?.expand()
                 }
             })
     }
@@ -117,31 +126,31 @@ class MainActivity : BaseMvvmActivity() {
         }, object : MPEvents<Song>() {
 
             override fun onPlay() {
-                miniPlayerBottomSheet.isPlaying()
-                fullPlayerDialog.isPlaying()
+                miniPlayerBottomSheet?.isPlaying()
+                fullPlayerDialog?.isPlaying()
             }
 
             override fun onPlaySong(currentSong: Song, hasNext: Boolean, hasPrevious: Boolean) {
-                miniPlayerBottomSheet.expand()
+                miniPlayerBottomSheet?.expand()
 
                 val mpSong = currentSong.toMPSong()
 
-                miniPlayerBottomSheet.updatePlayer(mpSong)
-                fullPlayerDialog.updatePlayer(mpSong, hasNext, hasPrevious)
+                miniPlayerBottomSheet?.updatePlayer(mpSong)
+                fullPlayerDialog?.updatePlayer(mpSong, hasNext, hasPrevious)
             }
 
             override fun onPause() {
-                miniPlayerBottomSheet.isPlaying(playing = false)
-                fullPlayerDialog.isPlaying(playing = false)
+                miniPlayerBottomSheet?.isPlaying(playing = false)
+                fullPlayerDialog?.isPlaying(playing = false)
             }
 
             override fun onStop() {
-                miniPlayerBottomSheet.isPlaying(playing = false)
-                fullPlayerDialog.isPlaying(playing = false)
+                miniPlayerBottomSheet?.isPlaying(playing = false)
+                fullPlayerDialog?.isPlaying(playing = false)
             }
 
             override fun onUpdateCounter(counter: Long) {
-                fullPlayerDialog.updateCounter(counter.toInt())
+                fullPlayerDialog?.updateCounter(counter.toInt())
             }
         })
 }
