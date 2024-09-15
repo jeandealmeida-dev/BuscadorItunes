@@ -20,7 +20,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setupSettings()
     }
 
-    fun setupSettings() {
+    private fun setupSettings() {
         findPreference<ListPreference>(getString(R.string.preference_theme_key))
             ?.setOnPreferenceChangeListener { _, newValue ->
                 applyTheme(resources, newValue as String?)

@@ -1,34 +1,33 @@
 package com.jeanpaulo.musiclibrary.search.ui.viewmodel
 
 import android.content.Context
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
+import com.jeanpaulo.musiclibrary.commons.di.qualifiers.IOScheduler
+import com.jeanpaulo.musiclibrary.commons.di.qualifiers.MainScheduler
+import com.jeanpaulo.musiclibrary.commons.view.ViewState
+import com.jeanpaulo.musiclibrary.core.BuildConfig
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
 import com.jeanpaulo.musiclibrary.player.mp.MPService
 import com.jeanpaulo.musiclibrary.search.domain.SearchInteractor
 import io.reactivex.rxjava3.core.Scheduler
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
 
-sealed class SearchState {
-    object Loading : SearchState()
-    object Error : SearchState()
-    data class Success(val musicList: PagingData<SongUIModel>) : SearchState()
-    class Options(val music: SongUIModel) : SearchState()
-}
-
 class SearchViewModel @Inject constructor(
-    @Named("MainScheduler") private val mainScheduler: Scheduler,
-    @Named("IOScheduler") private val ioScheduler: Scheduler,
+    @MainScheduler private val mainScheduler: Scheduler,
+    @IOScheduler private val ioScheduler: Scheduler,
     private val searchInteractor: SearchInteractor,
     private val favoriteInteractor: FavoriteInteractor,
 ) : BaseViewModel() {
 
-    private val _searchingState = MutableLiveData<SearchState>()
-    val searchingState: LiveData<SearchState> get() = _searchingState
+    private val _searchingState = MutableLiveData<ViewState<PagingData<SongUIModel>>>()
+    val searchingState: LiveData<ViewState<PagingData<SongUIModel>>> get() = _searchingState
 
     fun init() {
         setCurrentQuery(DEFAULT_QUERY)
@@ -38,32 +37,21 @@ class SearchViewModel @Inject constructor(
         compositeDisposable.add(
             searchInteractor.getSearchResults(query)
                 .subscribeOn(ioScheduler)
-                //.delay(500, TimeUnit.MILLISECONDS)
-                .observeOn(mainScheduler)
                 .doOnSubscribe {
-                    _searchingState.value = SearchState.Loading
+                    _searchingState.postValue(ViewState.Loading)
                 }
+                .observeOn(mainScheduler)
                 .map { paged ->
                     paged.map { SongUIModel.fromModel(it) }
                 }
-                .subscribe(
-                    { result ->
-                        _searchingState.postValue(SearchState.Success(result))
-                    },
-                    { error ->
-                        _searchingState.postValue(SearchState.Error)
-                    }
-                )
+                .delay(BuildConfig.DEFAULT_DELAY, TimeUnit.MILLISECONDS)
+                .subscribe({ result ->
+                    _searchingState.postValue(ViewState.Success(result))
+                }, {
+                    it.printStackTrace()
+                    _searchingState.postValue(ViewState.Error)
+                })
         )
-    }
-
-    fun playMusic(context: Context, song: SongUIModel) {
-        val mpSong = song.convertToSong().toMPSong()
-        MPService.playSongList(context, listOf(mpSong))
-    }
-
-    fun options(song: SongUIModel) {
-        _searchingState.value = SearchState.Options(song)
     }
 
     fun addInFavorite(song: SongUIModel) {
@@ -77,6 +65,11 @@ class SearchViewModel @Inject constructor(
                     })
             )
         }
+    }
+
+    fun playMusic(context: Context, song: SongUIModel) {
+        val mpSong = song.convertToSong().toMPSong()
+        MPService.playSongList(context, listOf(mpSong))
     }
 
     companion object {

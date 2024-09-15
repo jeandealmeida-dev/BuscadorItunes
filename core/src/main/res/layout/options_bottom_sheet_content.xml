@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:padding="@dimen/margin_sm_mid"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_sm_mid">
 
     <!-- Drag handle for accessibility -->
     <com.google.android.material.bottomsheet.BottomSheetDragHandleView
         android:id="@+id/drag_handle"
         style="@style/AppBottomSheetDragHandle"
         android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <include
         android:id="@+id/item_music"
@@ -30,10 +31,10 @@
         android:layout_alignTop="@+id/item_music"
         android:layout_alignBottom="@+id/item_music"
         android:layout_alignParentRight="true"
-        android:background="@null"
         android:layout_marginRight="@dimen/margin_md"
-        android:buttonTint="?colorAccent"
-        android:button="@drawable/favorite_button_selector" />
+        android:background="@null"
+        android:button="@drawable/favorite_button_selector"
+        android:buttonTint="?colorAccent" />
 
     <View
         android:id="@+id/separator"
@@ -47,8 +48,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/separator"
-        android:paddingTop="@dimen/margin_sm"
         android:paddingHorizontal="@dimen/margin_md"
+        android:paddingTop="@dimen/margin_sm"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="3"
         tools:listitem="@layout/option_item" />
 

@@ -16,15 +16,15 @@ class SearchLoadStateAdapter(private val retry: () -> Unit) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadStateViewHolder {
-        val binding =
+
+
+        return LoadStateViewHolder(
             ItemListFooterBinding.inflate(
-                LayoutInflater
-                    .from(parent.context),
+                LayoutInflater.from(parent.context),
                 parent,
                 false
             )
-
-        return LoadStateViewHolder(binding)
+        )
     }
 
     inner class LoadStateViewHolder(private val binding: ItemListFooterBinding) :
@@ -37,10 +37,10 @@ class SearchLoadStateAdapter(private val retry: () -> Unit) :
         }
 
         fun bind(loadState: LoadState) {
-            binding.apply {
+            with(binding) {
                 progressBar.isVisible = loadState is LoadState.Loading
-                retryButton.isVisible = loadState !is LoadState.Loading
-                txtError.isVisible = loadState !is LoadState.Loading
+                retryButton.isVisible = loadState is LoadState.Error
+                txtError.isVisible = loadState is LoadState.Error
             }
         }
     }

@@ -4,7 +4,10 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
+import com.jeanpaulo.musiclibrary.commons.di.qualifiers.IOScheduler
+import com.jeanpaulo.musiclibrary.commons.di.qualifiers.MainScheduler
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
+import com.jeanpaulo.musiclibrary.core.BuildConfig
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
@@ -22,18 +25,13 @@ sealed class FavoriteState {
 }
 
 class FavoriteViewModel @Inject constructor(
-    @Named("MainScheduler") private val mainScheduler: Scheduler,
-    @Named("IOScheduler") private val ioScheduler: Scheduler,
+    @MainScheduler private val mainScheduler: Scheduler,
+    @IOScheduler private val ioScheduler: Scheduler,
     private val interactor: FavoriteInteractor
 ) : BaseViewModel() {
 
     private val _favoriteState = MutableLiveData<FavoriteState>()
     val favoriteState: LiveData<FavoriteState> get() = _favoriteState
-
-    override fun onCreate() {
-        super.onCreate()
-        getFavoriteList()
-    }
 
     fun refresh() {
         getFavoriteList()
@@ -43,12 +41,12 @@ class FavoriteViewModel @Inject constructor(
         compositeDisposable.add(
             interactor.getFavoriteMusics()
                 .subscribeOn(ioScheduler)
-                .observeOn(mainScheduler)
                 .doOnSubscribe {
                     val loading = FavoriteState.Wrapper(ViewState.Loading)
                     _favoriteState.postValue(loading)
                 }
-                .delay(500, TimeUnit.MILLISECONDS)
+                .observeOn(mainScheduler)
+                .delay(BuildConfig.DEFAULT_DELAY, TimeUnit.MILLISECONDS)
                 .subscribe({ favorites ->
                     if (favorites.isEmpty()) {
                         val emptyState = FavoriteState.Wrapper(ViewState.Empty)
