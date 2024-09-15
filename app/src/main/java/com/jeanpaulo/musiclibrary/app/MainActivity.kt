@@ -20,19 +20,22 @@ import com.jeanpaulo.musiclibrary.settings.ui.SettingsActivity
 
 class MainActivity : BaseMvvmActivity() {
 
-    private val binding: ActivityMusicBinding by lazy {
-        ActivityMusicBinding.inflate(layoutInflater)
-    }
-
-    private var fullPlayerDialog: FullPlayerBottomSheet? = null
-    private var miniPlayerBottomSheet: MiniPlayerBottomSheet? = null
+    private var _binding: ActivityMusicBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        setContentView(ActivityMusicBinding.inflate(layoutInflater).apply {
+            _binding = this
+        }.root)
 
         setupNavigation()
         setupPlayers()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     private fun setupNavigation() {
@@ -65,6 +68,11 @@ class MainActivity : BaseMvvmActivity() {
         return findNavController(R.id.nav_host_fragment).navigateUp() ||
                 super.onSupportNavigateUp()
     }
+
+    // Players
+
+    private var fullPlayerDialog: FullPlayerBottomSheet? = null
+    private var miniPlayerBottomSheet: MiniPlayerBottomSheet? = null
 
     private fun setupPlayers() {
         setupMiniPlayer()

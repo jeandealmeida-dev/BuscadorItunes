@@ -2,6 +2,7 @@ package com.jeanpaulo.musiclibrary.playlist.ui.fragments
 
 import android.os.Bundle
 import android.view.*
+import androidx.fragment.app.commit
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
@@ -93,11 +94,11 @@ class PlaylistFragment : BaseMvvmFragment() {
 
     private fun setupFavoriteContainer() {
         parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.favorite_container, FavoriteContainerFragment {
-                navigateToFavorites()
-            })
-            .commit()
+            .commit {
+                replace(R.id.favorite_container, FavoriteContainerFragment {
+                    navigateToFavorites()
+                })
+            }
     }
 
     private fun setupListAdapter() {

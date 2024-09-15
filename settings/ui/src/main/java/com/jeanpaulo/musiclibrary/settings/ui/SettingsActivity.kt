@@ -2,6 +2,7 @@ package com.jeanpaulo.musiclibrary.settings.ui
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.fragment.app.commit
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmActivity
 import com.jeanpaulo.musiclibrary.settings.ui.databinding.ActivitySettingsBinding
 
@@ -13,7 +14,7 @@ class SettingsActivity : BaseMvvmActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
+        setContentView(requireNotNull(binding).root)
 
         setupToolbar()
         setupFragment()
@@ -30,10 +31,9 @@ class SettingsActivity : BaseMvvmActivity() {
     }
 
     private fun setupFragment() {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.container, SettingsFragment())
-            .commit()
+        supportFragmentManager.commit {
+            replace(R.id.container, SettingsFragment())
+        }
     }
 
     private fun setupToolbar() {
