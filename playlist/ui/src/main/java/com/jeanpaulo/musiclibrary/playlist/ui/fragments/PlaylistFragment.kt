@@ -41,6 +41,8 @@ class PlaylistFragment : BaseMvvmFragment() {
         super.onViewCreated(view, savedInstanceState)
         setupListeners()
         setupWidgets()
+
+        viewModel.getPlaylistList()
     }
 
     override fun onDestroyView() {

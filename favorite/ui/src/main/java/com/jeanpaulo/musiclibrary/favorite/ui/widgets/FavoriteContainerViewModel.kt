@@ -3,6 +3,8 @@ package com.jeanpaulo.musiclibrary.favorite.ui.widgets
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
+import com.jeanpaulo.musiclibrary.commons.di.qualifiers.IOScheduler
+import com.jeanpaulo.musiclibrary.commons.di.qualifiers.MainScheduler
 import com.jeanpaulo.musiclibrary.commons.exceptions.EmptyResultException
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
 import com.jeanpaulo.musiclibrary.core.BuildConfig
@@ -13,8 +15,8 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class FavoriteContainerViewModel @Inject constructor(
-    @Named("MainScheduler") private val mainScheduler: Scheduler,
-    @Named("IOScheduler") private val ioScheduler: Scheduler,
+    @MainScheduler private val mainScheduler: Scheduler,
+    @IOScheduler private val ioScheduler: Scheduler,
     private val interactor: FavoriteInteractor
 ) : BaseViewModel() {
 

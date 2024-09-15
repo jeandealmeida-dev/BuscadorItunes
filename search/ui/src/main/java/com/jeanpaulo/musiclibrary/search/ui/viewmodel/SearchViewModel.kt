@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
+import com.jeanpaulo.musiclibrary.commons.di.qualifiers.IOScheduler
+import com.jeanpaulo.musiclibrary.commons.di.qualifiers.MainScheduler
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
 import com.jeanpaulo.musiclibrary.core.BuildConfig
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
@@ -18,8 +20,8 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class SearchViewModel @Inject constructor(
-    @Named("MainScheduler") private val mainScheduler: Scheduler,
-    @Named("IOScheduler") private val ioScheduler: Scheduler,
+    @MainScheduler private val mainScheduler: Scheduler,
+    @IOScheduler private val ioScheduler: Scheduler,
     private val searchInteractor: SearchInteractor,
     private val favoriteInteractor: FavoriteInteractor,
 ) : BaseViewModel() {
