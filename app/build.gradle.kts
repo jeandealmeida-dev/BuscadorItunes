@@ -37,6 +37,11 @@ dependencies {
     implementation(project(ProjectDependencies.Module.Domain.settings))
     implementation(project(ProjectDependencies.Module.Data.settings))
 
+    // → Artist
+    implementation(project(ProjectDependencies.Module.UI.artist))
+    implementation(project(ProjectDependencies.Module.Domain.artist))
+    implementation(project(ProjectDependencies.Module.Data.artist))
+
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))
     implementation(project(ProjectDependencies.Module.player))

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_artist_label">Artista</string>
+    <string name="artist_error">Erro ao consultar detalhes desse artista!</string>
+    <string name="artist_popular_musics">Popular</string>
+</resources>

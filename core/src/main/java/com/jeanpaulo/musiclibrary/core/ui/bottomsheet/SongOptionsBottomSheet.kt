@@ -58,11 +58,11 @@ class SongOptionsBottomSheet(
         }
 
         binding.content.favoriteButton.setOnClickListener {
-            listener.onOptionSelected(SongOption.ADD_FAVORITE)
+            listener.onOptionSelected(SongOption.ADD_FAVORITE, song)
         }
 
         binding.content.options.adapter = SongOptionsAdapter(options) {
-            listener.onOptionSelected(it)
+            listener.onOptionSelected(it, song)
             dismiss()
         }
         binding.content.options.addDivider()
@@ -70,7 +70,7 @@ class SongOptionsBottomSheet(
 
     interface MusicOptionListener {
 
-        fun onOptionSelected(searchOption: SongOption)
+        fun onOptionSelected(searchOption: SongOption, song: SongUIModel)
     }
 
     companion object {

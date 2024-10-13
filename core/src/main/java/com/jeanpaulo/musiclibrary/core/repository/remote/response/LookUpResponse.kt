@@ -5,6 +5,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class LookUpResponse(
-    @Json(name = "results") val result: List<MusicResponse>,
+    @Json(name = "results") val result: List<*>,
     @Json(name = "resultCount") val count: Int
 )

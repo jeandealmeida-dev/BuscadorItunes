@@ -1,7 +1,10 @@
 package com.jeanpaulo.musiclibrary.playlist.ui.fragments
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.commit
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -97,9 +100,15 @@ class PlaylistFragment : BaseMvvmFragment() {
     private fun setupFavoriteContainer() {
         parentFragmentManager
             .commit {
-                replace(R.id.favorite_container, FavoriteContainerFragment {
-                    navigateToFavorites()
-                })
+                replace(
+                    R.id.favorite_container,
+                    FavoriteContainerFragment.newInstance(object :
+                        FavoriteContainerFragment.Listener {
+                        override fun onClickEvent() {
+                            navigateToFavorites()
+                        }
+                    })
+                )
             }
     }
 

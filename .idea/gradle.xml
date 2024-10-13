@@ -4,14 +4,27 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="testRunner" value="GRADLE" />
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/buildSrc" name="buildSrc">
+                <projects>
+                  <project path="$PROJECT_DIR$/buildSrc" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="JDK" />
+        <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/artist" />
+            <option value="$PROJECT_DIR$/artist/data" />
+            <option value="$PROJECT_DIR$/artist/domain" />
+            <option value="$PROJECT_DIR$/artist/ui" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/commons" />
             <option value="$PROJECT_DIR$/core" />
@@ -23,6 +36,7 @@
             <option value="$PROJECT_DIR$/music/data" />
             <option value="$PROJECT_DIR$/music/domain" />
             <option value="$PROJECT_DIR$/music/ui" />
+            <option value="$PROJECT_DIR$/player" />
             <option value="$PROJECT_DIR$/playlist" />
             <option value="$PROJECT_DIR$/playlist/data" />
             <option value="$PROJECT_DIR$/playlist/domain" />
@@ -37,6 +51,7 @@
             <option value="$PROJECT_DIR$/settings/ui" />
           </set>
         </option>
+        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

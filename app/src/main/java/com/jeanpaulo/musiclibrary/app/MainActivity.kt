@@ -21,7 +21,7 @@ import com.jeanpaulo.musiclibrary.settings.ui.SettingsActivity
 class MainActivity : BaseMvvmActivity() {
 
     private var _binding: ActivityMusicBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = requireNotNull(_binding)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,25 +42,28 @@ class MainActivity : BaseMvvmActivity() {
         val fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
         val navController = if (fragment is NavHostFragment) fragment.navController else return
 
-        binding.navView.setupWithNavController(navController)
-        binding.navView.setOnItemSelectedListener { item ->
-            fullPlayerDialog?.hide()
+        binding.navView.apply {
+            setupWithNavController(navController)
 
-            when (item.itemId) {
-                R.id.nav_settings -> {
-                    startActivity(Intent(this, SettingsActivity::class.java))
-                    return@setOnItemSelectedListener true
-                }
+            setOnItemSelectedListener { item ->
+                fullPlayerDialog?.hide()
 
-                else -> {
-                    onNavDestinationSelected(item, navController)
-                    return@setOnItemSelectedListener true
+                when (item.itemId) {
+                    R.id.nav_settings -> {
+                        startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+                        return@setOnItemSelectedListener true
+                    }
+
+                    else -> {
+                        onNavDestinationSelected(item, navController)
+                        return@setOnItemSelectedListener true
+                    }
                 }
             }
-        }
 
-        binding.navView.setOnItemReselectedListener { menu ->
-            findNavController(R.id.nav_host_fragment).clearBackStack(menu.itemId)
+            binding.navView.setOnItemReselectedListener { menu ->
+                findNavController(R.id.nav_host_fragment).clearBackStack(menu.itemId)
+            }
         }
     }
 

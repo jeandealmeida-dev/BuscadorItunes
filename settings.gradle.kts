@@ -5,6 +5,11 @@ include(
     ":commons",
     ":player",
 
+    ":artist",
+    ":artist:ui",
+    ":artist:data",
+    ":artist:domain",
+
     ":playlist",
     ":playlist:ui",
     ":playlist:data",

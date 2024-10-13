@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.google.android.material.snackbar.Snackbar
@@ -21,15 +23,16 @@ import com.jeanpaulo.musiclibrary.core.ui.adapter.SongListSkeleton
 import com.jeanpaulo.musiclibrary.core.ui.bottomsheet.SongOption
 import com.jeanpaulo.musiclibrary.core.ui.bottomsheet.SongOptionsBottomSheet
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
+import com.jeanpaulo.musiclibrary.player.mp.MPService
 import com.jeanpaulo.musiclibrary.search.ui.adapter.SearchAdapter
 import com.jeanpaulo.musiclibrary.search.ui.adapter.SearchLoadStateAdapter
-import com.jeanpaulo.musiclibrary.search.ui.databinding.FragMusicSearchBinding
+import com.jeanpaulo.musiclibrary.search.ui.databinding.SearchFragmentBinding
 import com.jeanpaulo.musiclibrary.search.ui.viewmodel.SearchViewModel
 
 class SearchFragment : BaseMvvmFragment() {
     val viewModel by appViewModel<SearchViewModel>()
 
-    private var _binding: FragMusicSearchBinding? = null
+    private var _binding: SearchFragmentBinding? = null
     private val binding get() = requireNotNull(_binding)
 
     private var skeleton: SongListSkeleton? = null
@@ -40,7 +43,7 @@ class SearchFragment : BaseMvvmFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = FragMusicSearchBinding.inflate(inflater, container, false).also {
+    ) = SearchFragmentBinding.inflate(inflater, container, false).also {
         _binding = it
         (requireActivity() as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
     }.root
@@ -68,27 +71,34 @@ class SearchFragment : BaseMvvmFragment() {
 
     private fun setupListAdapter() {
         searchAdapter = SearchAdapter(object : SearchAdapter.SearchListener {
-            override fun onItemPressed(music: SongUIModel) {
-                viewModel.playMusic(requireContext(), music)
+            override fun onItemPressed(music: SearchUIModel) {
+                val mpSong = music.convertToSong().toMPSong()
+                MPService.playSongList(requireContext(), listOf(mpSong))
             }
 
-            override fun onOptionsPressed(music: SongUIModel) {
-                showOptionsBottomSheet(music)
+            override fun onOptionsPressed(music: SearchUIModel) {
+                showOptionsBottomSheet(music.convertToSongUIModel())
             }
         })
 
         searchAdapter.addLoadStateListener { loadState ->
-            binding.searchErrorLayout.isVisible = loadState.source.refresh is LoadState.Error
-            binding.listSearchResult.isVisible = loadState.source.refresh is LoadState.NotLoading
+            updateAdapterVisibility(loadState)
+        }
+    }
+
+    private fun updateAdapterVisibility(loadState: CombinedLoadStates) {
+        with(binding) {
+            searchErrorLayout.isVisible = loadState.source.refresh is LoadState.Error
+            listSearchResult.isVisible = loadState.source.refresh is LoadState.NotLoading
 
             if (loadState.source.refresh is LoadState.NotLoading &&
                 loadState.append.endOfPaginationReached &&
                 searchAdapter.itemCount < 1
             ) {
-                binding.listSearchResult.gone()
-                binding.noResultLayout.visible()
+                listSearchResult.gone()
+                noResultLayout.visible()
             } else {
-                binding.noResultLayout.gone()
+                noResultLayout.gone()
             }
         }
     }
@@ -147,7 +157,7 @@ class SearchFragment : BaseMvvmFragment() {
         skeleton?.hideSkeletons()
     }
 
-    private fun handleSuccess(pagingData: PagingData<SongUIModel>) {
+    private fun handleSuccess(pagingData: PagingData<SearchUIModel>) {
         searchAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
         skeleton?.hideSkeletons()
     }
@@ -159,11 +169,12 @@ class SearchFragment : BaseMvvmFragment() {
             music,
             listOf(
                 SongOption.ADD_FAVORITE,
+                SongOption.GO_TO_ARTIST
             ),
             object : SongOptionsBottomSheet.MusicOptionListener {
-                override fun onOptionSelected(searchOption: SongOption) {
+                override fun onOptionSelected(option: SongOption, song: SongUIModel) {
                     onSearchOptionSelected(
-                        option = searchOption,
+                        option = option,
                         music = music
                     )
                 }
@@ -174,19 +185,33 @@ class SearchFragment : BaseMvvmFragment() {
     fun onSearchOptionSelected(option: SongOption, music: SongUIModel) {
         when (option) {
             SongOption.ADD_FAVORITE -> {
-                viewModel.addInFavorite(music)
-                requireContext().showTopSnackbar(
+                viewModel.addInFavorite(music.musicId)
+                showSnackBar(
                     view = binding.root,
                     text = getString(R.string.search_add_favorite_success)
                 )
             }
 
-            else -> {
-                requireContext().showTopSnackbar(
-                    view = binding.root,
-                    text = getString(option.desciption)
+            SongOption.GO_TO_ARTIST -> {
+                findNavController().navigate(
+                    SearchFragmentDirections
+                        .actionSearchFragmentToArtistFragment(
+                            artistId = music.artistId,
+                            artistName = music.artistName
+                        )
                 )
             }
+
+            else -> {
+                showSnackBar(view = binding.root, text = getString(option.desciption))
+            }
         }
+    }
+
+    private fun showSnackBar(view: View, text: String) {
+        requireContext().showTopSnackbar(
+            view = view,
+            text = text
+        )
     }
 }

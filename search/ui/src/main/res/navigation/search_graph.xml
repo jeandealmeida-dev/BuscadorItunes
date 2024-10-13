@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_search"
+    app:startDestination="@id/search_fragment_dest">
+
+    <fragment
+        android:id="@+id/search_fragment_dest"
+        android:name="com.jeanpaulo.musiclibrary.search.ui.SearchFragment"
+        android:label="@string/menu_search"
+        tools:layout="@layout/search_fragment">
+
+        <action
+            android:id="@+id/action_searchFragment_to_ArtistFragment"
+            app:destination="@id/nav_artist"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_out_to_right"
+            app:restoreState="true">
+
+            <argument
+                android:name="artistId"
+                android:defaultValue="0L"
+                app:argType="long" />
+
+            <argument
+                android:name="artistName"
+                app:argType="string"
+                app:nullable="true" />
+
+        </action>
+
+    </fragment>
+
+    <include app:graph="@navigation/artist_graph" />
+
+</navigation>

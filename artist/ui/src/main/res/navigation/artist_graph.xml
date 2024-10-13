@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_artist"
+    app:startDestination="@id/artist_fragment_dest">
+
+    <fragment
+        android:id="@+id/artist_fragment_dest"
+        android:name="com.jeanpaulo.musiclibrary.artist.ui.view.ArtistFragment"
+        android:label="@string/menu_artist_label"
+        tools:layout="@layout/artist_fragment">
+
+        <argument
+            android:name="artistId"
+            android:defaultValue="0L"
+            app:argType="long" />
+
+        <argument
+            android:name="artistName"
+            app:argType="string"
+            app:nullable="true"/>
+
+    </fragment>
+
+</navigation>

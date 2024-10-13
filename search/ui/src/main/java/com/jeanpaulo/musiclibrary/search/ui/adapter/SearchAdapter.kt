@@ -8,12 +8,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.jeanpaulo.musiclibrary.core.databinding.SongItemBinding
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
+import com.jeanpaulo.musiclibrary.search.ui.SearchUIModel
 import com.jeanpaulo.musiclibrary.search.ui.databinding.ItemListFooterBinding
 import com.squareup.picasso.Picasso
 
 class SearchAdapter(
     private val listener: SearchListener
-) : PagingDataAdapter<SongUIModel, RecyclerView.ViewHolder>(diffItemCallback) {
+) : PagingDataAdapter<SearchUIModel, RecyclerView.ViewHolder>(diffItemCallback) {
 
     private val FOOTER_VIEW_TYPE = 1
     private val MUSIC_VIEW_TYPE = 0
@@ -63,7 +64,7 @@ class SearchAdapter(
     class MusicViewHolder(private val binding: SongItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(music: SongUIModel, listener: SearchListener) {
+        fun bind(music: SearchUIModel, listener: SearchListener) {
             binding.apply {
                 musicName.text = music.musicName
                 artistName.text = music.artistName
@@ -99,20 +100,20 @@ class SearchAdapter(
     }
 
     interface SearchListener {
-        fun onItemPressed(music: SongUIModel)
-        fun onOptionsPressed(music: SongUIModel)
+        fun onItemPressed(music: SearchUIModel)
+        fun onOptionsPressed(music: SearchUIModel)
     }
 
     companion object {
 
-        private val diffItemCallback = object : DiffUtil.ItemCallback<SongUIModel>() {
+        private val diffItemCallback = object : DiffUtil.ItemCallback<SearchUIModel>() {
 
-            override fun areItemsTheSame(oldItem: SongUIModel, newItem: SongUIModel) =
+            override fun areItemsTheSame(oldItem: SearchUIModel, newItem: SearchUIModel) =
                 oldItem.musicId == newItem.musicId
 
             override fun areContentsTheSame(
-                oldItem: SongUIModel,
-                newItem: SongUIModel
+                oldItem: SearchUIModel,
+                newItem: SearchUIModel
             ) =
                 oldItem == newItem
         }
