@@ -84,7 +84,14 @@ class ArtistFragment : BaseMvvmFragment() {
             when (state) {
                 ViewState.Error -> handleError()
                 ViewState.Loading -> handleLoading()
-                is ViewState.Success -> handleSuccess(state.data)
+                is ViewState.Success -> {
+                    if (state.data.popularMusic.isEmpty()) {
+                        handleError()
+                    } else {
+                        handleSuccess(state.data)
+                    }
+                }
+
                 else -> {}
             }
         }

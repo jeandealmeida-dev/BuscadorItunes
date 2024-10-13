@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.google.android.material.snackbar.Snackbar
@@ -81,19 +82,23 @@ class SearchFragment : BaseMvvmFragment() {
         })
 
         searchAdapter.addLoadStateListener { loadState ->
-            with(binding) {
-                searchErrorLayout.isVisible = loadState.source.refresh is LoadState.Error
-                listSearchResult.isVisible = loadState.source.refresh is LoadState.NotLoading
+            updateAdapterVisibility(loadState)
+        }
+    }
 
-                if (loadState.source.refresh is LoadState.NotLoading &&
-                    loadState.append.endOfPaginationReached &&
-                    searchAdapter.itemCount < 1
-                ) {
-                    listSearchResult.gone()
-                    noResultLayout.visible()
-                } else {
-                    noResultLayout.gone()
-                }
+    private fun updateAdapterVisibility(loadState: CombinedLoadStates) {
+        with(binding) {
+            searchErrorLayout.isVisible = loadState.source.refresh is LoadState.Error
+            listSearchResult.isVisible = loadState.source.refresh is LoadState.NotLoading
+
+            if (loadState.source.refresh is LoadState.NotLoading &&
+                loadState.append.endOfPaginationReached &&
+                searchAdapter.itemCount < 1
+            ) {
+                listSearchResult.gone()
+                noResultLayout.visible()
+            } else {
+                noResultLayout.gone()
             }
         }
     }
