@@ -100,6 +100,8 @@ class MyMediaPlayer(val context: Context) {
         getMediaPlayer().let {
             it.pause()
             it.seekTo(0)
+            updateVolumeRunnable.stop()
+            updateCounterRunnable.stop()
         }
     }
 

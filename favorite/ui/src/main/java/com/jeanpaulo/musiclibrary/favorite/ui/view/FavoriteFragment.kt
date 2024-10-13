@@ -157,6 +157,7 @@ class FavoriteFragment : BaseMvvmFragment() {
             music,
             listOf(
                 SongOption.REMOVE_FAVORITE,
+                SongOption.GO_TO_ARTIST,
             ),
             object : SongOptionsBottomSheet.MusicOptionListener {
                 override fun onOptionSelected(searchOption: SongOption, song: SongUIModel) {

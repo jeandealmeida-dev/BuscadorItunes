@@ -9,9 +9,7 @@ import com.jeanpaulo.musiclibrary.commons.view.ViewState
 import com.jeanpaulo.musiclibrary.favorite.ui.R
 import com.jeanpaulo.musiclibrary.favorite.ui.databinding.FavoriteContainerBinding
 
-class FavoriteContainerFragment(
-    val onClickEvent: () -> Unit
-) : BaseMvvmFragment() {
+class FavoriteContainerFragment : BaseMvvmFragment() {
 
     private val viewModel by appViewModel<FavoriteContainerViewModel>()
 
@@ -19,6 +17,7 @@ class FavoriteContainerFragment(
     private val binding: FavoriteContainerBinding get() = requireNotNull(_binding)
 
     private var skeleton: FavoriteContainerSkeleton? = null
+    private var listener: Listener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,7 +51,8 @@ class FavoriteContainerFragment(
             when (state) {
                 is ViewState.Success -> {
                     skeleton?.hideSkeletons()
-                    binding.txtDescription.text = formatMusicCountText(state.data).format(state.data)
+                    binding.txtDescription.text =
+                        formatMusicCountText(state.data).format(state.data)
                 }
 
                 ViewState.Loading -> {
@@ -68,7 +68,7 @@ class FavoriteContainerFragment(
         }
     }
 
-    private fun formatMusicCountText(count: Int) =  if (count > 1) {
+    private fun formatMusicCountText(count: Int) = if (count > 1) {
         resources.getString(R.string.favorite_musics_count)
     } else {
         resources.getString(R.string.favorite_music_count)
@@ -76,7 +76,19 @@ class FavoriteContainerFragment(
 
     private fun setupEvent() {
         binding.root.setOnClickListener {
-            onClickEvent()
+            listener?.onClickEvent()
         }
+    }
+
+    interface Listener {
+        fun onClickEvent()
+    }
+
+    companion object {
+
+        fun newInstance(listener: Listener) =
+            FavoriteContainerFragment().apply {
+                this.listener = listener
+            }
     }
 }

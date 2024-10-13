@@ -3,8 +3,10 @@ package com.jeanpaulo.musiclibrary.search.ui.viewmodel
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.map
+import androidx.paging.rxjava3.cachedIn
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
 import com.jeanpaulo.musiclibrary.commons.di.qualifiers.IOScheduler
 import com.jeanpaulo.musiclibrary.commons.di.qualifiers.MainScheduler
@@ -31,12 +33,14 @@ class SearchViewModel @Inject constructor(
     val searchingState: LiveData<ViewState<PagingData<SearchUIModel>>> get() = _searchingState
 
     fun init() {
-        setCurrentQuery(DEFAULT_QUERY)
+        if(_searchingState.value !is ViewState.Success<*>)
+            setCurrentQuery(DEFAULT_QUERY)
     }
 
     fun setCurrentQuery(query: String) {
         compositeDisposable.add(
             searchInteractor.getSearchResults(query)
+                .cachedIn(viewModelScope)
                 .subscribeOn(ioScheduler)
                 .doOnSubscribe {
                     _searchingState.postValue(ViewState.Loading)
@@ -66,11 +70,6 @@ class SearchViewModel @Inject constructor(
                     })
             )
         }
-    }
-
-    fun playMusic(context: Context, song: SongUIModel) {
-        val mpSong = song.convertToSong().toMPSong()
-        MPService.playSongList(context, listOf(mpSong))
     }
 
     companion object {

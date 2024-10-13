@@ -14,7 +14,10 @@
         <action
             android:id="@+id/action_searchFragment_to_ArtistFragment"
             app:destination="@id/nav_artist"
-            app:launchSingleTop="true">
+            app:enterAnim="@anim/slide_in_from_right"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_out_to_right"
+            app:restoreState="true">
 
             <argument
                 android:name="artistId"

@@ -19,10 +19,10 @@ import com.jeanpaulo.musiclibrary.commons.extensions.ui.showTopSnackbar
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.visible
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
 import com.jeanpaulo.musiclibrary.core.ui.adapter.SongListSkeleton
-import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
 import com.jeanpaulo.musiclibrary.core.ui.bottomsheet.SongOption
 import com.jeanpaulo.musiclibrary.core.ui.bottomsheet.SongOptionsBottomSheet
 import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
+import com.jeanpaulo.musiclibrary.player.mp.MPService
 import com.jeanpaulo.musiclibrary.search.ui.adapter.SearchAdapter
 import com.jeanpaulo.musiclibrary.search.ui.adapter.SearchLoadStateAdapter
 import com.jeanpaulo.musiclibrary.search.ui.databinding.SearchFragmentBinding
@@ -71,26 +71,29 @@ class SearchFragment : BaseMvvmFragment() {
     private fun setupListAdapter() {
         searchAdapter = SearchAdapter(object : SearchAdapter.SearchListener {
             override fun onItemPressed(music: SearchUIModel) {
-                viewModel.playMusic(requireContext(), music)
+                val mpSong = music.convertToSong().toMPSong()
+                MPService.playSongList(requireContext(), listOf(mpSong))
             }
 
             override fun onOptionsPressed(music: SearchUIModel) {
-                viewModel.options(music)
+                showOptionsBottomSheet(music.convertToSongUIModel())
             }
         })
 
         searchAdapter.addLoadStateListener { loadState ->
-            binding.searchErrorLayout.isVisible = loadState.source.refresh is LoadState.Error
-            binding.searchResultList.isVisible = loadState.source.refresh is LoadState.NotLoading
+            with(binding) {
+                searchErrorLayout.isVisible = loadState.source.refresh is LoadState.Error
+                listSearchResult.isVisible = loadState.source.refresh is LoadState.NotLoading
 
-            if (loadState.source.refresh is LoadState.NotLoading &&
-                loadState.append.endOfPaginationReached &&
-                searchAdapter.itemCount < 1
-            ) {
-                binding.searchResultList.gone()
-                binding.noResultLayout.visible()
-            } else {
-                binding.noResultLayout.gone()
+                if (loadState.source.refresh is LoadState.NotLoading &&
+                    loadState.append.endOfPaginationReached &&
+                    searchAdapter.itemCount < 1
+                ) {
+                    listSearchResult.gone()
+                    noResultLayout.visible()
+                } else {
+                    noResultLayout.gone()
+                }
             }
         }
     }
@@ -107,17 +110,17 @@ class SearchFragment : BaseMvvmFragment() {
     }
 
     private fun setupSkeleton() {
-        skeleton = SongListSkeleton(binding.searchResultList)
+        skeleton = SongListSkeleton(binding.listSearchResult)
     }
 
     private fun setupWidgets() {
         with(binding) {
             searchErrorLayout.setOnClickListener { searchAdapter.retry() }
-            searchResultList.adapter = searchAdapter.withLoadStateHeaderAndFooter(
+            listSearchResult.adapter = searchAdapter.withLoadStateHeaderAndFooter(
                 header = SearchLoadStateAdapter { searchAdapter.retry() },
                 footer = SearchLoadStateAdapter { searchAdapter.retry() },
             )
-            searchResultList.addDivider()
+            listSearchResult.addDivider()
         }
     }
 
@@ -149,7 +152,7 @@ class SearchFragment : BaseMvvmFragment() {
         skeleton?.hideSkeletons()
     }
 
-    private fun handleSuccess(pagingData: PagingData<SongUIModel>) {
+    private fun handleSuccess(pagingData: PagingData<SearchUIModel>) {
         searchAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
         skeleton?.hideSkeletons()
     }
@@ -178,7 +181,7 @@ class SearchFragment : BaseMvvmFragment() {
         when (option) {
             SongOption.ADD_FAVORITE -> {
                 viewModel.addInFavorite(music.musicId)
-                requireContext().showTopSnackbar(
+                showSnackBar(
                     view = binding.root,
                     text = getString(R.string.search_add_favorite_success)
                 )
@@ -195,11 +198,15 @@ class SearchFragment : BaseMvvmFragment() {
             }
 
             else -> {
-                requireContext().showTopSnackbar(
-                    view = binding.root,
-                    text = getString(option.desciption)
-                )
+                showSnackBar(view = binding.root, text = getString(option.desciption))
             }
         }
+    }
+
+    private fun showSnackBar(view: View, text: String) {
+        requireContext().showTopSnackbar(
+            view = view,
+            text = text
+        )
     }
 }

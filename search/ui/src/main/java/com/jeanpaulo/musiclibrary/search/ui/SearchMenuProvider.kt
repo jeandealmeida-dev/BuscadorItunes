@@ -17,7 +17,7 @@ class SearchMenuProvider(
     val onQueryChanged: (String) -> Unit
 ) : MenuProvider {
 
-    private lateinit var disposable: Disposable
+    private var disposable: Disposable? = null
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.menu_search, menu)
@@ -64,8 +64,8 @@ class SearchMenuProvider(
     }
 
     fun onDestroy() {
-        if (!disposable.isDisposed) {
-            disposable.dispose()
+        if (disposable?.isDisposed == false) {
+            disposable?.dispose()
         }
     }
 

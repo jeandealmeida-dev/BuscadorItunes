@@ -1,7 +1,8 @@
 package com.jeanpaulo.musiclibrary.commons.exceptions
 
-import java.lang.Exception
 
 class EmptyResultException() : Exception()
 class NotFoundException() : Exception()
+
+// CrashApp Exceptions
 class CastException() : Exception()
