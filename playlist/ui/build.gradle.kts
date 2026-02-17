@@ -10,29 +10,30 @@ myOptions {
     }
 }
 
-addDaggerDependencies()
-addRxJavaDependencies()
-
-//Tests
-addUnitTestDependencies()
-
 dependencies {
-    implementation(project(ProjectDependencies.Module.commons))
-    implementation(project(ProjectDependencies.Module.core))
+    implementationModules(
+        ProjectDependencies.Module.commons,
+        ProjectDependencies.Module.ds,
+        ProjectDependencies.Module.core,
+        ProjectDependencies.Module.Domain.playlist,
+        ProjectDependencies.Module.Domain.favorite,
+        ProjectDependencies.Module.UI.favorite
+    )
 
-    implementation(project(ProjectDependencies.Module.Domain.playlist))
-    implementation(project(ProjectDependencies.Module.Domain.favorite))
+    implementationPackLibraries {
+        addDaggerDependencies(it)
+        addRxJavaDependencies(it)
+        addUnitTestDependencies(it)
+    }
 
-    implementation(project(ProjectDependencies.Module.UI.favorite))
+    // UI
+    implementation(libs.material)
+    implementation(libs.androidx.swiperefreshlayout)
 
-    implementation(ProjectDependencies.Android.MaterialComponents())
-
-    // Android X
-    implementation(ProjectDependencies.AndroidX.SwipeRefreshLayout())
-
-    implementation(ProjectDependencies.AndroidX.Navigation.Fragment())
-    implementation(ProjectDependencies.AndroidX.Navigation.UI())
+    // Navigation
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
 
     // UI Test
-    testImplementation(ProjectDependencies.AndroidX.ArchCoreTesting())
+    //testImplementation(ProjectDependencies.AndroidX.ArchCoreTesting())
 }

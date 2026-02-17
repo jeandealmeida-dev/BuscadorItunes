@@ -4,10 +4,6 @@ plugins {
     id(ProjectPlugins.NavigationSafeArgs)
 }
 
-addDaggerDependencies()
-addRxJavaDependencies()
-addRetrofitDependencies()
-
 dependencies {
     implementation(ProjectDependencies.Kotlin.Stdlib())
 
@@ -45,39 +41,55 @@ dependencies {
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))
     implementation(project(ProjectDependencies.Module.player))
+    implementation(project(ProjectDependencies.Module.ds))
 
-    // Base
-    implementation(ProjectDependencies.AndroidX.Design())
-    implementation(ProjectDependencies.AndroidX.core())
-    implementation(ProjectDependencies.AndroidX.AppCompat())
-    implementation(ProjectDependencies.Android.MaterialComponents())
-    testImplementation(ProjectDependencies.JUnit())
-    androidTestImplementation(ProjectDependencies.AndroidX.JUnit())
-    androidTestImplementation(ProjectDependencies.AndroidX.Espresso())
+    // VersionCatalog
+    implementationPackLibraries {
+        addDaggerDependencies(it)
+        addRetrofitDependencies(it)
+        addRxJavaDependencies(it)
+    }
 
     // Android
-    implementation(ProjectDependencies.Android.Multidex())
+    implementation(libs.multidex)
+
+    // UI
+    implementation(libs.design)
+    implementation(libs.material)
 
     // Android X
-    implementation(ProjectDependencies.AndroidX.Paging())
-    implementation(ProjectDependencies.AndroidX.ConstraintLayout())
-    implementation(ProjectDependencies.AndroidX.Fragment())
-    implementation(ProjectDependencies.AndroidX.SwipeRefreshLayout())
-    implementation(ProjectDependencies.AndroidX.CardView())
-    implementation(ProjectDependencies.AndroidX.RecyclerView())
-    implementation(ProjectDependencies.AndroidX.Preference())
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.fragment)
+    implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.androidx.cardview)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.preference)
+    implementation(libs.androidx.localbroadcastmanager)
 
-    // → Lifecycle
-    implementation(ProjectDependencies.AndroidX.Lifecycle.LiveData())
-    implementation(ProjectDependencies.AndroidX.Lifecycle.ViewModel())
-    implementation(ProjectDependencies.AndroidX.Lifecycle.Extensions())
-    // → Navigation
-    implementation(ProjectDependencies.AndroidX.Navigation.Fragment())
-    implementation(ProjectDependencies.AndroidX.Navigation.UI())
+    // Tests
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso)
+
+    // Lifecycle
+    implementation(libs.androidx.lifecycle.livedata)
+    implementation(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.androidx.lifecycle.extensions)
+
+    // Navigation
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
+
+    // Pagging
+    implementation(libs.androidx.paging.rxjava)
+    implementation(libs.androidx.paging.runtime)
 
     // Others
-    implementation(ProjectDependencies.Stetho())
+    implementation(libs.stetho)
 
     // Picasso
-    implementation(ProjectDependencies.Picasso())
+    implementation(libs.picasso)
+    implementation(libs.shimmerlayout)
 }

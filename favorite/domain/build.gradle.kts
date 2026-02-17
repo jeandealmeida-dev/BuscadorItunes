@@ -4,14 +4,15 @@ plugins {
     id(ProjectPlugins.NavigationSafeArgs)
 }
 
-addDaggerDependencies()
-addRxJavaDependencies()
-
-addUnitTestDependencies()
-
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))
     implementation(project(ProjectDependencies.Module.Data.favorite))
     implementation(project(ProjectDependencies.Module.Data.music))
+
+    implementationPackLibraries {
+        addDaggerDependencies(it)
+        addRxJavaDependencies(it)
+        addUnitTestDependencies(it)
+    }
 }

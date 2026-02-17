@@ -10,39 +10,40 @@ myOptions {
     }
 }
 
-addDaggerDependencies()
-addRxJavaDependencies()
-
-addUnitTestDependencies()
-
 dependencies {
-    implementation(project(ProjectDependencies.Module.commons))
-    implementation(project(ProjectDependencies.Module.player))
-    implementation(project(ProjectDependencies.Module.core))
-    implementation(project(ProjectDependencies.Module.Domain.search))
-    implementation(project(ProjectDependencies.Module.Domain.favorite))
+    implementationModules(
+        ProjectDependencies.Module.commons,
+        ProjectDependencies.Module.ds,
+        ProjectDependencies.Module.player,
+        ProjectDependencies.Module.core,
+        ProjectDependencies.Module.Domain.playlist,
+        ProjectDependencies.Module.Domain.favorite,
+        ProjectDependencies.Module.Domain.search,
+        ProjectDependencies.Module.UI.music,
+        ProjectDependencies.Module.UI.artist,
+    )
 
-    implementation(project(ProjectDependencies.Module.UI.music))
-    implementation(project(ProjectDependencies.Module.UI.artist))
+    implementationPackLibraries {
+        addDaggerDependencies(it)
+        addRxJavaDependencies(it)
+        addUnitTestDependencies(it)
+    }
 
-    // Material
-    implementation(ProjectDependencies.Android.MaterialComponents())
-
-    // AndroidX
-    implementation(ProjectDependencies.AndroidX.CardView())
-    implementation(ProjectDependencies.AndroidX.RecyclerView())
-
-    // Picasso
-    implementation(ProjectDependencies.Picasso())
+    // UI
+    implementation(libs.material)
+    implementation(libs.picasso)
+    implementation(libs.androidx.cardview)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.lifecycle.extensions)
 
     // Pagging
-    implementation(ProjectDependencies.AndroidX.Paging())
-    implementation(ProjectDependencies.AndroidX.PagingRxJava())
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.rxjava)
 
     // UI Test
-    testImplementation(ProjectDependencies.AndroidX.ArchCoreTesting())
+    //testImplementation(ProjectDependencies.AndroidX.ArchCoreTesting())
 
     // Navigation
-    implementation(ProjectDependencies.AndroidX.Navigation.Fragment())
-    implementation(ProjectDependencies.AndroidX.Navigation.UI())
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
 }

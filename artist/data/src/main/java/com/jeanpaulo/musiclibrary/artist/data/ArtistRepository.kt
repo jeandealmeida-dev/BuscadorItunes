@@ -1,6 +1,7 @@
 package com.jeanpaulo.musiclibrary.artist.data
 
 import com.jeanpaulo.musiclibrary.commons.exceptions.EmptyResultException
+import com.jeanpaulo.musiclibrary.core.domain.model.Artist
 import com.jeanpaulo.musiclibrary.core.repository.database.dao.ArtistDao
 import com.jeanpaulo.musiclibrary.core.repository.remote.ItunesService
 import com.jeanpaulo.musiclibrary.core.repository.remote.response.ArtistResponse

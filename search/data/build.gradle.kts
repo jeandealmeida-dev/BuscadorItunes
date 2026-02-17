@@ -4,21 +4,23 @@ plugins {
     id(ProjectPlugins.NavigationSafeArgs)
 }
 
-addRetrofitDependencies()
-addDaggerDependencies()
-
-addUnitTestDependencies()
-
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))
 
-    // Android X
-    implementation(ProjectDependencies.AndroidX.Paging())
+    implementationPackLibraries {
+        addRetrofitDependencies(it)
+        addDaggerDependencies(it)
+        addUnitTestDependencies(it)
+    }
+
+    // Pagging
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.rxjava)
 
     // Convert Coroutines in RxJava
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-rx3:1.6.0")
+    implementation(libs.kotlinx.coroutines.rx3)
 
-    //Test using Coroutines
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
+    // Test using Coroutines
+    testImplementation(libs.kotlinx.coroutines.test)
 }

@@ -3,7 +3,7 @@ package com.jeanpaulo.musiclibrary.search.ui
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
-import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
+import com.jeanpaulo.musiclibrary.ds.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.search.ui.viewmodel.SearchState
 
 val query = "test"

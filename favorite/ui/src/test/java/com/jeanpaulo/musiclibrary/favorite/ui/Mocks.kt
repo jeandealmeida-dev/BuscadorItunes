@@ -3,7 +3,7 @@ package com.jeanpaulo.musiclibrary.favorite.ui
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
 import com.jeanpaulo.musiclibrary.core.domain.model.Favorite
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
-import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
+import com.jeanpaulo.musiclibrary.ds.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.ui.view.FavoriteState
 
 val music1 = Music(musicId = 1, trackName = "Song 1")

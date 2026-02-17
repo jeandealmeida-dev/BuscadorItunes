@@ -9,19 +9,15 @@ myOptions {
     }
 }
 
-addDaggerDependencies()
-addRxJavaDependencies()
-
 dependencies {
+    implementationPackLibraries {
+        addDaggerDependencies(it)
+        addRxJavaDependencies(it)
+    }
 
-    // Base
-    implementation(ProjectDependencies.AndroidX.core())
-    implementation(ProjectDependencies.AndroidX.AppCompat())
-    implementation(ProjectDependencies.Android.MaterialComponents())
-    testImplementation(ProjectDependencies.JUnit())
-    androidTestImplementation(ProjectDependencies.AndroidX.JUnit())
-    androidTestImplementation(ProjectDependencies.AndroidX.Espresso())
-
-    implementation(ProjectDependencies.AndroidX.SwipeRefreshLayout())
-
+    implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.androidx.lifecycle.extensions)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.material)
 }

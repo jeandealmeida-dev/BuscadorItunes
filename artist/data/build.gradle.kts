@@ -10,10 +10,12 @@ myOptions {
     }
 }
 
-addDaggerDependencies()
-addRxJavaDependencies()
-
 dependencies {
     implementation(project(ProjectDependencies.Module.core))
     implementation(project(ProjectDependencies.Module.commons))
+
+    implementationPackLibraries {
+        addDaggerDependencies(it)
+        addRxJavaDependencies(it)
+    }
 }

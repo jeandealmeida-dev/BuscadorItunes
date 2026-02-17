@@ -96,7 +96,7 @@ class FullPlayerBottomSheet(
         binding.apply {
             musicNameTxt.text = song.name
             artistNameTxt.text = song.artist
-            Picasso.with(root.context).load(song.artworkUrl).into(artcoverImg)
+            Picasso.get().load(song.artworkUrl).into(artcoverImg)
             playButton.isSelected = true
 
             nextButton.isEnabled = hasNext

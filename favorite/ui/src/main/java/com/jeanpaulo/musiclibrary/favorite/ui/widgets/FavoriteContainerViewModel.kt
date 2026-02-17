@@ -5,14 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import com.jeanpaulo.musiclibrary.commons.base.BaseViewModel
 import com.jeanpaulo.musiclibrary.commons.di.qualifiers.IOScheduler
 import com.jeanpaulo.musiclibrary.commons.di.qualifiers.MainScheduler
-import com.jeanpaulo.musiclibrary.commons.exceptions.EmptyResultException
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
-import com.jeanpaulo.musiclibrary.core.BuildConfig
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
 import io.reactivex.rxjava3.core.Scheduler
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import javax.inject.Named
 
 class FavoriteContainerViewModel @Inject constructor(
     @MainScheduler private val mainScheduler: Scheduler,
@@ -27,19 +23,11 @@ class FavoriteContainerViewModel @Inject constructor(
         compositeDisposable.add(
             interactor.getFavoriteCount()
                 .subscribeOn(ioScheduler)
-                .doOnSubscribe {
-                    _favoriteCountState.postValue(ViewState.Loading)
-                }
                 .observeOn(mainScheduler)
-                .delay(BuildConfig.DEFAULT_DELAY, TimeUnit.MILLISECONDS)
                 .subscribe({ count ->
                     _favoriteCountState.postValue(ViewState.Success(count))
                 }, {
-                    if (it is EmptyResultException) {
-                        _favoriteCountState.postValue(ViewState.Empty)
-                    } else {
-                        _favoriteCountState.postValue(ViewState.Error)
-                    }
+                    _favoriteCountState.postValue(ViewState.Error)
                 })
         )
     }

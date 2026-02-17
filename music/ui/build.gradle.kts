@@ -10,24 +10,24 @@ myOptions {
     }
 }
 
-addDaggerDependencies()
-addRxJavaDependencies()
-
 dependencies {
-    implementation(project(ProjectDependencies.Module.commons))
-    implementation(project(ProjectDependencies.Module.core))
-    implementation(project(ProjectDependencies.Module.Domain.music))
-    implementation(project(ProjectDependencies.Module.player))
+    implementationModules(
+        ProjectDependencies.Module.commons,
+        ProjectDependencies.Module.core,
+        ProjectDependencies.Module.Domain.music,
+        ProjectDependencies.Module.player
+    )
 
-    // Material
-    implementation(ProjectDependencies.Android.MaterialComponents())
+    implementationPackLibraries {
+        addDaggerDependencies(it)
+        addRxJavaDependencies(it)
+    }
+
+    // UI
+    implementation(libs.material)
+    implementation(libs.palette)
+    implementation(libs.picasso)
 
     //AndroidX
-    implementation(ProjectDependencies.AndroidX.CardView())
-
-    // Palette
-    implementation(ProjectDependencies.Android.Palette())
-
-    // Picasso
-    implementation(ProjectDependencies.Picasso())
+    implementation(libs.androidx.cardview)
 }

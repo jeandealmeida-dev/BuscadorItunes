@@ -10,37 +10,36 @@ myOptions {
     }
 }
 
-addDaggerDependencies()
-addRxJavaDependencies()
-
-//Tests
-addUnitTestDependencies()
-
 dependencies {
-    implementation(project(ProjectDependencies.Module.commons))
-    implementation(project(ProjectDependencies.Module.core))
-    implementation(project(ProjectDependencies.Module.player))
+    implementationModules(
+        ProjectDependencies.Module.ds,
+        ProjectDependencies.Module.commons,
+        ProjectDependencies.Module.core,
+        ProjectDependencies.Module.player,
+        ProjectDependencies.Module.Domain.favorite
+    )
 
-    implementation(project(ProjectDependencies.Module.Domain.favorite))
+    implementationPackLibraries {
+        addDaggerDependencies(it)
+        addRxJavaDependencies(it)
+        addUnitTestDependencies(it)
+    }
 
-    implementation(ProjectDependencies.Android.MaterialComponents())
-    implementation(ProjectDependencies.Picasso())
-
-    // Android X
-    implementation(ProjectDependencies.AndroidX.core())
-    implementation(ProjectDependencies.AndroidX.RecyclerView())
-    implementation(ProjectDependencies.AndroidX.SwipeRefreshLayout())
-
-    implementation(ProjectDependencies.AndroidX.Navigation.Fragment())
-    implementation(ProjectDependencies.AndroidX.Navigation.UI())
+    // Navigation
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
 
     // UI Test
     testImplementation(ProjectDependencies.AndroidX.ArchCoreTesting())
 
-    // Skeleton
-    implementation(ProjectDependencies.Skeleton.core() )
-    implementation(ProjectDependencies.Skeleton.ShimmerLayout())
+    // UI
+    implementation(libs.material)
+    implementation(libs.skeleton)
+    implementation(libs.picasso)
 
-    // Constraint Layout
-    implementation(ProjectDependencies.AndroidX.ConstraintLayout())
+    // Android X
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.swiperefreshlayout)
 }

@@ -11,12 +11,12 @@ import com.jeanpaulo.musiclibrary.commons.extensions.ui.gone
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.showTopSnackbar
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.visible
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
-import com.jeanpaulo.musiclibrary.core.ui.adapter.SongListAdapter
-import com.jeanpaulo.musiclibrary.core.ui.adapter.SongListListener
-import com.jeanpaulo.musiclibrary.core.ui.adapter.SongListSkeleton
-import com.jeanpaulo.musiclibrary.core.ui.bottomsheet.SongOption
-import com.jeanpaulo.musiclibrary.core.ui.bottomsheet.SongOptionsBottomSheet
-import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
+import com.jeanpaulo.musiclibrary.ds.ui.adapter.SongListAdapter
+import com.jeanpaulo.musiclibrary.ds.ui.adapter.SongListListener
+import com.jeanpaulo.musiclibrary.ds.ui.adapter.SongListSkeleton
+import com.jeanpaulo.musiclibrary.ds.ui.bottomsheet.SongOption
+import com.jeanpaulo.musiclibrary.ds.ui.bottomsheet.SongOptionsBottomSheet
+import com.jeanpaulo.musiclibrary.ds.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.ui.R
 import com.jeanpaulo.musiclibrary.favorite.ui.databinding.FavoriteFragmentBinding
 
@@ -24,8 +24,6 @@ class FavoriteFragment : BaseMvvmFragment() {
     private val viewModel by appViewModel<FavoriteViewModel>()
 
     private var _binding: FavoriteFragmentBinding? = null
-    private val binding: FavoriteFragmentBinding get() = requireNotNull(_binding)
-
     private var skeleton: SongListSkeleton? = null
     private var listAdapter: SongListAdapter? = null
 
@@ -59,7 +57,7 @@ class FavoriteFragment : BaseMvvmFragment() {
 
     private fun setupToolbar() {
         (activity as? AppCompatActivity)?.let {
-            it.setSupportActionBar(binding.toolbar)
+            it.setSupportActionBar(_binding?.toolbar)
             it.supportActionBar?.apply {
                 setDisplayHomeAsUpEnabled(true)
             }
@@ -67,11 +65,11 @@ class FavoriteFragment : BaseMvvmFragment() {
     }
 
     private fun setupSkeleton() {
-        skeleton = SongListSkeleton(binding.listFavorite)
+        _binding?.let { skeleton = SongListSkeleton(it.listFavorite) }
     }
 
     private fun setupFab() {
-        binding.playAllButton.setOnClickListener {
+        _binding?.playAllButton?.setOnClickListener {
             listAdapter?.let {
                 viewModel.playSongList(requireContext(), it.getList())
             }
@@ -95,58 +93,63 @@ class FavoriteFragment : BaseMvvmFragment() {
                 }
 
             })
-        binding.listFavorite.adapter = listAdapter
-        binding.listFavorite.addDivider()
+        _binding?.listFavorite?.apply {
+            adapter = listAdapter
+            addDivider()
+        }
     }
 
     private fun setupListeners() {
         viewModel.favoriteState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is FavoriteState.ShowMusicOptions -> {
-                    showMusicOptions(state.music)
+                ViewState.Loading -> {
+                    _binding?.txtEmpty?.gone()
+                    _binding?.txtError?.gone()
+                    skeleton?.showSkeletons()
                 }
 
-                is FavoriteState.Removed -> {
+                ViewState.Empty -> {
+                    skeleton?.hideSkeletons()
+                    _binding?.txtEmpty?.visible()
+                    _binding?.listFavorite?.gone()
+                }
+
+                ViewState.Error -> {
+                    skeleton?.hideSkeletons()
+                    _binding?.txtError?.visible()
+                    _binding?.listFavorite?.gone()
+                }
+
+                is ViewState.Success -> {
+                    _binding?.txtError?.gone()
+                    _binding?.txtEmpty?.gone()
+                    _binding?.listFavorite?.visible()
+
+                    handleSuccess(state.data)
+                }
+            }
+        }
+
+        viewModel.favoriteAction.observe(viewLifecycleOwner) { action ->
+            when (action) {
+                is FavoriteAction.ShowMusicOptions -> {
+                    showMusicOptions(action.music)
+                }
+
+                is FavoriteAction.Removed -> {
+                    val root = _binding?.root ?: return@observe
                     requireContext().showTopSnackbar(
-                        view = binding.root.rootView,
+                        view = root.rootView,
                         text = getString(R.string.favorite_remove_success)
                     )
-                }
-
-                is FavoriteState.Wrapper -> {
-                    when (val viewState = state.viewState) {
-                        ViewState.Loading -> handleLoading()
-                        ViewState.Empty -> handleEmpty()
-                        ViewState.Error -> handleError()
-                        is ViewState.Success -> handleSuccess(viewState.data)
-                    }
                 }
             }
         }
     }
 
     // Handle
-
-    private fun handleLoading() {
-        binding.txtEmpty.gone()
-        binding.txtError.gone()
-
-        skeleton?.showSkeletons()
-    }
-
-    private fun handleEmpty() {
-        skeleton?.hideSkeletons()
-        binding.txtEmpty.visible()
-    }
-
-    private fun handleError() {
-        skeleton?.hideSkeletons()
-        binding.txtError.visible()
-    }
-
     private fun handleSuccess(data: List<SongUIModel>) {
         skeleton?.hideSkeletons()
-
         listAdapter?.submitList(data)
     }
 

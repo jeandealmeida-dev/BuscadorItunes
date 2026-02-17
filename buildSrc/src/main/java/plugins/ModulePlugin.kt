@@ -6,6 +6,7 @@ import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.create
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 
@@ -21,6 +22,12 @@ class ModulePlugin : Plugin<Project> {
 
         // Config Jacoco for each module.
         project.extensions.create<MyModuleExtension>("myOptions")
+
+        // Config Versions catalog
+        project.extensions.findByType(VersionCatalogsExtension::class.java)?.let {
+            project.extensions.extraProperties["version-catalog"] = it.named("libs")
+        }
+
         project.afterEvaluate {
             project.extensions.getByType(MyModuleExtension::class.java).run {
                 val jacocoOptions = this.jacoco

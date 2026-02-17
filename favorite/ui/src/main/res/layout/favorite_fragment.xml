@@ -76,7 +76,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/song_item" />
 
-            <TextView
+            <com.jeanpaulo.musiclibrary.ds.widgets.ErrorMessageView
                 android:id="@+id/txt_empty"
                 style="@style/AppTextStyle.Head.Medium"
                 android:layout_width="wrap_content"
@@ -84,27 +84,26 @@
                 android:gravity="center"
                 android:maxLines="2"
                 android:paddingHorizontal="@dimen/margin_md"
-                android:text="@string/favorite_list_empty"
                 android:visibility="gone"
+                app:errorMessage="@string/favorite_list_empty"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
 
-            <TextView
+            <com.jeanpaulo.musiclibrary.ds.widgets.ErrorMessageView
                 android:id="@+id/txt_error"
-                style="@style/AppTextStyle.Head.Medium"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:maxLines="2"
-                android:paddingHorizontal="@dimen/margin_md"
-                android:text="@string/favorite_list_error"
                 android:visibility="gone"
+                app:errorActionText="Mensagen de Erro"
+                app:errorMessage="@string/favorite_list_error"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

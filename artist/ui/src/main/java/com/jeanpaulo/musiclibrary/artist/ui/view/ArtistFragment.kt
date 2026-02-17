@@ -12,13 +12,12 @@ import com.jeanpaulo.musiclibrary.artist.ui.databinding.ArtistFragmentBinding
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.gone
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.visible
-import com.jeanpaulo.musiclibrary.commons.view.CustomLinearLayoutManager
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
 import com.jeanpaulo.musiclibrary.core.domain.model.Artist
-import com.jeanpaulo.musiclibrary.core.ui.adapter.SongListAdapter
-import com.jeanpaulo.musiclibrary.core.ui.adapter.SongListListener
-import com.jeanpaulo.musiclibrary.core.ui.adapter.SongListSkeleton
-import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
+import com.jeanpaulo.musiclibrary.ds.ui.adapter.SongListAdapter
+import com.jeanpaulo.musiclibrary.ds.ui.adapter.SongListListener
+import com.jeanpaulo.musiclibrary.ds.ui.adapter.SongListSkeleton
+import com.jeanpaulo.musiclibrary.ds.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.player.mp.MPService
 
 class ArtistFragment : BaseMvvmFragment() {

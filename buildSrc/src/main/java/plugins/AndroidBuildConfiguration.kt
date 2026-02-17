@@ -22,8 +22,8 @@ object AndroidBuildConfiguration {
             buildToolsVersion(Config.buildToolsVersion)
 
             defaultConfig {
-                minSdkVersion(Config.minSdkVersion)
-                targetSdkVersion(Config.targetSdkVersion)
+                minSdk = Config.minSdkVersion
+                targetSdk = Config.targetSdkVersion
                 versionCode = Config.versionCode
                 versionName = Config.versionName
                 multiDexEnabled = true

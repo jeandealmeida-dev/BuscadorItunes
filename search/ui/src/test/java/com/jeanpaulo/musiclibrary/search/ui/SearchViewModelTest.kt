@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import androidx.paging.PagingData
 import com.jeanpaulo.musiclibrary.commons.CustomSafeObserver
-import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
+import com.jeanpaulo.musiclibrary.ds.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
 import com.jeanpaulo.musiclibrary.search.domain.SearchInteractor
 import com.jeanpaulo.musiclibrary.search.ui.viewmodel.SearchState
