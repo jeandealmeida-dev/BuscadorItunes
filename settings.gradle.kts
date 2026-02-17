@@ -1,7 +1,21 @@
-rootProject.name = "MusicLibrary"
+    dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven("https://jitpack.io")
+    }
+    versionCatalogs {
+        create("libs") {
+            from(files("libs.versions.toml"))
+        }
+    }
+}
+rootProject.name = "Music Library"
 include(
     ":app",
     ":core",
+    ":ds",
     ":commons",
     ":player",
 

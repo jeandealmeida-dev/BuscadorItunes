@@ -4,11 +4,12 @@ plugins {
     id(ProjectPlugins.NavigationSafeArgs)
 }
 
-addDaggerDependencies()
-addRxJavaDependencies()
-
 dependencies {
     implementation(project(ProjectDependencies.Module.Data.artist))
-
     implementation(project(ProjectDependencies.Module.core))
+
+    implementationPackLibraries {
+        addDaggerDependencies(it)
+        addRxJavaDependencies(it)
+    }
 }

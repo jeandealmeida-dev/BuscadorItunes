@@ -10,23 +10,21 @@ myOptions {
     }
 }
 
-addDaggerDependencies()
-addRxJavaDependencies()
-
-addUnitTestDependencies()
-
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))
-
     implementation(project(ProjectDependencies.Module.Domain.settings))
     implementation(project(ProjectDependencies.Module.Domain.playlist))
 
-    implementation(ProjectDependencies.Android.MaterialComponents())
+    implementationPackLibraries {
+        addDaggerDependencies(it)
+        addRxJavaDependencies(it)
+        addUnitTestDependencies(it)
+    }
 
-    // Android X
-    implementation(ProjectDependencies.AndroidX.Preference())
+    implementation(libs.material)
+    implementation(libs.androidx.preference)
 
     // UI Test
-    testImplementation(ProjectDependencies.AndroidX.ArchCoreTesting())
+    // testImplementation(ProjectDependencies.AndroidX.ArchCoreTesting())
 }

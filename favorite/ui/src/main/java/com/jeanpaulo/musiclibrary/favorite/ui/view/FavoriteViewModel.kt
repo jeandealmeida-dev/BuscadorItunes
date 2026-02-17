@@ -8,20 +8,16 @@ import com.jeanpaulo.musiclibrary.commons.di.qualifiers.IOScheduler
 import com.jeanpaulo.musiclibrary.commons.di.qualifiers.MainScheduler
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
 import com.jeanpaulo.musiclibrary.core.BuildConfig
-import com.jeanpaulo.musiclibrary.core.domain.model.Music
-import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
+import com.jeanpaulo.musiclibrary.ds.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
 import com.jeanpaulo.musiclibrary.player.mp.MPService
 import io.reactivex.rxjava3.core.Scheduler
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import javax.inject.Named
 
-sealed class FavoriteState {
-    data class Wrapper(val viewState: ViewState<List<SongUIModel>>) : FavoriteState()
-
-    data class ShowMusicOptions(val music: SongUIModel) : FavoriteState()
-    data class Removed(val music: SongUIModel) : FavoriteState()
+sealed class FavoriteAction {
+    data class ShowMusicOptions(val music: SongUIModel) : FavoriteAction()
+    data class Removed(val music: SongUIModel) : FavoriteAction()
 }
 
 class FavoriteViewModel @Inject constructor(
@@ -30,42 +26,34 @@ class FavoriteViewModel @Inject constructor(
     private val interactor: FavoriteInteractor
 ) : BaseViewModel() {
 
-    private val _favoriteState = MutableLiveData<FavoriteState>()
-    val favoriteState: LiveData<FavoriteState> get() = _favoriteState
+    private val _favoriteState = MutableLiveData<ViewState<List<SongUIModel>>>()
+    val favoriteState: LiveData<ViewState<List<SongUIModel>>> get() = _favoriteState
 
-    fun refresh() {
-        getFavoriteList()
-    }
+    private var _favoriteAction = MutableLiveData<FavoriteAction>()
+    val favoriteAction: LiveData<FavoriteAction> get() = _favoriteAction
 
     fun getFavoriteList() {
         compositeDisposable.add(
             interactor.getFavoriteMusics()
                 .subscribeOn(ioScheduler)
                 .doOnSubscribe {
-                    val loading = FavoriteState.Wrapper(ViewState.Loading)
-                    _favoriteState.postValue(loading)
+                    _favoriteState.postValue(ViewState.Loading)
                 }
                 .observeOn(mainScheduler)
                 .delay(BuildConfig.DEFAULT_DELAY, TimeUnit.MILLISECONDS)
                 .subscribe({ favorites ->
                     if (favorites.isEmpty()) {
-                        val emptyState = FavoriteState.Wrapper(ViewState.Empty)
-                        _favoriteState.postValue(emptyState)
+                        _favoriteState.postValue(ViewState.Empty)
                         return@subscribe
                     }
 
-                    val musicFiltered = favorites.map {
-                        it.music?.let { music ->
-                            SongUIModel.fromModel(music)
-                        } ?: SongUIModel.fromModel(Music(musicId = it.musicId, trackName = ""))
-                    }
-                    val successState = FavoriteState.Wrapper(ViewState.Success(musicFiltered))
-                    _favoriteState.postValue(successState)
-                }, {
-                    val errorState = FavoriteState.Wrapper(ViewState.Error)
-                    _favoriteState.postValue(errorState)
+                    val musicFiltered = favorites
+                        .mapNotNull { it.music }
+                        .map { SongUIModel.fromModel(it) }
 
-                    it.printStackTrace()
+                    _favoriteState.postValue(ViewState.Success(musicFiltered))
+                }, {
+                    _favoriteState.postValue(ViewState.Error)
                 })
         )
     }
@@ -83,7 +71,7 @@ class FavoriteViewModel @Inject constructor(
     }
 
     fun options(song: SongUIModel) {
-        _favoriteState.value = FavoriteState.ShowMusicOptions(song)
+        _favoriteAction.value = FavoriteAction.ShowMusicOptions(song)
     }
 
     fun remove(song: SongUIModel) {
@@ -92,7 +80,7 @@ class FavoriteViewModel @Inject constructor(
                 .subscribeOn(ioScheduler)
                 .observeOn(mainScheduler)
                 .subscribe({
-                    _favoriteState.postValue(FavoriteState.Removed(song))
+                    _favoriteAction.value = FavoriteAction.Removed(song)
                 }, {
                     it.printStackTrace()
                 })

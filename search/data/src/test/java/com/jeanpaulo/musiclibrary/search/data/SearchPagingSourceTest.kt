@@ -16,12 +16,12 @@ class SearchPagingSourceTest {
     @MockK
     private lateinit var itunesService: ItunesService
 
-    private lateinit var searchPagingSource: SearchPagingSource
+    private lateinit var searchPagingSource: MusicPagingSource
 
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        searchPagingSource = SearchPagingSource(itunesService, query)
+        searchPagingSource = MusicPagingSource(itunesService, query)
     }
 
     @Test
@@ -36,7 +36,7 @@ class SearchPagingSourceTest {
             every {
                 itunesService.searchMusic(
                     query,
-                    SearchPagingSource.SONG_MEDIA_TYPE,
+                    MusicPagingSource.SONG_MEDIA_TYPE,
                     0,
                     2
                 )
@@ -68,7 +68,7 @@ class SearchPagingSourceTest {
             every {
                 itunesService.searchMusic(
                     query,
-                    SearchPagingSource.SONG_MEDIA_TYPE,
+                    MusicPagingSource.SONG_MEDIA_TYPE,
                     0,
                     2
                 )
@@ -101,7 +101,7 @@ class SearchPagingSourceTest {
             every {
                 itunesService.searchMusic(
                     query,
-                    SearchPagingSource.SONG_MEDIA_TYPE,
+                    MusicPagingSource.SONG_MEDIA_TYPE,
                     0,
                     2
                 )

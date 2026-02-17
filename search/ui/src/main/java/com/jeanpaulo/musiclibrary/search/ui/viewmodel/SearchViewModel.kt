@@ -1,6 +1,5 @@
 package com.jeanpaulo.musiclibrary.search.ui.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -12,7 +11,6 @@ import com.jeanpaulo.musiclibrary.commons.di.qualifiers.IOScheduler
 import com.jeanpaulo.musiclibrary.commons.di.qualifiers.MainScheduler
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
 import com.jeanpaulo.musiclibrary.core.BuildConfig
-import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
 import com.jeanpaulo.musiclibrary.player.mp.MPService
 import com.jeanpaulo.musiclibrary.search.domain.SearchInteractor

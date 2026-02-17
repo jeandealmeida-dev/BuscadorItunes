@@ -2,7 +2,7 @@ package com.jeanpaulo.musiclibrary.search.ui
 
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
 import com.jeanpaulo.musiclibrary.core.domain.model.Song
-import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
+import com.jeanpaulo.musiclibrary.ds.ui.model.SongUIModel
 
 data class SearchUIModel(
     val musicId: Long,

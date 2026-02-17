@@ -72,7 +72,7 @@ class MiniPlayerBottomSheet(
         binding.apply {
             musicName.text = song.name
             artistName.text = song.artist
-            Picasso.with(root.context).load(song.artworkUrl).into(artwork)
+            Picasso.get().load(song.artworkUrl).into(artwork)
             playButton.isSelected = true
         }
     }

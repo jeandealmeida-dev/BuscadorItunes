@@ -4,4 +4,8 @@ plugins {
     id(ProjectPlugins.NavigationSafeArgs)
 }
 
-addDaggerDependencies()
+dependencies {
+    implementationPackLibraries {
+        addDaggerDependencies(it)
+    }
+}

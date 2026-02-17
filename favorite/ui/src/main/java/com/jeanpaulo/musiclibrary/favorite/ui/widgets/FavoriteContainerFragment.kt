@@ -5,19 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jeanpaulo.musiclibrary.commons.base.BaseMvvmFragment
+import com.jeanpaulo.musiclibrary.commons.extensions.ui.gone
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
 import com.jeanpaulo.musiclibrary.favorite.ui.R
 import com.jeanpaulo.musiclibrary.favorite.ui.databinding.FavoriteContainerBinding
 
 class FavoriteContainerFragment : BaseMvvmFragment() {
 
-    private val viewModel by appViewModel<FavoriteContainerViewModel>()
-
     private var _binding: FavoriteContainerBinding? = null
-    private val binding: FavoriteContainerBinding get() = requireNotNull(_binding)
-
-    private var skeleton: FavoriteContainerSkeleton? = null
     private var listener: Listener? = null
+
+    private val viewModel by appViewModel<FavoriteContainerViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,8 +30,6 @@ class FavoriteContainerFragment : BaseMvvmFragment() {
 
         setupListeners()
         setupEvent()
-        setupView()
-
         viewModel.getFavoriteCount()
     }
 
@@ -42,25 +38,16 @@ class FavoriteContainerFragment : BaseMvvmFragment() {
         _binding = null
     }
 
-    private fun setupView() {
-        skeleton = FavoriteContainerSkeleton(binding.txtDescription)
-    }
-
     private fun setupListeners() {
         viewModel.favoriteCountState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is ViewState.Success -> {
-                    skeleton?.hideSkeletons()
-                    binding.txtDescription.text =
-                        formatMusicCountText(state.data).format(state.data)
-                }
-
-                ViewState.Loading -> {
-                    skeleton?.showSkeletons()
+                    _binding?.txtDescription?.text =
+                        formatMusicCountText(state.data)
                 }
 
                 ViewState.Error -> {
-                    skeleton?.hideSkeletons()
+                    _binding?.txtDescription?.gone()
                 }
 
                 else -> {}
@@ -72,10 +59,10 @@ class FavoriteContainerFragment : BaseMvvmFragment() {
         resources.getString(R.string.favorite_musics_count)
     } else {
         resources.getString(R.string.favorite_music_count)
-    }
+    }.format(count)
 
     private fun setupEvent() {
-        binding.root.setOnClickListener {
+        _binding?.root?.setOnClickListener {
             listener?.onClickEvent()
         }
     }

@@ -34,25 +34,16 @@ android {
     }
 }
 
-addDaggerDependencies()
-addRoomDependencies()
-addRetrofitDependencies()
-addMoshiDependencies()
-
-// Tests
-addUnitTestDependencies()
-
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.player))
+    implementation(libs.androidx.recyclerview)
 
-    implementation(ProjectDependencies.Android.MaterialComponents())
-    implementation(ProjectDependencies.AndroidX.ConstraintLayout())
-    implementation(ProjectDependencies.AndroidX.RecyclerView())
-
-    implementation(ProjectDependencies.Skeleton.core())
-    implementation(ProjectDependencies.Skeleton.ShimmerLayout())
-
-    // Picasso
-    implementation(ProjectDependencies.Picasso())
+    implementationPackLibraries {
+        addUnitTestDependencies(it)
+        addDaggerDependencies(it)
+        addRoomDependencies(it)
+        addRetrofitDependencies(it)
+        addMoshiDependencies(it)
+    }
 }

@@ -2,8 +2,6 @@ package com.jeanpaulo.musiclibrary.search.ui.di
 
 import androidx.lifecycle.ViewModel
 import com.jeanpaulo.musiclibrary.commons.di.ViewModelKey
-import com.jeanpaulo.musiclibrary.search.domain.SearchInteractor
-import com.jeanpaulo.musiclibrary.search.domain.SearchInteractorImpl
 import com.jeanpaulo.musiclibrary.search.domain.di.SearchDomainModule
 import com.jeanpaulo.musiclibrary.search.ui.SearchFragment
 import com.jeanpaulo.musiclibrary.search.ui.viewmodel.SearchViewModel
@@ -14,7 +12,7 @@ import dagger.multibindings.IntoMap
 
 @Module(
     includes = [
-        SearchModule::class,
+        SearchUIModule::class,
         SearchDomainModule::class,
     ]
 )
@@ -26,10 +24,7 @@ abstract class SearchModuleBuilder {
 }
 
 @Module
-abstract class SearchModule {
-
-    @Binds
-    abstract fun provideInteractor(interactor: SearchInteractorImpl): SearchInteractor
+abstract class SearchUIModule {
 
     @Binds
     @IntoMap

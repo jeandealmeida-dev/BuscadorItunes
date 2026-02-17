@@ -4,12 +4,14 @@ plugins {
     id(ProjectPlugins.NavigationSafeArgs)
 }
 
-addDaggerDependencies()
-addRetrofitDependencies()
-addRoomDependencies()
-addUnitTestDependencies()
-
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))
+
+    implementationPackLibraries {
+        addDaggerDependencies(it)
+        addRetrofitDependencies(it)
+        addRoomDependencies(it)
+        addUnitTestDependencies(it)
+    }
 }

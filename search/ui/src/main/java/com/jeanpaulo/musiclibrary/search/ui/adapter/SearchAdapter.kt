@@ -6,8 +6,7 @@ import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.jeanpaulo.musiclibrary.core.databinding.SongItemBinding
-import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
+import com.jeanpaulo.musiclibrary.ds.databinding.SongItemBinding
 import com.jeanpaulo.musiclibrary.search.ui.SearchUIModel
 import com.jeanpaulo.musiclibrary.search.ui.databinding.ItemListFooterBinding
 import com.squareup.picasso.Picasso
@@ -69,7 +68,7 @@ class SearchAdapter(
                 musicName.text = music.musicName
                 artistName.text = music.artistName
                 Picasso
-                    .with(binding.root.context)
+                    .get()
                     .load(music.artworkUrl)
                     .into(artwork)
 

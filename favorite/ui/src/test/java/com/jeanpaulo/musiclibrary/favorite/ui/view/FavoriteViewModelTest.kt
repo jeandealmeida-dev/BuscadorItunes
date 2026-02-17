@@ -5,7 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.jeanpaulo.musiclibrary.commons.CustomSafeObserver
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
-import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
+import com.jeanpaulo.musiclibrary.ds.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.favorite.domain.FavoriteInteractor
 import com.jeanpaulo.musiclibrary.favorite.ui.favoriteList
 import com.jeanpaulo.musiclibrary.favorite.ui.song1

@@ -1,0 +1,188 @@
+# =============================================================================
+# VERSION CATALOG - Dependency Management
+# =============================================================================
+# Organization: Categories are alphabetically ordered
+# Naming Convention: kebab-case for versions, dot.notation for libraries
+# =============================================================================
+
+[versions]
+# Build & Gradle
+agp = "8.11.1"
+kotlin = "2.2.0"
+
+# AndroidX - Core
+androidx-appcompat = "1.7.1"
+androidx-cardview = "1.0.0"
+androidx-constraintlayout = "2.2.1"
+androidx-core-ktx = "1.16.0"
+androidx-fragment = "1.8.8"
+androidx-lifecycle = "2.2.0"
+androidx-localbroadcastmanager = "1.1.0"
+androidx-paging = "3.2.1"
+androidx-preference = "1.2.1"
+androidx-recyclerview = "1.4.0"
+androidx-swiperefreshlayout = "1.1.0"
+
+# AndroidX - Navigation
+navigation = "2.9.2"
+
+# Dependency Injection
+dagger = "2.57"
+
+# JSON Parsing
+moshi = "1.15.2"
+
+# Networking
+retrofit = "3.0.0"
+
+# Persistence
+room = "2.7.2"
+
+# Reactive Programming
+rxandroid = "3.0.2"
+rxjava = "3.1.11"
+rxkotlin = "3.0.1"
+
+# Testing
+androidx-espresso = "3.6.1"
+androidx-junit = "1.2.1"
+jacoco = "0.8.13"
+junit = "4.13.2"
+mockk = "1.14.5"
+
+# UI & Design
+design = "28.0.0"
+kotlinx-coroutines = "1.10.2"
+material = "1.12.0"
+multidex = "2.0.1"
+palette = "31.0.0"
+picasso = "2.71828"
+shimmerlayout = "2.1.0"
+skeleton = "ff06517d46"
+stetho = "1.6.0"
+
+# =============================================================================
+# PLUGINS
+# =============================================================================
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+
+# =============================================================================
+# LIBRARIES
+# =============================================================================
+
+[libraries]
+
+# -----------------------------------------------------------------------------
+# AndroidX - Core Libraries
+# -----------------------------------------------------------------------------
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
+androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "androidx-cardview" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
+androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidx-fragment" }
+androidx-localbroadcastmanager = { group = "androidx.localbroadcastmanager", name = "localbroadcastmanager", version.ref = "androidx-localbroadcastmanager" }
+androidx-preference = { group = "androidx.preference", name = "preference", version.ref = "androidx-preference" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "androidx-recyclerview" }
+androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "androidx-swiperefreshlayout" }
+
+# -----------------------------------------------------------------------------
+# AndroidX - Lifecycle
+# -----------------------------------------------------------------------------
+androidx-lifecycle-extensions = { group = "androidx.lifecycle", name = "lifecycle-extensions", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
+
+# -----------------------------------------------------------------------------
+# AndroidX - Navigation
+# -----------------------------------------------------------------------------
+navigation-fragment = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
+navigation-plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
+navigation-ui = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+
+# -----------------------------------------------------------------------------
+# AndroidX - Paging
+# -----------------------------------------------------------------------------
+androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "androidx-paging" }
+androidx-paging-rxjava = { group = "androidx.paging", name = "paging-rxjava3", version.ref = "androidx-paging" }
+
+# -----------------------------------------------------------------------------
+# AndroidX - Testing
+# -----------------------------------------------------------------------------
+androidx-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
+
+# -----------------------------------------------------------------------------
+# Build Tools
+# -----------------------------------------------------------------------------
+build-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+# -----------------------------------------------------------------------------
+# Dependency Injection - Dagger
+# -----------------------------------------------------------------------------
+dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
+dagger-android = { group = "com.google.dagger", name = "dagger-android", version.ref = "dagger" }
+dagger-android-processor = { module = "com.google.dagger:dagger-android-processor", version.ref = "dagger" }
+dagger-android-support = { module = "com.google.dagger:dagger-android-support", version.ref = "dagger" }
+dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
+
+# -----------------------------------------------------------------------------
+# JSON Parsing - Moshi
+# -----------------------------------------------------------------------------
+moshi-adapters = { group = "com.squareup.moshi", name = "moshi-adapters", version.ref = "moshi" }
+moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }
+moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
+
+# -----------------------------------------------------------------------------
+# Kotlin - Coroutines
+# -----------------------------------------------------------------------------
+kotlinx-coroutines-rx3 = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-rx3", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+
+# -----------------------------------------------------------------------------
+# Networking - Retrofit
+# -----------------------------------------------------------------------------
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-adapter-rxjava = { group = "com.squareup.retrofit2", name = "adapter-rxjava3", version.ref = "retrofit" }
+retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+retrofit-converter-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
+
+# -----------------------------------------------------------------------------
+# Persistence - Room
+# -----------------------------------------------------------------------------
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-rxjava = { group = "androidx.room", name = "room-rxjava3", version.ref = "room" }
+
+# -----------------------------------------------------------------------------
+# Reactive Programming - RxJava
+# -----------------------------------------------------------------------------
+rxandroid = { group = "io.reactivex.rxjava3", name = "rxandroid", version.ref = "rxandroid" }
+rxjava = { group = "io.reactivex.rxjava3", name = "rxjava", version.ref = "rxjava" }
+rxkotlin = { group = "io.reactivex.rxjava3", name = "rxkotlin", version.ref = "rxkotlin" }
+
+# -----------------------------------------------------------------------------
+# Testing - Unit & Instrumentation
+# -----------------------------------------------------------------------------
+jacoco = { group = "org.jacoco", name = "org.jacoco.core", version.ref = "jacoco" }
+jacoco-agent = { group = "org.jacoco", name = "org.jacoco.agent", version.ref = "jacoco" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+
+# -----------------------------------------------------------------------------
+# UI & Design
+# -----------------------------------------------------------------------------
+design = { group = "com.android.support", name = "design", version.ref = "design" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+multidex = { group = "com.android.support", name = "multidex", version.ref = "multidex" }
+palette = { group = "com.android.support", name = "palette-v7", version.ref = "palette" }
+picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "picasso" }
+shimmerlayout = { group = "io.supercharge", name = "shimmerlayout", version.ref = "shimmerlayout" }
+skeleton = { group = "com.github.ethanhua", name = "skeleton", version.ref = "skeleton" }
+stetho = { group = "com.facebook.stetho", name = "stetho", version.ref = "stetho" }

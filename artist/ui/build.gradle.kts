@@ -10,22 +10,24 @@ myOptions {
     }
 }
 
-addDaggerDependencies()
-addRxJavaDependencies()
-
 dependencies {
-    implementation(project(ProjectDependencies.Module.commons))
-    implementation(project(ProjectDependencies.Module.core))
-    implementation(project(ProjectDependencies.Module.player))
+    implementationModules(
+        ProjectDependencies.Module.ds,
+        ProjectDependencies.Module.commons,
+        ProjectDependencies.Module.core,
+        ProjectDependencies.Module.player,
+        ProjectDependencies.Module.Domain.artist
+    )
 
-    implementation(project(ProjectDependencies.Module.Domain.artist))
-
-    implementation(ProjectDependencies.Android.MaterialComponents())
+    implementationPackLibraries {
+        addDaggerDependencies(it)
+        addRxJavaDependencies(it)
+    }
 
     // Constraint Layout
-    implementation(ProjectDependencies.AndroidX.ConstraintLayout())
+    implementation(libs.androidx.constraintlayout)
 
     // Navigation
-    implementation(ProjectDependencies.AndroidX.Navigation.Fragment())
-    implementation(ProjectDependencies.AndroidX.Navigation.UI())
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
 }

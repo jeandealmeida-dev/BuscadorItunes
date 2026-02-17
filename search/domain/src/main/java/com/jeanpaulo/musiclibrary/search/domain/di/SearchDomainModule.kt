@@ -2,6 +2,8 @@ package com.jeanpaulo.musiclibrary.search.domain.di
 
 import com.jeanpaulo.musiclibrary.search.data.SearchRepository
 import com.jeanpaulo.musiclibrary.search.data.SearchRepositoryImpl
+import com.jeanpaulo.musiclibrary.search.domain.SearchInteractor
+import com.jeanpaulo.musiclibrary.search.domain.SearchInteractorImpl
 import dagger.Binds
 import dagger.Module
 
@@ -10,4 +12,7 @@ abstract class SearchDomainModule {
 
     @Binds
     abstract fun provideRepository(repository: SearchRepositoryImpl): SearchRepository
+
+    @Binds
+    abstract fun provideInteractor(interactor: SearchInteractorImpl): SearchInteractor
 }

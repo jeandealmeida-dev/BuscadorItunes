@@ -19,10 +19,10 @@ import com.jeanpaulo.musiclibrary.commons.extensions.ui.showSnackbar
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.showTopSnackbar
 import com.jeanpaulo.musiclibrary.commons.extensions.ui.visible
 import com.jeanpaulo.musiclibrary.commons.view.ViewState
-import com.jeanpaulo.musiclibrary.core.ui.adapter.SongListSkeleton
-import com.jeanpaulo.musiclibrary.core.ui.bottomsheet.SongOption
-import com.jeanpaulo.musiclibrary.core.ui.bottomsheet.SongOptionsBottomSheet
-import com.jeanpaulo.musiclibrary.core.ui.model.SongUIModel
+import com.jeanpaulo.musiclibrary.ds.ui.adapter.SongListSkeleton
+import com.jeanpaulo.musiclibrary.ds.ui.bottomsheet.SongOption
+import com.jeanpaulo.musiclibrary.ds.ui.bottomsheet.SongOptionsBottomSheet
+import com.jeanpaulo.musiclibrary.ds.ui.model.SongUIModel
 import com.jeanpaulo.musiclibrary.player.mp.MPService
 import com.jeanpaulo.musiclibrary.search.ui.adapter.SearchAdapter
 import com.jeanpaulo.musiclibrary.search.ui.adapter.SearchLoadStateAdapter

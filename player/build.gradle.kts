@@ -14,7 +14,7 @@ dependencies {
     // Project
     implementation(project(ProjectDependencies.Module.commons))
 
-    implementation(ProjectDependencies.Android.MaterialComponents())
-
-    implementation(ProjectDependencies.Picasso())
+    implementation(libs.material)
+    implementation(libs.picasso)
+    implementation(libs.androidx.localbroadcastmanager)
 }

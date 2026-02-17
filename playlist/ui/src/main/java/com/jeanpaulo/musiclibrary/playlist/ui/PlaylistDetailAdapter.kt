@@ -3,8 +3,8 @@ package com.jeanpaulo.musiclibrary.playlist.ui
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.jeanpaulo.musiclibrary.core.databinding.SongItemBinding
 import com.jeanpaulo.musiclibrary.core.domain.model.Music
+import com.jeanpaulo.musiclibrary.ds.databinding.SongItemBinding
 
 class PlaylistDetailAdapter(
     private val listener: (Music) -> Unit
