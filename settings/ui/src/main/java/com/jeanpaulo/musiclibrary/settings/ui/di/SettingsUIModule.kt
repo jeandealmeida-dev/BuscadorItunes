@@ -2,9 +2,6 @@ package com.jeanpaulo.musiclibrary.settings.ui.di
 
 import androidx.lifecycle.ViewModel
 import com.jeanpaulo.musiclibrary.commons.di.ViewModelKey
-import com.jeanpaulo.musiclibrary.playlist.domain.PlaylistInteractor
-import com.jeanpaulo.musiclibrary.playlist.domain.PlaylistInteractorImpl
-import com.jeanpaulo.musiclibrary.playlist.domain.di.PlaylistDomainModule
 import com.jeanpaulo.musiclibrary.settings.domain.SettingsInteractor
 import com.jeanpaulo.musiclibrary.settings.domain.SettingsInteractorImpl
 import com.jeanpaulo.musiclibrary.settings.domain.di.SettingsDomainModule
@@ -19,7 +16,6 @@ import dagger.multibindings.IntoMap
     includes = [
         SettingsModule::class,
         SettingsDomainModule::class,
-        PlaylistDomainModule::class,
     ]
 )
 abstract class SettingsModuleBuilder {

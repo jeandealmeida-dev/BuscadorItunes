@@ -2,9 +2,7 @@ package com.jeanpaulo.musiclibrary.app.di
 
 import androidx.appcompat.app.AppCompatActivity
 import com.jeanpaulo.musiclibrary.app.MainActivity
-import com.jeanpaulo.musiclibrary.artist.ui.di.ArtistModuleBuilder
 import com.jeanpaulo.musiclibrary.favorite.ui.di.FavoriteModuleBuilder
-import com.jeanpaulo.musiclibrary.playlist.ui.di.PlaylistModuleBuilder
 import com.jeanpaulo.musiclibrary.search.ui.di.SearchModuleBuilder
 import com.jeanpaulo.musiclibrary.settings.ui.SettingsActivity
 import com.jeanpaulo.musiclibrary.settings.ui.di.SettingsModuleBuilder
@@ -19,8 +17,6 @@ abstract class MainModule {
         modules = [
             SearchModuleBuilder::class,
             FavoriteModuleBuilder::class,
-            PlaylistModuleBuilder::class,
-            ArtistModuleBuilder::class,
         ]
     )
     internal abstract fun bindMainActivity(): MainActivity
@@ -28,7 +24,7 @@ abstract class MainModule {
     @ContributesAndroidInjector(
         modules = [
             SettingsModuleBuilder::class,
-            PlaylistModuleBuilder::class,
+            FavoriteModuleBuilder::class,
         ]
     )
     internal abstract fun bindSettingsActivity(): SettingsActivity

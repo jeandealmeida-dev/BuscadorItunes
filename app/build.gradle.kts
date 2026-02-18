@@ -13,11 +13,6 @@ dependencies {
     implementation(project(ProjectDependencies.Module.Domain.search))
     implementation(project(ProjectDependencies.Module.Data.search))
 
-    // → Playlist
-    implementation(project(ProjectDependencies.Module.UI.playlist))
-    implementation(project(ProjectDependencies.Module.Domain.playlist))
-    implementation(project(ProjectDependencies.Module.Data.playlist))
-
     // → Favorite
     implementation(project(ProjectDependencies.Module.UI.favorite))
     implementation(project(ProjectDependencies.Module.Domain.favorite))
@@ -32,11 +27,6 @@ dependencies {
     implementation(project(ProjectDependencies.Module.UI.settings))
     implementation(project(ProjectDependencies.Module.Domain.settings))
     implementation(project(ProjectDependencies.Module.Data.settings))
-
-    // → Artist
-    implementation(project(ProjectDependencies.Module.UI.artist))
-    implementation(project(ProjectDependencies.Module.Domain.artist))
-    implementation(project(ProjectDependencies.Module.Data.artist))
 
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))

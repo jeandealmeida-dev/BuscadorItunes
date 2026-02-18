@@ -18,6 +18,7 @@ interface FavoriteInteractor {
     fun getFavoriteCount(): Single<Int>
     fun removeFromFavorites(trackId: Long): Completable
     fun saveInFavorite(music: Music): Completable
+    fun deleteAll() : Completable
 }
 
 class FavoriteInteractorImpl @Inject constructor(
@@ -45,6 +46,10 @@ class FavoriteInteractorImpl @Inject constructor(
         ).flatMapCompletable { musicId ->
             favoriteRepository.save(musicId)
         }
+
+    override fun deleteAll(): Completable {
+        return favoriteRepository.removeAll()
+    }
 
 
     override fun removeFromFavorites(musicId: Long): Completable =

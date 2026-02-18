@@ -13,27 +13,21 @@ object ProjectDependencies {
 
         object UI {
             const val search = ":search:ui"
-            const val playlist = ":playlist:ui"
             const val music = ":music:ui"
-            const val artist = ":artist:ui"
             const val favorite = ":favorite:ui"
             const val settings = ":settings:ui"
         }
 
         object Domain {
             const val search = ":search:domain"
-            const val playlist = ":playlist:domain"
             const val music = ":music:domain"
-            const val artist = ":artist:domain"
             const val favorite = ":favorite:domain"
             const val settings = ":settings:domain"
         }
 
         object Data {
             const val search = ":search:data"
-            const val playlist = ":playlist:data"
             const val music = ":music:data"
-            const val artist = ":artist:data"
             const val favorite = ":favorite:data"
             const val settings = ":settings:data"
         }

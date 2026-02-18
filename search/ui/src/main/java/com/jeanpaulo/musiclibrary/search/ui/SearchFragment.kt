@@ -169,7 +169,6 @@ class SearchFragment : BaseMvvmFragment() {
             music,
             listOf(
                 SongOption.ADD_FAVORITE,
-                SongOption.GO_TO_ARTIST
             ),
             object : SongOptionsBottomSheet.MusicOptionListener {
                 override fun onOptionSelected(option: SongOption, song: SongUIModel) {
@@ -189,16 +188,6 @@ class SearchFragment : BaseMvvmFragment() {
                 showSnackBar(
                     view = binding.root,
                     text = getString(R.string.search_add_favorite_success)
-                )
-            }
-
-            SongOption.GO_TO_ARTIST -> {
-                findNavController().navigate(
-                    SearchFragmentDirections
-                        .actionSearchFragmentToArtistFragment(
-                            artistId = music.artistId,
-                            artistName = music.artistName
-                        )
                 )
             }
 

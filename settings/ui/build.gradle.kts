@@ -14,7 +14,7 @@ dependencies {
     implementation(project(ProjectDependencies.Module.commons))
     implementation(project(ProjectDependencies.Module.core))
     implementation(project(ProjectDependencies.Module.Domain.settings))
-    implementation(project(ProjectDependencies.Module.Domain.playlist))
+    implementation(project(ProjectDependencies.Module.Domain.favorite))
 
     implementationPackLibraries {
         addDaggerDependencies(it)

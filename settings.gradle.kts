@@ -19,16 +19,6 @@ include(
     ":commons",
     ":player",
 
-    ":artist",
-    ":artist:ui",
-    ":artist:data",
-    ":artist:domain",
-
-    ":playlist",
-    ":playlist:ui",
-    ":playlist:data",
-    ":playlist:domain",
-
     ":music",
     ":music:ui",
     ":music:data",

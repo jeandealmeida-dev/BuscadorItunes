@@ -17,6 +17,7 @@ interface FavoriteRepository {
     fun save(musicId: Long): Completable
     fun remove(musicId: Long): Completable
     fun getCount(): Single<Int>
+    fun removeAll(): Completable
 }
 
 class FavoriteRepositoryImpl @Inject constructor(
@@ -50,6 +51,10 @@ class FavoriteRepositoryImpl @Inject constructor(
 
     override fun getCount(): Single<Int> =
         favoriteDao.getCount()
+
+    override fun removeAll(): Completable {
+        return favoriteDao.removeAll()
+    }
 
     override fun remove(remoteId: Long): Completable =
         favoriteDao.removeMusicFromFavorite(remoteId)

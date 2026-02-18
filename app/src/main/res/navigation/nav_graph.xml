@@ -7,8 +7,6 @@
 
     <include app:graph="@navigation/search_graph" />
 
-    <include app:graph="@navigation/playlist_graph" />
-
     <include app:graph="@navigation/favorite_graph" />
 
 </navigation>

@@ -44,4 +44,8 @@ interface FavoriteDao {
             "FROM ${FavoriteEntity.TABLE} ")
     fun getCount(): Single<Int>
 
+    @Query("DELETE " +
+            "FROM ${FavoriteEntity.TABLE} ")
+    fun removeAll(): Completable
+
 }

@@ -16,11 +16,9 @@ dependencies {
         ProjectDependencies.Module.ds,
         ProjectDependencies.Module.player,
         ProjectDependencies.Module.core,
-        ProjectDependencies.Module.Domain.playlist,
         ProjectDependencies.Module.Domain.favorite,
         ProjectDependencies.Module.Domain.search,
         ProjectDependencies.Module.UI.music,
-        ProjectDependencies.Module.UI.artist,
     )
 
     implementationPackLibraries {
